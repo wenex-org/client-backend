@@ -1,11 +1,12 @@
 {
-    "cSpell.words": [
-        "kafkajs",
-        "nestjs",
-        "opentelemetry",
-        "OTLP",
-        "Vahid",
-        "Wenex",
-        "Zipkin"
-    ]
+  "cSpell.words": [
+    "consts",
+    "kafkajs",
+    "nestjs",
+    "opentelemetry",
+    "OTLP",
+    "Vahid",
+    "Wenex",
+    "Zipkin"
+  ]
 }
