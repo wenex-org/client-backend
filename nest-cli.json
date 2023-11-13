@@ -62,6 +62,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "health": {
+      "type": "library",
+      "root": "libs/health",
+      "entryFile": "index",
+      "sourceRoot": "libs/health/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/health/tsconfig.lib.json"
+      }
+    },
+    "redis": {
+      "type": "library",
+      "root": "libs/redis",
+      "entryFile": "index",
+      "sourceRoot": "libs/redis/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/redis/tsconfig.lib.json"
+      }
+    },
+    "sdk": {
+      "type": "library",
+      "root": "libs/sdk",
+      "entryFile": "index",
+      "sourceRoot": "libs/sdk/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/sdk/tsconfig.lib.json"
+      }
     }
   }
 }

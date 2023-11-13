@@ -1,44 +1,72 @@
 import {
-  AuthenticationRequest,
-  AuthorizationCanRequest,
-  AuthorizationPolicyRequest,
-  Token,
-} from '@wenex/sdk/common/interfaces';
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+  Body,
+  Controller,
+  Post,
+  UseFilters,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
+import {
+  AuthenticationResponseSerializer,
+  AuthorizationCanResponseSerializer,
+  AuthorizationPolicyResponseSerializer,
+  JwtTokenSerializer,
+  ResultSerializer,
+} from '@app/common/serializers';
+import {
+  AuthenticationRequestDto,
+  AuthorizationCanRequestDto,
+  AuthorizationPolicyRequestDto,
+  TokenDto,
+} from '@app/common/dto';
 import { LoggerInterceptor } from '@app/common/interceptors';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
-import { ApiTags } from '@nestjs/swagger';
+import { AllExceptionsFilter } from '@app/common/filters';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ValidationPipe } from '@app/common/pipes';
 
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
 @Controller('auth')
+@UsePipes(ValidationPipe)
+@UseFilters(AllExceptionsFilter)
 @UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('token')
-  token(@Body() data: AuthenticationRequest) {
+  token(
+    @Body() data: AuthenticationRequestDto,
+  ): Promise<AuthenticationResponseSerializer> {
     return this.authService.token(data);
   }
 
   @Post('verify')
-  verify(@Body() data: Token) {
+  @ApiBearerAuth()
+  verify(@Body() data: TokenDto): Promise<JwtTokenSerializer> {
     return this.authService.verify(data);
   }
 
   @Post('can')
-  can(@Body() data: AuthorizationCanRequest) {
+  @ApiBearerAuth()
+  can(
+    @Body() data: AuthorizationCanRequestDto,
+  ): Promise<AuthorizationCanResponseSerializer> {
     return this.authService.can(data);
   }
 
   @Post('policy')
-  policy(@Body() data: AuthorizationPolicyRequest) {
+  @ApiBearerAuth()
+  policy(
+    @Body() data: AuthorizationPolicyRequestDto,
+  ): Promise<AuthorizationPolicyResponseSerializer> {
     return this.authService.policy(data);
   }
 
   @Post('logout')
-  logout(@Body() data: Token) {
+  @ApiBearerAuth()
+  logout(@Body() data: TokenDto): Promise<ResultSerializer> {
     return this.authService.logout(data);
   }
 }
