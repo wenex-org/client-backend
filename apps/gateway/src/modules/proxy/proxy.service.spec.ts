@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommandService } from './command.service';
+import { ProxyService } from './proxy.service';
 
-describe('CommandService', () => {
-  let service: CommandService;
+describe('ProxyService', () => {
+  let service: ProxyService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CommandService],
+      providers: [ProxyService],
     }).compile();
 
-    service = module.get<CommandService>(CommandService);
+    service = module.get<ProxyService>(ProxyService);
   });
 
   it('should be defined', () => {

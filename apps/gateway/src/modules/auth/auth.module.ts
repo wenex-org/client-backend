@@ -9,8 +9,8 @@ import { AuthController } from './auth.controller';
   imports: [
     HttpModule.register({
       baseURL: process.env.PLATFORM_URL,
-      headers: { 'api-key': process.env.API_KEY },
-      timeout: parseInt(process.env.TIMEOUT || '30000'),
+      timeout: +(process.env.TIMEOUT || 30000),
+      headers: { 'x-api-key': process.env.API_KEY },
     }),
   ],
   controllers: [AuthController],

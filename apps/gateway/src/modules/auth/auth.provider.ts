@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { AuthClient } from 'platform-sdk';
+import { AuthClient } from '@wenex/sdk';
 
 @Injectable()
 export class AuthProvider {

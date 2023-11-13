@@ -1,10 +1,10 @@
 import {
   AuthenticationRequest,
-  AuthorizationRequest,
-  TokenInterface,
-} from 'platform-sdk/common/interfaces';
+  AuthorizationCanRequest,
+  AuthorizationPolicyRequest,
+  Token,
+} from '@wenex/sdk/common';
 import { Inject, Injectable, Scope } from '@nestjs/common';
-import { Role } from '@app/common/enums';
 import { REQUEST } from '@nestjs/core';
 import { AxiosPromise } from 'axios';
 import { Request } from 'express';
@@ -24,8 +24,6 @@ export class AuthService {
     data.client_id = process.env.CLIENT_ID;
     data.client_secret = process.env.CLIENT_SECRET;
 
-    data.roles = data.roles ?? Object.values(Role);
-
     const res = this.provider.client.authentication.token(data, {
       headers: this.headers(),
     });
@@ -33,15 +31,15 @@ export class AuthService {
     return await this.response(res);
   }
 
-  async decrypt(data: TokenInterface) {
-    const res = this.provider.client.authentication.decrypt(data, {
+  async verify(data: Token) {
+    const res = this.provider.client.authentication.verify(data, {
       headers: this.headers(),
     });
 
     return await this.response(res);
   }
 
-  async logout(data: TokenInterface) {
+  async logout(data: Token) {
     const res = this.provider.client.authentication.logout(data, {
       headers: this.headers(),
     });
@@ -49,8 +47,16 @@ export class AuthService {
     return await this.response(res);
   }
 
-  async can(data: AuthorizationRequest) {
+  async can(data: AuthorizationCanRequest) {
     const res = this.provider.client.authorization.can(data, {
+      headers: this.headers(),
+    });
+
+    return await this.response(res);
+  }
+
+  async policy(data: AuthorizationPolicyRequest) {
+    const res = this.provider.client.authorization.policy(data, {
       headers: this.headers(),
     });
 
