@@ -3,10 +3,12 @@
     "consts",
     "kafkajs",
     "nestjs",
+    "ntegral",
     "opentelemetry",
     "OTLP",
     "Vahid",
     "Wenex",
+    "willsoto",
     "Zipkin"
   ]
 }
