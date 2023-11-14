@@ -45,6 +45,8 @@
     "@wenex/sdk": "^0.0.6",
     "@willsoto/nestjs-prometheus": "^6.0.0",
     "abacl": "^8.0.4",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.3",
     "axios": "^1.6.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

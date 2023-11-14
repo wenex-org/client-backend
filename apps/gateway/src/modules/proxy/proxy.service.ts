@@ -1,16 +1,25 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { getHeaders } from '@app/common/utils';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import { AxiosResponse } from 'axios';
 import { Request } from 'express';
 
+import { PROXY_SERVICE } from './proxy.const';
+
 @Injectable({ scope: Scope.REQUEST })
-export class ProxyService {
+export class ProxyService implements OnModuleInit {
   constructor(
     private readonly httpService: HttpService,
+
     @Inject(REQUEST) private readonly req: Request,
+    @Inject(PROXY_SERVICE) private readonly client: ClientProxy,
   ) {}
+
+  onModuleInit() {
+    this.client.connect();
+  }
 
   async all(): Promise<AxiosResponse> {
     try {

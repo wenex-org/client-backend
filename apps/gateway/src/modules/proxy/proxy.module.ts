@@ -9,22 +9,18 @@ import { ProxyController } from './proxy.controller';
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: PROXY_SERVICE,
+        options: RMQ_CONFIG(),
+        transport: Transport.RMQ,
+      },
+    ]),
     HttpModule.register({
       baseURL: process.env.PLATFORM_URL,
       timeout: +(process.env.TIMEOUT || 30000),
       headers: { 'api-key': process.env.API_KEY },
     }),
-    ClientsModule.register([
-      {
-        name: PROXY_SERVICE,
-        transport: Transport.RMQ,
-        options: {
-          urls: [RMQ_CONFIG()],
-          queueOptions: { durable: false },
-          queue: process.env.ENGAGE_QUEUE ?? 'proxy',
-        },
-      },
-    ]),
   ],
   controllers: [ProxyController],
   providers: [ProxyService],
