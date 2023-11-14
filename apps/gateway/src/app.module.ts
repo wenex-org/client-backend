@@ -5,6 +5,9 @@ import { HealthModule } from '@app/health';
 import { Module } from '@nestjs/common';
 import { SdkModule } from '@app/sdk';
 
+import { AuthModule } from './modules/auth';
+import { ProxyModule } from './modules/proxy';
+
 @Module({
   imports: [
     SdkModule.forRoot({
@@ -15,6 +18,8 @@ import { SdkModule } from '@app/sdk';
     PrometheusModule.register(),
     SentryModule.forRoot(SENTRY_CONFIG()),
     HealthModule.forRoot(['disk', 'memory', 'kafka']),
+
+    ...[AuthModule, ProxyModule],
   ],
 })
 export class AppModule {}

@@ -12,16 +12,16 @@ import { ProxyController } from './proxy.controller';
       timeout: +(process.env.TIMEOUT || 30000),
       headers: { 'api-key': process.env.API_KEY },
     }),
-    ClientsModule.register([
-      {
-        name: 'PROXY_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          consumer: { groupId: 'proxy-consumer' },
-          client: { clientId: 'proxy', brokers: ['localhost:9092'] },
-        },
-      },
-    ]),
+    // ClientsModule.register([
+    //   {
+    //     name: 'PROXY_SERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       consumer: { groupId: 'proxy-consumer' },
+    //       client: { clientId: 'proxy', brokers: ['localhost:9092'] },
+    //     },
+    //   },
+    // ]),
   ],
   controllers: [ProxyController],
   providers: [ProxyService],

@@ -5,9 +5,9 @@ import {
   Token,
 } from '@wenex/sdk/common';
 import { Inject, Injectable, Scope } from '@nestjs/common';
+import { getHeaders, setHeaders } from '@app/common/utils';
 import { REQUEST } from '@nestjs/core';
 import { SdkService } from '@app/sdk';
-import { AxiosHeaders } from 'axios';
 import { Request } from 'express';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -21,18 +21,18 @@ export class AuthService {
     data.app_id = process.env.APP_ID;
     data.client_id = process.env.CLIENT_ID;
     data.client_secret = process.env.CLIENT_SECRET;
-    data.strict = process.env.STRICT_TOKEN?.includes('true');
+    data.strict = !process.env.STRICT_TOKEN?.includes('false');
 
     const {
       status,
       headers,
       data: res,
     } = await this.sdkService.auth.authentication.token(data, {
-      headers: this.getHeaders(),
+      headers: getHeaders(this.req),
     });
 
     this.req.res.status(status);
-    this.setHeaders(headers as AxiosHeaders);
+    setHeaders(headers, this.req.res);
     return res;
   }
 
@@ -42,11 +42,11 @@ export class AuthService {
       headers,
       data: res,
     } = await this.sdkService.auth.authentication.verify(data, {
-      headers: this.getHeaders(),
+      headers: getHeaders(this.req),
     });
 
     this.req.res.status(status);
-    this.setHeaders(headers as AxiosHeaders);
+    setHeaders(headers, this.req.res);
     return res;
   }
 
@@ -56,11 +56,11 @@ export class AuthService {
       headers,
       data: res,
     } = await this.sdkService.auth.authentication.logout(data, {
-      headers: this.getHeaders(),
+      headers: getHeaders(this.req),
     });
 
     this.req.res.status(status);
-    this.setHeaders(headers as AxiosHeaders);
+    setHeaders(headers, this.req.res);
     return res;
   }
 
@@ -70,11 +70,11 @@ export class AuthService {
       headers,
       data: res,
     } = await this.sdkService.auth.authorization.can(data, {
-      headers: this.getHeaders(),
+      headers: getHeaders(this.req),
     });
 
     this.req.res.status(status);
-    this.setHeaders(headers as AxiosHeaders);
+    setHeaders(headers, this.req.res);
     return res;
   }
 
@@ -84,24 +84,11 @@ export class AuthService {
       headers,
       data: res,
     } = await this.sdkService.auth.authorization.policy(data, {
-      headers: this.getHeaders(),
+      headers: getHeaders(this.req),
     });
 
     this.req.res.status(status);
-    this.setHeaders(headers as AxiosHeaders);
+    setHeaders(headers, this.req.res);
     return res;
-  }
-
-  protected getHeaders() {
-    return {
-      'x-user-ip': this.req.ip,
-      'x-user-agent': this.req.headers['user-agent'],
-      authorization: this.req.headers['authorization'],
-    };
-  }
-
-  protected setHeaders(headers: AxiosHeaders) {
-    for (const [key, val] of Object.entries(headers))
-      if (val && key.startsWith('x-')) this.req.res.setHeader(key, val);
   }
 }

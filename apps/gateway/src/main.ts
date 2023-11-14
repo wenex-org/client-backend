@@ -18,7 +18,7 @@ import { AppModule } from './app.module';
 const { GATEWAY } = APP;
 
 async function bootstrap() {
-  if (NODE_ENV().IS_PROD) await initTracing(['http', 'kafka']);
+  if (NODE_ENV().IS_PROD) await initTracing(['http', 'amqp']);
 
   const app = await NestFactory.create(AppModule, { cors: true });
 
