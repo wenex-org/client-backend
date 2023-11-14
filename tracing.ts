@@ -7,7 +7,7 @@ import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentation
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
-import { KafkaJsInstrumentation } from 'opentelemetry-instrumentation-kafkajs';
+import { AmqplibInstrumentation } from '@opentelemetry/instrumentation-amqplib';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc';
@@ -15,9 +15,8 @@ import { Instrumentation } from '@opentelemetry/instrumentation';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { Resource } from '@opentelemetry/resources';
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { NODE_ENV } from '@app/common/configs';
 
-export const initTracing = async (modules: ('http' | 'grpc' | 'kafka')[]) => {
+export const initTracing = async (modules: ('http' | 'grpc' | 'amqp')[]) => {
   const exporter = new OTLPTraceExporter({
     url: `http://${process.env.OTLP_HOST}:${process.env.OTLP_PORT}/v1/traces`,
   });
@@ -28,11 +27,10 @@ export const initTracing = async (modules: ('http' | 'grpc' | 'kafka')[]) => {
     }),
   });
 
-  const SpanProcessor = NODE_ENV().IS_PRODUCTION
-    ? BatchSpanProcessor
-    : SimpleSpanProcessor;
+  const IS_PRODUCTION = process.env.NODE_ENV.toLowerCase().startsWith('prod');
+  const SpanProcessor = IS_PRODUCTION ? BatchSpanProcessor : SimpleSpanProcessor;
 
-  if (NODE_ENV().IS_PRODUCTION)
+  if (IS_PRODUCTION)
     provider.addSpanProcessor(
       new SpanProcessor(new ZipkinExporter({ url: process.env.ZIPKIN_URL })),
     );
@@ -46,7 +44,7 @@ export const initTracing = async (modules: ('http' | 'grpc' | 'kafka')[]) => {
 
   if (modules.includes('http')) instrumentations.push(new HttpInstrumentation());
   if (modules.includes('grpc')) instrumentations.push(new GrpcInstrumentation());
-  if (modules.includes('kafka')) instrumentations.push(new KafkaJsInstrumentation());
+  if (modules.includes('amqp')) instrumentations.push(new AmqplibInstrumentation());
 
   provider.register();
   const sdk = new NodeSDK({
