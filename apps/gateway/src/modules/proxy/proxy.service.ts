@@ -1,10 +1,10 @@
 import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { getHeaders } from '@app/common/utils';
+import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import { AxiosResponse } from 'axios';
-import { Request } from 'express';
 
 import { PROXY_SERVICE } from './proxy.const';
 
@@ -21,7 +21,7 @@ export class ProxyService implements OnModuleInit {
     this.client.connect();
   }
 
-  async all(): Promise<AxiosResponse> {
+  async all(_res?: Response): Promise<AxiosResponse> {
     try {
       return await this.httpService.axiosRef.request({
         responseType: 'stream',
