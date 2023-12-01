@@ -17,13 +17,13 @@ export class ProxyController {
 
   @All('*')
   async all(@Res() res: Response) {
-    const { data, status, headers } = await this.proxyService.all(res);
+    const { data, status, headers } = (await this.proxyService.all(res)) ?? {};
 
     if (data || status || headers) {
       res.status(status ?? 500);
       for (const head in headers ?? {})
         if (headers[head]?.startsWith('x-')) res.setHeader(head, headers[head]);
       if (data) data.pipe(res);
-    } else return;
+    } else res.end();
   }
 }
