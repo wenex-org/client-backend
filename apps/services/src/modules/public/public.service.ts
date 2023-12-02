@@ -11,7 +11,12 @@ export class PublicService {
     const sdk = await this.sdkService.asClient();
 
     const app = await sdk.domain.apps.findById(id);
-    const client = await sdk.domain.clients.findById(id);
+
+    const client = (
+      await sdk.domain.clients.find({
+        query: { $or: [{ id }, { client_id: id }] },
+      })
+    )?.pop();
 
     return { end: { app, client } };
   }
