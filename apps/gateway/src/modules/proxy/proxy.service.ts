@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
 import { getHeaders, getRequestInfo, toJSON } from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
 import { ClientProxy } from '@nestjs/microservices';
@@ -44,7 +44,7 @@ export class ProxyService implements OnModuleInit {
       if (typeof message === 'string') {
         const error = toJSON(message);
         if (typeof error === 'object') {
-          res.status(error.status);
+          res.status(error.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
           return { end: error };
         }
       }
