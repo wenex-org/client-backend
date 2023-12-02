@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import { getHeaders, getRequestInfo, toJSON } from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
-import { getHeaders, getRequestInfo } from '@app/common/utils';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
@@ -23,7 +23,7 @@ export class ProxyService implements OnModuleInit {
     this.client.connect();
   }
 
-  async beforeSync(): Promise<SyncData> {
+  async beforeSync(res: Response): Promise<SyncData> {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'Before');
 
@@ -40,11 +40,19 @@ export class ProxyService implements OnModuleInit {
 
       this.mergeRequest(result);
       return result;
-    } catch {}
+    } catch ({ message }) {
+      if (typeof message === 'string') {
+        const error = toJSON(message);
+        if (typeof error === 'object') {
+          res.status(error.status);
+          return { end: error };
+        }
+      }
+    }
   }
 
   async all(res: Response): Promise<AxiosResponse> {
-    const before = await this.beforeSync();
+    const before = await this.beforeSync(res);
 
     try {
       if (!before?.end) {
