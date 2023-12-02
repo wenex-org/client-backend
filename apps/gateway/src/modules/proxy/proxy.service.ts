@@ -58,7 +58,7 @@ export class ProxyService implements OnModuleInit {
           headers: getHeaders(this.req),
           baseURL: process.env.PLATFORM_URL,
         });
-      } else res.json(before);
+      } else res.json(before?.end ?? before);
     } catch ({ response }) {
       return response;
     }
