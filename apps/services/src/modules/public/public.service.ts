@@ -11,7 +11,6 @@ export class PublicService {
       headers,
       params: {
         projection: 'id cid url site type name logo status slogan version created_at',
-        zone: 'client',
       },
     });
 
@@ -25,7 +24,6 @@ export class PublicService {
           params: {
             projection:
               'id url plan site logo name state status slogan created_at domains.name domains.status domains.subjects',
-            zone: 'client',
           },
         },
       )
