@@ -4,6 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';
 import { Headers } from '@app/common/interfaces';
+import { wrap } from '@app/common/utils';
 
 import { PublicService } from './public.service';
 
@@ -15,10 +16,10 @@ export class PublicController {
   constructor(readonly service: PublicService) {}
 
   @MessagePattern('Before: GET /public/host/?')
-  getHost(
+  async getHost(
     @Payload('params', ParseIdPipe) id: string,
     @Payload('headers') headers: Headers,
   ) {
-    return this.service.getHost(id, headers);
+    return wrap(await this.service.getHost(id, headers), 'end');
   }
 }
