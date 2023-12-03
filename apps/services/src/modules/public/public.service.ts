@@ -7,16 +7,13 @@ export class PublicService {
   constructor(private readonly sdkService: SdkService) {}
 
   async getHost(id: string, headers?: Headers) {
-    await this.sdkService.reset({ headers });
-    const sdk = await this.sdkService.asClient();
-
-    const app = await sdk.domain.apps.findById(id, {
+    const app = await this.sdkService.client.domain.apps.findById(id, {
       headers,
       params: { zone: 'client' },
     });
 
     const client = (
-      await sdk.domain.clients.find(
+      await this.sdkService.client.domain.clients.find(
         {
           query: { $or: [{ id }, { client_id: id }] },
         },
