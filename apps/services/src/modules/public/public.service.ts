@@ -17,7 +17,23 @@ export class PublicService {
         {
           query: { $or: [{ id }, { client_id: id }] },
         },
-        { headers, params: { zone: 'client' } },
+        {
+          headers,
+          params: {
+            projection: {
+              status: 1,
+              state: 1,
+              logo: 1,
+              name: 1,
+              slogan: 1,
+              created_at: 1,
+              'domains.name': 1,
+              'domains.status': 1,
+              'domains.subjects': 1,
+            },
+            zone: 'client',
+          },
+        },
       )
     )?.pop();
 
