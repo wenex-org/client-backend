@@ -75,8 +75,8 @@ dependencies:
     specifier: ^1.18.1
     version: 1.18.1
   '@wenex/sdk':
-    specifier: ^0.1.4
-    version: 0.1.4(axios@1.6.2)(mongoose@8.0.0)
+    specifier: ^0.1.5
+    version: 0.1.5(axios@1.6.2)(mongoose@8.0.0)
   '@willsoto/nestjs-prometheus':
     specifier: ^6.0.0
     version: 6.0.0(@nestjs/common@10.2.10)(prom-client@15.0.0)
@@ -3339,8 +3339,8 @@ packages:
       '@xtuc/long': 4.2.2
     dev: true
 
-  /@wenex/sdk@0.1.4(axios@1.6.2)(mongoose@8.0.0):
-    resolution: {integrity: sha512-PymkenbeI/AOvvrNjkmsP7VdPVbMmBCxyC4I+Wt89CvxLk3s8zP5PjMC59GBGbuiEYQLDZ5TC63vmVkuWz/ofg==}
+  /@wenex/sdk@0.1.5(axios@1.6.2)(mongoose@8.0.0):
+    resolution: {integrity: sha512-cNmm8O/P0DW/5syIvwL8mkPob/J1CpQJ1HUx7bIntKZ6/DpYVMzZGpNsZ/VVnJnMdKSt2BTMt0brIgdao7nA/w==}
     peerDependencies:
       axios: ^1.5.0
       mongoose: ^8.0.0
