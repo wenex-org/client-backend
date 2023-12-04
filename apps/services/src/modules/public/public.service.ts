@@ -29,6 +29,6 @@ export class PublicService {
       )
     )?.pop();
 
-    return app.id ? { app, client } : { client };
+    return app?.id ? { app, client } : { client };
   }
 }
