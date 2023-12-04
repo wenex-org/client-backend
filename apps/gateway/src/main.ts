@@ -8,6 +8,7 @@ import {
 } from '@app/common/interceptors';
 import { setupSwagger } from '@app/common/utils';
 import { NODE_ENV } from '@app/common/configs';
+import { MACHINE } from '@app/common/helpers';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common/consts';
 import { initTracing } from 'tracing';
@@ -39,5 +40,6 @@ async function bootstrap() {
   console.log(`Prometheus is running on ${url}/metrics`);
   console.log(`Health check is running on ${url}/status`);
   console.log(`OpenApi Spec is running on: ${url}/api-json`);
+  console.log('\x1b[32m%s\x1b[0m', 'Machine GUID:', MACHINE.GUID);
 }
 bootstrap();

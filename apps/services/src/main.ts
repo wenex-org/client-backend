@@ -4,6 +4,7 @@ require('log-node')();
 
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { NODE_ENV, RMQ_CONFIG } from '@app/common/configs';
+import { MACHINE } from '@app/common/helpers';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common/consts';
 import { initTracing } from 'tracing';
@@ -29,5 +30,6 @@ async function bootstrap() {
   console.log(`Prometheus is running on ${url}/metrics`);
   console.log(`Health check is running on ${url}/status`);
   console.log(`Service RMQ Micro Successfully Started`);
+  console.log('\x1b[32m%s\x1b[0m', 'Machine GUID:', MACHINE.GUID);
 }
 bootstrap();
