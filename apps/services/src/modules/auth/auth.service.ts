@@ -1,6 +1,6 @@
 import { AuthenticationRequest } from '@wenex/sdk/common';
-import { Injectable } from '@nestjs/common';
 import { SyncBody } from '@app/common/interfaces';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
