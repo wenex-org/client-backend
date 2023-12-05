@@ -1,15 +1,14 @@
-import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
-import { ParseIdPipe, ValidationPipe } from '@app/common/pipes';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';
 import { Headers } from '@app/common/interfaces';
+import { ParseIdPipe } from '@app/common/pipes';
 import { wrap } from '@app/common/utils';
 
 import { PublicService } from './public.service';
 
 @Controller()
-@UsePipes(ValidationPipe)
 @UseFilters(AllExceptionsFilter)
 @UseInterceptors(new SentryInterceptor())
 export class PublicController {
