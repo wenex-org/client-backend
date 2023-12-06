@@ -5,7 +5,7 @@ if [ -f .data/machine.env ]; then
 else
   touch .data/machine.env
 
-  echo "MACHINE_GUID=$(cat /dev/urandom | head -c 10 | base32)" >> .data/machine.env
+  echo "MACHINE_ID=$(cat /dev/urandom | head -c 10 | base32)" >> .data/machine.env
 
   echo "Machine information prepared successfully."
 fi
