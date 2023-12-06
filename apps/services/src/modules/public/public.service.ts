@@ -1,4 +1,4 @@
-import { Headers } from '@app/common/interfaces';
+import { Headers, SyncEnd } from '@app/common/interfaces';
 import { Injectable } from '@nestjs/common';
 import { SdkService } from '@app/sdk';
 
@@ -6,7 +6,7 @@ import { SdkService } from '@app/sdk';
 export class PublicService {
   constructor(private readonly sdkService: SdkService) {}
 
-  async getHost(id: string, headers?: Headers) {
+  async getHost(id: string, headers?: Headers): Promise<SyncEnd> {
     const app = await this.sdkService.client.domain.apps.findById(id, {
       headers,
       params: {
