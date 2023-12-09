@@ -2,10 +2,18 @@ import {
   Headers,
   OAuthInfo,
   OAuthRequest,
+  Registration,
   SyncBody,
   SyncEnd,
 } from '@app/common/interfaces';
-import { AuthenticationRequest, Query, Status, User, UserOAuth } from '@wenex/sdk/common';
+import {
+  AuthenticationRequest,
+  MongoId,
+  Query,
+  Status,
+  User,
+  UserOAuth,
+} from '@wenex/sdk/common';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OAUTH_CONFIG } from '@app/common/configs';
 import { HttpService } from '@nestjs/axios';
@@ -26,6 +34,33 @@ export class AuthService {
     data.strict = !process.env.STRICT_TOKEN?.includes('false');
 
     return { data, type: 'assign' };
+  }
+
+  async register(data: Registration, headers?: Headers): Promise<SyncEnd> {
+    const { identity } = this.sdkService.client();
+
+    const { email, phone, username, password } = data;
+    expect(
+      email || phone || username,
+      'one of the username or password or email is required',
+      HttpStatus.BAD_REQUEST,
+    );
+
+    const id = MongoId();
+    return await identity.users.create(
+      {
+        id,
+        email,
+        owner: id,
+        status: Status.Active,
+        subjects: [Subject.Guest],
+        // password,
+      },
+      {
+        headers,
+        params: { projection: 'id owner clients created_at created_by created_in' },
+      },
+    );
   }
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd> {

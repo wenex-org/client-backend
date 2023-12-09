@@ -1,10 +1,10 @@
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
+import { OAuthRequestDto, RegistrationDto } from '@app/common/dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AuthenticationRequest } from '@wenex/sdk/common';
 import { AllExceptionsFilter } from '@app/common/filters';
 import { ValidationPipe } from '@app/common/pipes';
-import { OAuthRequestDto } from '@app/common/dto';
 import { Headers } from '@app/common/interfaces';
 import { wrap } from '@app/common/utils';
 
@@ -28,5 +28,13 @@ export class AuthController {
     @Payload('data') data: OAuthRequestDto,
   ) {
     return wrap(await this.service.oauth(data, headers), 'end');
+  }
+
+  @MessagePattern('Before: POST /auth/register')
+  async register(
+    @Payload('headers') headers: Headers,
+    @Payload('data') data: RegistrationDto,
+  ) {
+    return wrap(await this.service.register(data, headers), 'end');
   }
 }
