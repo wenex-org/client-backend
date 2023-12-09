@@ -30,14 +30,18 @@ export class AuthService {
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd> {
     switch (data.source) {
-      case UserOAuth.Google:
+      case UserOAuth.Google: {
         const info = await this.getGoogleOAuthInfo(data);
-        return this.userCredential(info, headers);
-      case UserOAuth.Github:
-        return this.getGithubOAuthInfo(data);
-        break;
+        await this.userCredential(info, headers);
+        return info;
+      }
+      case UserOAuth.Github: {
+        const info = await this.getGithubOAuthInfo(data);
+        await this.userCredential(info, headers);
+        return info;
+      }
       default:
-        throw new HttpException('undefined source', HttpStatus.BAD_REQUEST);
+        throw new HttpException('unknown source', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -47,25 +51,41 @@ export class AuthService {
     const findQuery: Query<User> = { email: info.email };
     const findUsers = await identity.users.find({ query: findQuery }, { headers });
 
-    let user = findUsers.pop();
-    if (!user) {
+    const user = findUsers.pop();
+    if (!user?.id) {
       const { email, source } = info;
-      user = await identity.users.create(
+      await identity.users.create(
         {
           email,
           oauth: [source],
           status: Status.Active,
           subjects: [Subject.Guest],
-          // props: { google_avatar: avatar },
+          // props:
+          //   source === UserOAuth.Google
+          //     ? { google_avatar: avatar, google_name: name }
+          //     : { github_avatar: avatar, github_name: name },
+        },
+        { headers },
+      );
+    } else {
+      const { source } = info;
+      await identity.users.updateById(
+        user.id,
+        {
+          oauth: [...new Set([...user.oauth, source])],
+          // props: Object.assign(
+          //   toJSON(user.props ?? {}),
+          //   source === UserOAuth.Google
+          //     ? { google_avatar: avatar, google_name: name }
+          //     : { github_avatar: avatar, github_name: name },
+          // ),
         },
         { headers },
       );
     }
-
-    return user;
   }
 
-  private async getGithubOAuthInfo(oauth: OAuthRequest) {
+  private async getGithubOAuthInfo(oauth: OAuthRequest): Promise<OAuthInfo> {
     const { code, source } = oauth;
     const { GITHUB } = OAUTH_CONFIG();
 
@@ -87,16 +107,13 @@ export class AuthService {
       avatar_url: string;
       name: string;
       email: string;
-      login: string;
-      location: string;
     }>('https://api.github.com/user', {
       headers: { Authorization: 'Bearer ' + access_token },
     });
-
     expect(userInfo.email, 'email not found', HttpStatus.NOT_FOUND);
 
     const { email, avatar_url, name } = userInfo;
-    return { email, name, avatar: avatar_url, secret: access_token, source };
+    return { email, name, avatar: avatar_url, secret: String(access_token), source };
   }
 
   private async getGoogleOAuthInfo(oauth: OAuthRequest): Promise<OAuthInfo> {
@@ -124,7 +141,6 @@ export class AuthService {
       verified_email: boolean;
       picture: string;
       name: string;
-      locale: string;
     }>('https://www.googleapis.com/oauth2/v2/userinfo', {
       params: { access_token: access_token },
       headers: { 'Content-Type': ' application/json' },
