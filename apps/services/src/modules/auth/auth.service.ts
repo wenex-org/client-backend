@@ -12,6 +12,7 @@ import {
   Query,
   Status,
   User,
+  UserDto,
   UserOAuth,
 } from '@wenex/sdk/common';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -47,20 +48,25 @@ export class AuthService {
     );
 
     const id = MongoId();
-    return await identity.users.create(
-      {
-        id,
-        email,
-        owner: id,
-        status: Status.Active,
-        subjects: [Subject.Guest],
-        // password,
-      },
-      {
-        headers,
-        params: { projection: 'id owner clients created_at created_by created_in' },
-      },
-    );
+    const payload: UserDto = {
+      id,
+      owner: id,
+
+      password,
+      status: Status.Active,
+      subjects: [Subject.Guest],
+    };
+
+    if (email) payload.email = email;
+    if (phone) payload.phone = phone;
+    if (username) payload.username = username;
+
+    const user = await identity.users.create(payload, {
+      headers,
+      params: { projection: 'id owner clients created_at created_by created_in' },
+    });
+
+    return user;
   }
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd> {
