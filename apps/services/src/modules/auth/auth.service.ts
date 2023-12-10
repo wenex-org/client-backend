@@ -22,6 +22,7 @@ import { Subject } from '@app/common/enums';
 import { expect } from '@app/common/utils';
 import { SdkService } from '@app/sdk';
 import * as qs from 'qs';
+import { filterByNotation } from 'abacl';
 
 @Injectable()
 export class AuthService {
@@ -61,12 +62,10 @@ export class AuthService {
     if (phone) payload.phone = phone;
     if (username) payload.username = username;
 
-    const user = await identity.users.create(payload, {
-      headers,
-      params: { projection: 'id owner clients created_at created_by created_in' },
-    });
+    const user = await identity.users.create(payload, { headers });
 
-    return user;
+    const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
+    return filterByNotation(user, projection);
   }
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd> {
