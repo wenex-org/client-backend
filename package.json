@@ -19,7 +19,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/client-backend/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/client-backend/test/jest-e2e.json",
+    "command": "node -r tsconfig-paths/register -r ts-node/register libs/command/src/main.ts",
+    "command:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register libs/command/src/main.ts",
+    "platform:clean": "npm run command -- platform clean",
+    "platform:seed": "npm run command -- platform seed",
+    "platform:debug": "npm run command:debug -- platform"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.1",
@@ -60,6 +65,7 @@
     "log-node": "^8.0.3",
     "mongodb": "^6.3.0",
     "naming-conventions-modeler": "^1.4.1",
+    "nest-commander": "^3.12.5",
     "phone": "^3.1.41",
     "qs": "^6.11.2",
     "reflect-metadata": "^0.1.14",
