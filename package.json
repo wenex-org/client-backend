@@ -24,6 +24,7 @@
     "command:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register libs/command/src/main.ts",
     "platform:clean": "npm run command -- platform clean",
     "platform:seed": "npm run command -- platform seed",
+    "platform:raise": "npm run command -- platform raise",
     "platform:debug": "npm run command:debug -- platform"
   },
   "dependencies": {
