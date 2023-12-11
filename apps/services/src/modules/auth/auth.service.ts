@@ -20,9 +20,9 @@ import { OAUTH_CONFIG } from '@app/common/configs';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
 import { expect } from '@app/common/utils';
+import { filterByNotation } from 'abacl';
 import { SdkService } from '@app/sdk';
 import * as qs from 'qs';
-import { filterByNotation } from 'abacl';
 
 @Injectable()
 export class AuthService {
@@ -93,32 +93,32 @@ export class AuthService {
 
     const user = findUsers.pop();
     if (!user?.id) {
-      const { email, source } = info;
+      const { name, email, source, avatar } = info;
       await identity.users.create(
         {
           email,
           oauth: [source],
           status: Status.Active,
           subjects: [Subject.Guest],
-          // props:
-          //   source === UserOAuth.Google
-          //     ? { google_avatar: avatar, google_name: name }
-          //     : { github_avatar: avatar, github_name: name },
+          props:
+            source === UserOAuth.Google
+              ? { google_avatar: avatar, google_name: name }
+              : { github_avatar: avatar, github_name: name },
         },
         { headers },
       );
     } else {
-      const { source } = info;
+      const { name, avatar, source } = info;
       await identity.users.updateById(
         user.id,
         {
           oauth: [...new Set([...user.oauth, source])],
-          // props: Object.assign(
-          //   toJSON(user.props ?? {}),
-          //   source === UserOAuth.Google
-          //     ? { google_avatar: avatar, google_name: name }
-          //     : { github_avatar: avatar, github_name: name },
-          // ),
+          props: Object.assign(
+            user.props ?? {},
+            source === UserOAuth.Google
+              ? { google_avatar: avatar, google_name: name }
+              : { github_avatar: avatar, github_name: name },
+          ),
         },
         { headers },
       );
