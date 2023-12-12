@@ -51,9 +51,8 @@ export class AuthService {
     const id = MongoId();
     const payload: UserDto = {
       id,
-      owner: id,
-
       password,
+      owner: id,
       status: Status.Active,
       subjects: [Subject.Guest],
     };
@@ -93,10 +92,13 @@ export class AuthService {
 
     const user = findUsers.pop();
     if (!user?.id) {
+      const id = MongoId();
       const { name, email, source, avatar } = info;
       await identity.users.create(
         {
+          id,
           email,
+          owner: id,
           oauth: [source],
           status: Status.Active,
           subjects: [Subject.Guest],
