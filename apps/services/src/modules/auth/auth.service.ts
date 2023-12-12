@@ -190,7 +190,7 @@ export class AuthService {
 
     if (!userInfo.verified_email)
       throw new HttpException('email not verified', HttpStatus.NOT_ACCEPTABLE);
-    expect(userInfo.email, 'email not found', HttpStatus.NOT_FOUND);
+    expect(userInfo.email, 'email not verified', HttpStatus.NOT_FOUND);
 
     const { email, picture, name } = userInfo;
     return { email, name, avatar: picture, secret: access_token, source };
