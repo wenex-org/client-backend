@@ -16,7 +16,7 @@ import {
   UserOAuth,
 } from '@wenex/sdk/common';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { OAUTH_CONFIG } from '@app/common/configs';
+import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
 import { expect } from '@app/common/utils';
@@ -49,10 +49,12 @@ export class AuthService {
     );
 
     const id = MongoId();
+    const { appId } = CLIENT_CONFIG();
     const payload: UserDto = {
       id,
       password,
       owner: id,
+      created_in: appId,
       status: Status.Active,
       subjects: [Subject.Guest],
     };
@@ -93,6 +95,7 @@ export class AuthService {
     const user = findUsers.pop();
     if (!user?.id) {
       const id = MongoId();
+      const { appId } = CLIENT_CONFIG();
       const { name, email, source, avatar } = info;
       await identity.users.create(
         {
@@ -100,6 +103,7 @@ export class AuthService {
           email,
           owner: id,
           oauth: [source],
+          created_in: appId,
           status: Status.Active,
           subjects: [Subject.Guest],
           props:
@@ -110,10 +114,12 @@ export class AuthService {
         { headers },
       );
     } else {
+      const { appId } = CLIENT_CONFIG();
       const { name, avatar, source } = info;
       await identity.users.updateById(
         user.id,
         {
+          updated_in: appId,
           oauth: [...new Set([...user.oauth, source])],
           props: Object.assign(
             user.props ?? {},
