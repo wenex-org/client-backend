@@ -33,7 +33,7 @@ export class AuthService {
 
   token(data: AuthenticationRequest): SyncBody {
     data.client_secret = process.env.CLIENT_SECRET;
-    data.strict = !process.env.STRICT_TOKEN?.includes('false');
+    data.strict = process.env.STRICT_TOKEN?.includes('true');
 
     return { data, type: 'assign' };
   }
