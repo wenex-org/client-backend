@@ -163,7 +163,7 @@ export class AuthService {
 
     const file = (
       await special.files.upload(
-        [{ value: new Blob([Buffer.from(blb.data, 'binary')]) }],
+        [{ value: new Blob([Buffer.from(blb.data, 'binary')]), filename: 'avatar' }],
         'private',
         { headers },
       )
