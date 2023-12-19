@@ -9,6 +9,8 @@ import {
 import {
   AuthenticationRequest,
   MongoId,
+  Profile,
+  ProfileDto,
   Query,
   Status,
   User,
@@ -17,18 +19,21 @@ import {
 } from '@wenex/sdk/common';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
+import { date, expect, logger } from '@app/common/utils';
+import { toKebabCase } from 'naming-conventions-modeler';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
-import { expect } from '@app/common/utils';
 import { filterByNotation } from 'abacl';
 import { SdkService } from '@app/sdk';
 import * as qs from 'qs';
 
 @Injectable()
 export class AuthService {
+  private readonly log = logger(AuthService.name);
+
   constructor(
-    private readonly httpService: HttpService,
     private readonly sdkService: SdkService,
+    private readonly httpService: HttpService,
   ) {}
 
   token(data: AuthenticationRequest): SyncBody {
@@ -86,7 +91,7 @@ export class AuthService {
     }
   }
 
-  protected async userCredential(info: OAuthInfo, headers: Headers) {
+  protected async userCredential(info: OAuthInfo, headers?: Headers) {
     const { identity } = this.sdkService.client();
 
     const findQuery: Query<User> = { email: info.email };
@@ -130,6 +135,52 @@ export class AuthService {
         },
         { headers },
       );
+    }
+
+    try {
+      const { name, avatar } = info;
+      await this.upsertProfile(user, name, avatar, headers);
+    } catch (error) {
+      this.log
+        .get(toKebabCase(this.userCredential.name))
+        .error(date('upsert profile error with error %j'), error);
+    }
+  }
+
+  protected async upsertProfile(
+    user: User,
+    name: string,
+    avatar: string,
+    headers?: Headers,
+  ) {
+    if (!avatar || !user?.id) return;
+
+    const blb = await this.httpService.axiosRef.get(avatar, { responseType: 'blob' });
+    const file = (
+      await this.sdkService.special.files.upload(
+        [{ value: blb.data, filename: 'avatar' }],
+        'private',
+        { headers },
+      )
+    ).pop();
+
+    const { identity } = this.sdkService.client();
+
+    const query: Query<Profile> = { owner: user.id };
+    const profile = (await identity.profiles.find({ query }, { headers })).pop();
+
+    if (!profile?.id) {
+      const payload: ProfileDto = { owner: user.id };
+      if (name) Object.assign(payload, { nickname: name });
+      if (file?.id) Object.assign(payload, { avatar: file?.id });
+
+      return identity.profiles.create(payload, { headers });
+    } else {
+      const payload: Partial<ProfileDto> = {};
+      if (name) Object.assign(payload, { nickname: name });
+      if (file?.id) Object.assign(payload, { avatar: file?.id });
+
+      return identity.profiles.updateById(profile.id, payload);
     }
   }
 
