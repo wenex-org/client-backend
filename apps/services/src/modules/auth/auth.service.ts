@@ -158,15 +158,14 @@ export class AuthService {
     const blb = await this.httpService.axiosRef.get<Blob>(avatar, {
       responseType: 'blob',
     });
-    const file = (
-      await this.sdkService.special.files.upload(
-        [{ value: blb.data, filename: 'avatar' }],
-        'private',
-        { headers },
-      )
-    ).pop();
 
-    const { identity } = this.sdkService.client();
+    const { identity, special } = this.sdkService.client();
+
+    const file = (
+      await special.files.upload([{ value: blb.data, filename: 'avatar' }], 'private', {
+        headers,
+      })
+    ).pop();
 
     const query: Query<Profile> = { owner: user.id };
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
