@@ -162,11 +162,11 @@ export class AuthService {
 
     const { identity, special } = this.sdkService.client();
 
-    const buff = Buffer.from(blb.data, 'binary');
-    const ext = (await fileTypeFromBuffer(buff)).ext;
+    const buffer = Buffer.from(blb.data, 'binary');
+    const ext = (await fileTypeFromBuffer(buffer)).ext;
     const file = (
       await special.files.upload(
-        [{ value: new Blob([buff]), filename: `avatar.${ext}` }],
+        [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
         'private',
         { headers },
       )
