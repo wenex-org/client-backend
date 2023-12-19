@@ -143,7 +143,7 @@ export class AuthService {
     } catch (error) {
       this.log
         .get(toKebabCase(this.userCredential.name))
-        .error(date('upsert profile error with error %j'), error);
+        .error(date('upsert profile failed with error %j'), error);
     }
   }
 
@@ -155,16 +155,18 @@ export class AuthService {
   ) {
     if (!avatar || !user?.id) return;
 
-    const blb = await this.httpService.axiosRef.get<Blob>(avatar, {
-      responseType: 'blob',
+    const blb = await this.httpService.axiosRef.get(avatar, {
+      responseType: 'arraybuffer',
     });
 
     const { identity, special } = this.sdkService.client();
 
     const file = (
-      await special.files.upload([{ value: blb.data, filename: 'avatar' }], 'private', {
-        headers,
-      })
+      await special.files.upload(
+        [{ value: new Blob([Buffer.from(blb.data, 'binary')]) }],
+        'private',
+        { headers },
+      )
     ).pop();
 
     const query: Query<Profile> = { owner: user.id };
