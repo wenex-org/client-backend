@@ -155,7 +155,9 @@ export class AuthService {
   ) {
     if (!avatar || !user?.id) return;
 
-    const blb = await this.httpService.axiosRef.get(avatar, { responseType: 'blob' });
+    const blb = await this.httpService.axiosRef.get<Blob>(avatar, {
+      responseType: 'blob',
+    });
     const file = (
       await this.sdkService.special.files.upload(
         [{ value: blb.data, filename: 'avatar' }],
@@ -170,7 +172,8 @@ export class AuthService {
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
 
     if (!profile?.id) {
-      const payload: ProfileDto = { owner: user.id };
+      const { appId } = CLIENT_CONFIG();
+      const payload: ProfileDto = { created_in: appId, owner: user.id };
       if (name) Object.assign(payload, { nickname: name });
       if (file?.id) Object.assign(payload, { avatar: file?.id });
 
