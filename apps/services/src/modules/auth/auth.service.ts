@@ -158,10 +158,10 @@ export class AuthService {
 
     const { identity } = this.sdkService.client();
 
-    const file = await this.uploadAvatar(user, avatar, headers);
-
     const query: Query<Profile> = { owner: user.id };
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
+
+    const file = !profile?.avatar && (await this.uploadAvatar(user, avatar, headers));
 
     if (!profile?.id) {
       const { appId } = CLIENT_CONFIG();
