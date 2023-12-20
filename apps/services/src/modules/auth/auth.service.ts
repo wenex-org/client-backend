@@ -161,10 +161,10 @@ export class AuthService {
     const query: Query<Profile> = { owner: user.id };
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
 
-    const file = !profile?.avatar && (await this.uploadAvatar(user, avatar, headers));
-
     if (!profile?.id) {
       const { appId } = CLIENT_CONFIG();
+      const file = await this.uploadAvatar(user, avatar, headers);
+
       const payload: ProfileDto = { created_in: appId, owner: user.id };
       if (name) Object.assign(payload, { nickname: name });
       if (file?.id) Object.assign(payload, { avatar: file?.id });
@@ -173,7 +173,11 @@ export class AuthService {
     } else {
       const payload: Partial<ProfileDto> = {};
       if (name) Object.assign(payload, { nickname: name });
-      if (file?.id) Object.assign(payload, { avatar: file?.id });
+
+      if (!profile.avatar) {
+        const file = await this.uploadAvatar(user, avatar, headers);
+        if (file?.id) Object.assign(payload, { avatar: file?.id });
+      }
 
       return identity.profiles.updateById(profile.id, payload);
     }
