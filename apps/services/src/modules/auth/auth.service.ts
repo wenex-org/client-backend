@@ -163,7 +163,7 @@ export class AuthService {
     const { identity, special } = this.sdkService.client();
 
     const buffer = Buffer.from(blb.data, 'binary');
-    const ext = detectFile(buffer).extension;
+    const { extension: ext } = detectFile(buffer);
     const file = (
       await special.files.upload(
         [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
