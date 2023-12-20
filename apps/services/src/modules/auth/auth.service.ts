@@ -21,7 +21,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
 import { date, expect, logger } from '@app/common/utils';
 import { toKebabCase } from 'naming-conventions-modeler';
-import { fileTypeFromBuffer } from 'file-type';
+import { detectFile } from 'file-type-checker';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
 import { filterByNotation } from 'abacl';
@@ -163,7 +163,7 @@ export class AuthService {
     const { identity, special } = this.sdkService.client();
 
     const buffer = Buffer.from(blb.data, 'binary');
-    const ext = (await fileTypeFromBuffer(buffer)).ext;
+    const ext = detectFile(buffer).extension;
     const file = (
       await special.files.upload(
         [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
