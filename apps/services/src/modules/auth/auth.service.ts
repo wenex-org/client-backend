@@ -156,21 +156,9 @@ export class AuthService {
   ) {
     if (!avatar || !user?.id) return;
 
-    const blb = await this.httpService.axiosRef.get(avatar, {
-      responseType: 'arraybuffer',
-    });
+    const { identity } = this.sdkService.client();
 
-    const { identity, special } = this.sdkService.client();
-
-    const buffer = Buffer.from(blb.data, 'binary');
-    const { extension: ext } = detectFile(buffer);
-    const file = (
-      await special.files.upload(
-        [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
-        'private',
-        { headers },
-      )
-    ).pop();
+    const file = await this.uploadAvatar(user, avatar, headers);
 
     const query: Query<Profile> = { owner: user.id };
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
@@ -189,6 +177,36 @@ export class AuthService {
 
       return identity.profiles.updateById(profile.id, payload);
     }
+  }
+
+  private async uploadAvatar(user: User, avatar: string, headers?: Headers) {
+    if (!user?.id) return;
+
+    const { special } = this.sdkService.client();
+
+    const blb = await this.httpService.axiosRef.get(avatar, {
+      responseType: 'arraybuffer',
+    });
+
+    const buffer = Buffer.from(blb.data, 'binary');
+    const { extension: ext } = detectFile(buffer);
+    const file = (
+      await special.files.upload(
+        [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
+        'private',
+        { headers },
+      )
+    ).pop();
+
+    if (file?.id) {
+      const { appId } = CLIENT_CONFIG();
+      return await special.files.updateById(file.id, {
+        owner: user.id,
+        created_in: appId,
+      });
+    }
+
+    return file;
   }
 
   private async getGithubOAuthInfo(oauth: OAuthRequest): Promise<OAuthInfo> {
