@@ -157,12 +157,12 @@ export class AuthService {
     if (!avatar || !user?.id) return;
 
     const { identity } = this.sdkService.client();
+    const { appId, rootDomainName } = CLIENT_CONFIG();
 
-    const query: Query<Profile> = { owner: user.id };
+    const query: Query<Profile> = { owner: user.id, groups: rootDomainName };
     const profile = (await identity.profiles.find({ query }, { headers })).pop();
 
     if (!profile?.id) {
-      const { appId } = CLIENT_CONFIG();
       const file = await this.uploadAvatar(user, avatar, headers);
 
       const payload: ProfileDto = { created_in: appId, owner: user.id };
