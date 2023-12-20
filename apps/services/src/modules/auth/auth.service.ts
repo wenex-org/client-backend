@@ -176,7 +176,7 @@ export class AuthService {
 
       if (!profile.avatar) {
         const file = await this.uploadAvatar(user, avatar, headers);
-        if (file?.id) Object.assign(payload, { avatar: file?.id });
+        if (file?.id) Object.assign(payload, { avatar: file.id });
       }
 
       return identity.profiles.updateById(profile.id, payload);
