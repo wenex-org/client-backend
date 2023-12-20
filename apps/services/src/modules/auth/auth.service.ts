@@ -184,7 +184,7 @@ export class AuthService {
   }
 
   private async uploadAvatar(user: User, avatar: string, headers?: Headers) {
-    if (!user?.id) return;
+    if (!avatar || !user?.id) return;
 
     const { special } = this.sdkService.client();
 
