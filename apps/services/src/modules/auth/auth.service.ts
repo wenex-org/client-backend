@@ -202,15 +202,11 @@ export class AuthService {
       )
     ).pop();
 
-    if (file?.id) {
-      const { appId } = CLIENT_CONFIG();
-      return await special.files.updateById(file.id, {
-        owner: user.id,
-        created_in: appId,
-      });
-    }
-
-    return file;
+    const { appId } = CLIENT_CONFIG();
+    return await special.files.updateById(file.id, {
+      owner: user.id,
+      created_in: appId,
+    });
   }
 
   private async getGithubOAuthInfo(oauth: OAuthRequest): Promise<OAuthInfo> {
