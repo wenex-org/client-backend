@@ -28,7 +28,7 @@ export class ProxyController {
     const { data, status, headers } = (await this.proxyService.all(res)) ?? {};
 
     if (data || status || headers) {
-      if (req.header('if-none-match') === headers?.['etag']) {
+      if (headers?.['etag'] && req.header('if-none-match') === headers?.['etag']) {
         res.status(HttpStatus.NOT_MODIFIED).end();
       } else {
         res.status(status ?? 500);
