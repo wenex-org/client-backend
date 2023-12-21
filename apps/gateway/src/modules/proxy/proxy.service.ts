@@ -1,5 +1,5 @@
 import { HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
-import { getHeaders, getRequestInfo, toJSON } from '@app/common/utils';
+import { getHeaders, getPath, getRequestInfo, toJSON } from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request, Response } from 'express';
@@ -60,9 +60,9 @@ export class ProxyService implements OnModuleInit {
           responseType: 'stream',
 
           data: this.req.body,
+          url: getPath(this.req),
           params: this.req.query,
           method: this.req.method,
-          url: this.req.originalUrl,
           headers: getHeaders(this.req),
           baseURL: process.env.PLATFORM_URL,
         });
