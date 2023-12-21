@@ -234,7 +234,10 @@ export class AuthService {
       name: string;
       email: string;
     }>('https://api.github.com/user', {
-      headers: { Authorization: 'Bearer ' + access_token },
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+        Authorization: 'Bearer ' + access_token,
+      },
     });
     expect(userInfo.email, 'email not found', HttpStatus.NOT_FOUND);
 
