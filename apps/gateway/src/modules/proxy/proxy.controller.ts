@@ -11,6 +11,7 @@ import { LoggerInterceptor } from '@app/common/interceptors';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { setHeaders } from '@app/common/utils';
 import { Request, Response } from 'express';
 
 import { ProxyService } from './proxy.service';
@@ -32,10 +33,7 @@ export class ProxyController {
         res.status(HttpStatus.NOT_MODIFIED).end();
       } else {
         res.status(status ?? 500);
-        for (const head in headers ?? {}) {
-          if (head?.startsWith('x-') || head?.includes('etag'))
-            res.setHeader(head, headers[head]);
-        }
+        setHeaders(res, headers);
         if (data) data.pipe(res);
       }
     } else res.end();
