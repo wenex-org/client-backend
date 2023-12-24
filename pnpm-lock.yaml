@@ -75,8 +75,8 @@ dependencies:
     specifier: ^1.19.0
     version: 1.19.0
   '@wenex/sdk':
-    specifier: ^0.2.4
-    version: 0.2.4(axios@1.6.2)(mongoose@8.0.0)
+    specifier: ^0.2.6
+    version: 0.2.6(axios@1.6.2)(mongoose@8.0.0)
   '@willsoto/nestjs-prometheus':
     specifier: ^6.0.0
     version: 6.0.0(@nestjs/common@10.3.0)(prom-client@15.0.0)
@@ -161,11 +161,11 @@ devDependencies:
     specifier: ^20.10.5
     version: 20.10.5
   '@types/qs':
-    specifier: ^6.9.10
-    version: 6.9.10
+    specifier: ^6.9.11
+    version: 6.9.11
   '@types/supertest':
-    specifier: ^2.0.16
-    version: 2.0.16
+    specifier: ^6.0.1
+    version: 6.0.1
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.15.0
     version: 6.15.0(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)(typescript@5.3.3)
@@ -179,8 +179,8 @@ devDependencies:
     specifier: ^9.1.0
     version: 9.1.0(eslint@8.56.0)
   eslint-plugin-prettier:
-    specifier: ^5.0.1
-    version: 5.0.1(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1)
+    specifier: ^5.1.1
+    version: 5.1.1(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1)
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@20.10.5)(ts-node@10.9.2)
@@ -3131,8 +3131,8 @@ packages:
     resolution: {integrity: sha512-QVSSvno3dE0MgO76pJhmv4Qyi/j0Yk9pBp0Y7TJ2Tlj+KCgJWY6qX7nnxCOLkZ3VYRSIk1WTxCvwUSdx6CCLdg==}
     dev: false
 
-  /@types/cookiejar@2.1.4:
-    resolution: {integrity: sha512-b698BLJ6kPVd6uhHsY7wlebZdrWPXYied883PDSzpJZYOP97EOn/oGdLCH3jJf157srkFReIZY5v0H1s8Dozrg==}
+  /@types/cookiejar@2.1.5:
+    resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
     dev: true
 
   /@types/cookies@0.7.10:
@@ -3166,7 +3166,7 @@ packages:
     resolution: {integrity: sha512-OaJ7XLaelTgrvlZD8/aa0vvvxZdUmlCn6MtWeB7TkiKW70BQLc9XEPpDLPdbo52ZhXUCrznlWdCHWxJWtdyajA==}
     dependencies:
       '@types/node': 20.10.5
-      '@types/qs': 6.9.10
+      '@types/qs': 6.9.11
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
@@ -3175,7 +3175,7 @@ packages:
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.17.41
-      '@types/qs': 6.9.10
+      '@types/qs': 6.9.11
       '@types/serve-static': 1.15.5
 
   /@types/graceful-fs@4.1.9:
@@ -3299,6 +3299,10 @@ packages:
       '@types/node': 20.10.5
     dev: false
 
+  /@types/methods@1.1.4:
+    resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
+    dev: true
+
   /@types/mime-db@1.43.4:
     resolution: {integrity: sha512-/zD2TDBuZYrskCq4/4pNJzXj8zl1Qy8K1pJkar1gwDCmuuoyFu1f52cYssr6hAOrPXiKFCeCCaDfIzb18dL49Q==}
     dev: false
@@ -3334,8 +3338,8 @@ packages:
       pg-types: 2.2.0
     dev: false
 
-  /@types/qs@6.9.10:
-    resolution: {integrity: sha512-3Gnx08Ns1sEoCrWssEgTSJs/rsT2vhGP+Ja9cnnk9k4ALxinORlQneLXFeFKOTJMOeZUFD1s7w+w2AphTpvzZw==}
+  /@types/qs@6.9.11:
+    resolution: {integrity: sha512-oGk0gmhnEJK4Yyk+oI7EfXsLayXatCWPHary1MtcmbAifkobT9cM9yutG/hZKIseOU0MqbIwQ/u2nn/Gb+ltuQ==}
 
   /@types/range-parser@1.2.7:
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -3365,17 +3369,19 @@ packages:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
     dev: true
 
-  /@types/superagent@4.1.21:
-    resolution: {integrity: sha512-yrbAccEEY9+BSa1wji3ry8R3/BdW9kyWnjkRKctrtw5ebn/k2a2CsMeaQ7dD4iLfomgHkomBVIVgOFRMV4XYHA==}
+  /@types/superagent@8.1.1:
+    resolution: {integrity: sha512-YQyEXA4PgCl7EVOoSAS3o0fyPFU6erv5mMixztQYe1bqbWmmn8c+IrqoxjQeZe4MgwXikgcaZPiI/DsbmOVlzA==}
     dependencies:
-      '@types/cookiejar': 2.1.4
+      '@types/cookiejar': 2.1.5
+      '@types/methods': 1.1.4
       '@types/node': 20.10.5
     dev: true
 
-  /@types/supertest@2.0.16:
-    resolution: {integrity: sha512-6c2ogktZ06tr2ENoZivgm7YnprnhYE4ZoXGMY+oA7IuAf17M8FWvujXZGmxLv8y0PTyts4x5A+erSwVUFA8XSg==}
+  /@types/supertest@6.0.1:
+    resolution: {integrity: sha512-M1xs8grAWC4RisSEQjyQV0FZzXnL3y796540Q/HCdiPcErwKpcAfvsNQFb4xp+5btSWMOZG1YlDWs2z96pdbcw==}
     dependencies:
-      '@types/superagent': 4.1.21
+      '@types/methods': 1.1.4
+      '@types/superagent': 8.1.1
     dev: true
 
   /@types/tedious@4.0.14:
@@ -3661,8 +3667,8 @@ packages:
       '@xtuc/long': 4.2.2
     dev: true
 
-  /@wenex/sdk@0.2.4(axios@1.6.2)(mongoose@8.0.0):
-    resolution: {integrity: sha512-aPQJb6RNghsXQek5XWIRJnUdfI39LRhFh1t14d1n+W0mflCo1aAHtnVOpQwCXUuVqtd81DuOIaiXziy0abM94Q==}
+  /@wenex/sdk@0.2.6(axios@1.6.2)(mongoose@8.0.0):
+    resolution: {integrity: sha512-TCKOtHdjFHuB5NAS5JVAoEJy9GL39mgW0DEsKwF6R6qHL+hd56QC0oHkeN0bHVe5KPcavkejGzHq9wdXTmCQiA==}
     peerDependencies:
       axios: ^1.5.0
       mongoose: ^8.0.0
@@ -4758,8 +4764,8 @@ packages:
       eslint: 8.56.0
     dev: true
 
-  /eslint-plugin-prettier@5.0.1(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1):
-    resolution: {integrity: sha512-m3u5RnR56asrwV/lDC4GHorlW75DsFfmUcjfCYylTUs85dBRnB7VM6xG8eCMJdeDRnppzmxZVf1GEPJvl1JmNg==}
+  /eslint-plugin-prettier@5.1.1(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1):
+    resolution: {integrity: sha512-WQpV3mSmIobb77s4qiCZu3dBrZZ0rj8ckSfBtRrgNK9Wnh2s3eiaxNTWloz1LJ1WtvqZES/PAI7PLvsrGt/CEA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       '@types/eslint': '>=8.0.0'
