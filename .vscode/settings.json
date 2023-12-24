@@ -9,6 +9,7 @@
     "opentelemetry",
     "OTLP",
     "rabbitmq",
+    "TOTP",
     "Vahid",
     "Wenex",
     "willsoto",

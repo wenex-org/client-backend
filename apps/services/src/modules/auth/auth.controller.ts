@@ -4,9 +4,10 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AuthenticationRequest } from '@wenex/sdk/common';
 import { AllExceptionsFilter } from '@app/common/filters';
+import { mapToInstance, wrap } from '@app/common/utils';
 import { ValidationPipe } from '@app/common/pipes';
 import { Headers } from '@app/common/interfaces';
-import { wrap } from '@app/common/utils';
+import { from } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
@@ -18,8 +19,11 @@ export class AuthController {
   constructor(readonly service: AuthService) {}
 
   @MessagePattern('Before: POST /auth/token')
-  token(@Payload('data') data: AuthenticationRequest) {
-    return wrap(this.service.token(data), 'body');
+  token(
+    @Payload('headers') headers: Headers,
+    @Payload('data') data: AuthenticationRequest,
+  ) {
+    return from(this.service.token(data, headers)).pipe(mapToInstance(null, 'body'));
   }
 
   @MessagePattern('Before: POST /auth/oauth')

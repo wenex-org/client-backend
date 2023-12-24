@@ -1,13 +1,17 @@
 import {
+  Auth,
   Headers,
   OAuthInfo,
   OAuthRequest,
   Registration,
   SyncBody,
   SyncEnd,
+  Service as ServiceInterface,
+  FilterOne,
 } from '@app/common/interfaces';
 import {
   AuthenticationRequest,
+  GrantType,
   MongoId,
   Profile,
   ProfileDto,
@@ -21,27 +25,61 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
 import { date, expect, logger } from '@app/common/utils';
 import { toKebabCase } from 'naming-conventions-modeler';
+import { TOTP_SECRET_LENGTH } from '@app/common/consts';
 import { detectFile } from 'file-type-checker';
+import { Service } from '@app/common/classes';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
 import { filterByNotation } from 'abacl';
 import { SdkService } from '@app/sdk';
+import * as crypto from 'crypto';
 import * as qs from 'qs';
 
+import { AuthRepository } from './auth.repository';
+
 @Injectable()
-export class AuthService {
+export class AuthService
+  extends Service<Auth, Auth>
+  implements ServiceInterface<Auth, Auth>
+{
   private readonly log = logger(AuthService.name);
 
   constructor(
+    readonly repository: AuthRepository,
+
     private readonly sdkService: SdkService,
     private readonly httpService: HttpService,
-  ) {}
+  ) {
+    super(repository);
+  }
 
-  token(data: AuthenticationRequest): SyncBody {
+  async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody> {
     data.client_secret = process.env.CLIENT_SECRET;
     data.strict = process.env.STRICT_TOKEN?.includes('true');
 
+    if (data.grant_type === GrantType.OTP) {
+      const findQuery: FilterOne<Auth> = { query: {} };
+      if (data.email) findQuery.query.email = data.email;
+      if (data.phone) findQuery.query.phone = data.phone;
+      if (data.username) findQuery.query.username = data.username;
+
+      const auth = await this.repository.findOne(findQuery);
+      if (!auth?.uid) await this.userSecret(findQuery, headers);
+    }
+
     return { data, type: 'assign' };
+  }
+
+  async userSecret(filter: FilterOne<Auth>, headers?: Headers) {
+    const { identity } = this.sdkService.client();
+
+    const user = (await identity.users.find(filter, { headers })).pop();
+    expect(user?.id, 'user not found', HttpStatus.NOT_FOUND);
+
+    const secret = crypto.randomBytes(TOTP_SECRET_LENGTH).toString('hex');
+    await identity.users.updateById(user.id, { secret }, { headers });
+
+    return secret;
   }
 
   async register(data: Registration, headers?: Headers): Promise<SyncEnd> {
