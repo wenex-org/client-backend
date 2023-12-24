@@ -23,9 +23,9 @@ import {
 } from '@wenex/sdk/common';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
+import { TOTP_SECRET_BYTE_LENGTH } from '@app/common/consts';
 import { date, expect, logger } from '@app/common/utils';
 import { toKebabCase } from 'naming-conventions-modeler';
-import { TOTP_SECRET_LENGTH } from '@app/common/consts';
 import { detectFile } from 'file-type-checker';
 import { Service } from '@app/common/classes';
 import { HttpService } from '@nestjs/axios';
@@ -58,10 +58,17 @@ export class AuthService
     data.strict = process.env.STRICT_TOKEN?.includes('true');
 
     if (data.grant_type === GrantType.OTP) {
+      const { email, phone, username } = data;
+      expect(
+        email || phone || username,
+        'one of the username or password or email is required',
+        HttpStatus.BAD_REQUEST,
+      );
+
       const findQuery: FilterOne<Auth> = { query: {} };
-      if (data.email) findQuery.query.email = data.email;
-      if (data.phone) findQuery.query.phone = data.phone;
-      if (data.username) findQuery.query.username = data.username;
+      if (email) findQuery.query.email = email;
+      if (phone) findQuery.query.phone = phone;
+      if (username) findQuery.query.username = username;
 
       const auth = await this.repository.findOne(findQuery);
       if (!auth?.uid) await this.userSecret(findQuery, headers);
@@ -76,8 +83,11 @@ export class AuthService
     const user = (await identity.users.find(filter, { headers })).pop();
     expect(user?.id, 'user not found', HttpStatus.NOT_FOUND);
 
-    const secret = crypto.randomBytes(TOTP_SECRET_LENGTH).toString('hex');
+    const secret = crypto.randomBytes(TOTP_SECRET_BYTE_LENGTH).toString('hex');
     await identity.users.updateById(user.id, { secret }, { headers });
+
+    const { id: uid, email, phone, username } = user;
+    await this.repository.create({ uid, email, phone, username, secret });
 
     return secret;
   }
