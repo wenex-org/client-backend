@@ -87,7 +87,13 @@ export class AuthService
     await identity.users.updateById(user.id, { secret }, { headers });
 
     const { id: uid, email, phone, username } = user;
-    await this.repository.create({ uid, email, phone, username, secret });
+    const auth: Auth = { uid, secret };
+
+    if (email) auth.email = email;
+    if (phone) auth.phone = phone;
+    if (username) auth.username = username;
+
+    await this.repository.create(auth);
 
     return secret;
   }
