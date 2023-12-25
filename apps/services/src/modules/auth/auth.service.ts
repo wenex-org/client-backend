@@ -83,19 +83,25 @@ export class AuthService
     const user = (await identity.users.find(filter, { headers })).pop();
     expect(user?.id, 'user not found', HttpStatus.NOT_FOUND);
 
-    const secret = crypto.randomBytes(TOTP_SECRET_BYTE_LENGTH).toString('hex');
-    await identity.users.updateById(user.id, { secret }, { headers });
-
-    const { id: uid, email, phone, username } = user;
-    const auth: Auth = { uid, secret };
+    const { id, email, phone, username } = user;
+    const auth: Auth = { uid: id };
 
     if (email) auth.email = email;
     if (phone) auth.phone = phone;
     if (username) auth.username = username;
 
-    await this.repository.create(auth);
+    if (!user.secret) {
+      const secret = crypto.randomBytes(TOTP_SECRET_BYTE_LENGTH).toString('hex');
+      await identity.users.updateById(user.id, { secret }, { headers });
 
-    return secret;
+      return await this.repository.create({ ...auth, secret });
+    } else {
+      this.log
+        .get(toKebabCase(this.userSecret.name))
+        .info(date('user already had a secret: %s'), user.secret);
+
+      return await this.repository.create(auth);
+    }
   }
 
   async register(data: Registration, headers?: Headers): Promise<SyncEnd> {
