@@ -287,7 +287,7 @@ export class AuthService
     );
 
     const { access_token } = qs.parse(data);
-    expect(access_token, 'access_token not found', HttpStatus.NOT_FOUND);
+    expect(String(access_token), 'access_token not found', HttpStatus.NOT_FOUND);
 
     const { data: userInfo } = await this.httpService.axiosRef.get<{
       avatar_url: string;
