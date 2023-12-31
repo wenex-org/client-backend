@@ -1,12 +1,12 @@
+import { LoggerInterceptor, ParseInterceptor } from '@app/common/interceptors';
 import { Body, Controller, Put, UseInterceptors } from '@nestjs/common';
-import { LoggerInterceptor } from '@app/common/interceptors';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { MirrorPayloadDto } from '@app/common/dto';
 
 import { MirrorService } from './mirror.service';
 
+@UseInterceptors(LoggerInterceptor, ParseInterceptor, new SentryInterceptor())
 @Controller()
-@UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class MirrorController {
   constructor(readonly service: MirrorService) {}
 
@@ -18,7 +18,7 @@ export class MirrorController {
    * @param payload
    */
   @Put('mirror')
-  mirror(@Body() payload: MirrorPayloadDto) {
+  mirror(@Body('payload') payload: MirrorPayloadDto) {
     this.service.mirror(payload);
   }
 }
