@@ -1,4 +1,9 @@
-import { MONGO_CONFIG, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/configs';
+import {
+  MONGO_CONFIG,
+  MONGO_OPTIONS,
+  REDIS_CONFIG,
+  SENTRY_CONFIG,
+} from '@app/common/configs';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -21,8 +26,8 @@ import { PublicModule } from './modules/public';
     PrometheusModule.register(),
     RedisModule.forRoot(REDIS_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
-    MongooseModule.forRoot(MONGO_CONFIG()),
-    HealthModule.forRoot(['disk', 'memory', 'redis']),
+    MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
+    HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
 
     ...[AuthModule, PublicModule],
   ],
