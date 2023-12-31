@@ -10,6 +10,13 @@ import { MirrorService } from './mirror.service';
 export class MirrorController {
   constructor(readonly service: MirrorService) {}
 
+  /**
+   * To use db mirror functionality create a webhook on the platform EMQX with
+   * topic '6448d4122ed1fc913e4d4a5a/mongo/+/cdc', method 'PUT' and
+   * url 'http://localhost:8002/mirror'
+   *
+   * @param payload
+   */
   @Put('mirror')
   mirror(@Body() payload: MirrorPayloadDto) {
     this.service.mirror(payload);
