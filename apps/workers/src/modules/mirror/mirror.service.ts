@@ -1,5 +1,6 @@
 import { date, fixIn, logger } from '@app/common/utils';
 import { MirrorPayload } from '@app/common/interfaces';
+import { InjectConnection } from '@nestjs/mongoose';
 import { ObjectId } from '@wenex/sdk/common';
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mongoose';
@@ -8,7 +9,7 @@ import { Connection } from 'mongoose';
 export class MirrorService {
   private readonly log = logger(MirrorService.name);
 
-  constructor(private readonly connection: Connection) {}
+  constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async mirror(payload: MirrorPayload) {
     const { source, data, id } = payload;
