@@ -6,8 +6,16 @@ import {
   OnModuleInit,
   Scope,
 } from '@nestjs/common';
-import { getHeaders, getPath, getRequestInfo, toJSON } from '@app/common/utils';
+import {
+  date,
+  getHeaders,
+  getPath,
+  getRequestInfo,
+  logger,
+  toJSON,
+} from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
+import { toKebabCase } from 'naming-conventions-modeler';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
@@ -19,6 +27,8 @@ import { PROXY_SERVICE } from './proxy.const';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProxyService implements OnModuleInit {
+  private readonly log = logger(ProxyService.name);
+
   constructor(
     private readonly httpService: HttpService,
 
@@ -47,14 +57,21 @@ export class ProxyService implements OnModuleInit {
 
       this.mergeRequest(result);
       return result;
-    } catch ({ message }) {
-      if (typeof message === 'string') {
-        const error = toJSON(message);
+    } catch (err) {
+      this.log
+        .get(toKebabCase(this.beforeSync.name))
+        .error(date('rabbitmq exception occurred with error %o'), err);
+
+      if (typeof err?.message === 'string') {
+        const error = toJSON(err.message);
         if (typeof error === 'object') {
           res.status(error.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
           return { end: error };
-        }
-      } else throw new HttpException('timeout exceeded', HttpStatus.GATEWAY_TIMEOUT);
+        } else throw new HttpException('unknown exception', HttpStatus.BAD_GATEWAY);
+      } else {
+        if (err !== 'There is no matching message handler defined in the remote service.')
+          throw new HttpException('timeout exceeded', HttpStatus.GATEWAY_TIMEOUT);
+      }
     }
   }
 
