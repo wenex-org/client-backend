@@ -67,7 +67,7 @@ export class ProxyService implements OnModuleInit {
         if (typeof error === 'object') {
           res.status(error.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
           return { end: error };
-        } else throw new HttpException('unknown exception', HttpStatus.BAD_GATEWAY);
+        } else throw new HttpException(err.message, HttpStatus.BAD_GATEWAY);
       } else {
         if (err !== 'There is no matching message handler defined in the remote service.')
           throw new HttpException('timeout exceeded', HttpStatus.GATEWAY_TIMEOUT);
