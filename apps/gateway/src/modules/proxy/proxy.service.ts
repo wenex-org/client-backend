@@ -1,4 +1,11 @@
-import { HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  OnModuleInit,
+  Scope,
+} from '@nestjs/common';
 import { getHeaders, getPath, getRequestInfo, toJSON } from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
 import { ClientProxy } from '@nestjs/microservices';
@@ -47,7 +54,7 @@ export class ProxyService implements OnModuleInit {
           res.status(error.status ?? HttpStatus.INTERNAL_SERVER_ERROR);
           return { end: error };
         }
-      }
+      } else throw new HttpException('timeout exceeded', HttpStatus.GATEWAY_TIMEOUT);
     }
   }
 
