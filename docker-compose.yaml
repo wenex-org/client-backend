@@ -13,6 +13,9 @@ services:
   # CLIENT SERVICES
   #######################
   client:
+    build:
+      args:
+        SERVICE_NAME: gateway
     ports:
       - '3000:3000' # REST
     environment:
@@ -24,6 +27,9 @@ services:
   # CRAFTS SERVICES
   #######################
   crafts:
+    build:
+      args:
+        SERVICE_NAME: services
     ports:
       - '3001:3001' # REST
     environment:
