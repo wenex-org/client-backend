@@ -2,10 +2,6 @@
 require('dotenv').config();
 require('log-node')();
 
-import {
-  NamingConventionsInterceptor,
-  XRequestIdInterceptor,
-} from '@app/common/interceptors';
 import { setupSwagger } from '@app/common/utils';
 import { NODE_ENV } from '@app/common/configs';
 import { NestFactory } from '@nestjs/core';
@@ -23,11 +19,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
 
   app.use(helmet({ contentSecurityPolicy: false }));
-
-  app.useGlobalInterceptors(
-    new XRequestIdInterceptor(),
-    new NamingConventionsInterceptor(),
-  );
 
   setupSwagger(app);
 
