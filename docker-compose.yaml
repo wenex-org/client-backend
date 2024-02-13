@@ -17,9 +17,8 @@ services:
       args:
         SERVICE_NAME: gateway
     ports:
-      - '3000:3000' # REST
+      - '8000:8000' # REST
     environment:
-      PORT: 3000
       NODE_ENV: prod
     <<: *common
 
@@ -31,9 +30,8 @@ services:
       args:
         SERVICE_NAME: services
     ports:
-      - '3001:3001' # REST
+      - '8001:8001' # REST
     environment:
-      PORT: 3001
       NODE_ENV: prod
     <<: *common
 

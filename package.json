@@ -8,7 +8,7 @@
     "build": "nest build",
     "prepare": "npm run script:setup",
     "prepare:platform": "npm run platform:seed && npm run platform:raise",
-    "script:setup": "sh ./script/setup.sh",
+    "script:setup": "bash ./script/setup.sh",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
