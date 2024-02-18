@@ -1,8 +1,6 @@
 version: '3.8'
 
 x-common: &common
-  build:
-    context: .
   env_file:
     - .env
   networks:
@@ -16,6 +14,7 @@ services:
     build:
       args:
         SERVICE_NAME: gateway
+      context: .
     ports:
       - '8000:8000' # REST
     environment:
@@ -29,10 +28,27 @@ services:
     build:
       args:
         SERVICE_NAME: services
+      context: .
     ports:
       - '8001:8001' # REST
     environment:
       NODE_ENV: prod
+    <<: *common
+
+  #######################
+  # WORKER SERVICES
+  #######################
+  workers:
+    container_name: workers
+    build:
+      args:
+        SERVICE_NAME: workers
+      context: .
+    ports:
+      - 8002:8002 # Rest
+    environment:
+      NODE_ENV: prod
+      SENTRY_DSN:
     <<: *common
 
 networks:
