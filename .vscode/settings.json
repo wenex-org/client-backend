@@ -4,6 +4,7 @@
     "consts",
     "EMQX",
     "kafkajs",
+    "metadatas",
     "metatype",
     "nestjs",
     "ntegral",

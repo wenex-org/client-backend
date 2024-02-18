@@ -13,6 +13,7 @@ import { Module } from '@nestjs/common';
 import { SdkModule } from '@app/sdk';
 
 import { AuthModule } from './modules/auth';
+import { MailsModule } from './modules/mails';
 import { PublicModule } from './modules/public';
 
 @Module({
@@ -29,7 +30,7 @@ import { PublicModule } from './modules/public';
     MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
     HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
 
-    ...[AuthModule, PublicModule],
+    ...[AuthModule, PublicModule, MailsModule],
   ],
 })
 export class AppModule {}
