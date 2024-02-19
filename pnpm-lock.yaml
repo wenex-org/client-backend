@@ -30,8 +30,8 @@ dependencies:
     specifier: ^7.3.0
     version: 7.3.0(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.1)
   '@nestjs/terminus':
-    specifier: ^10.2.2
-    version: 10.2.2(@nestjs/axios@3.0.2)(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(@nestjs/microservices@10.3.3)(@nestjs/mongoose@10.0.4)(mongoose@8.1.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+    specifier: ^10.2.3
+    version: 10.2.3(@nestjs/axios@3.0.2)(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(@nestjs/microservices@10.3.3)(@nestjs/mongoose@10.0.4)(mongoose@8.1.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
   '@ntegral/nestjs-sentry':
     specifier: ^4.0.1
     version: 4.0.1(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(@sentry/hub@7.80.0)(@sentry/node@7.80.0)(class-transformer@0.5.1)(class-validator@0.14.1)(graphql@16.8.1)(reflect-metadata@0.2.1)(rimraf@3.0.2)(rxjs@7.8.1)
@@ -78,8 +78,8 @@ dependencies:
     specifier: ^12.1.0
     version: 12.1.0(mongoose@8.1.3)
   '@wenex/sdk':
-    specifier: ^0.4.7
-    version: 0.4.7(axios@1.6.7)(mongoose@8.1.3)
+    specifier: ^0.4.8
+    version: 0.4.8(axios@1.6.7)(mongoose@8.1.3)
   '@willsoto/nestjs-prometheus':
     specifier: ^6.0.0
     version: 6.0.0(@nestjs/common@10.3.3)(prom-client@15.0.0)
@@ -1555,8 +1555,8 @@ packages:
       swagger-ui-dist: 5.11.2
     dev: false
 
-  /@nestjs/terminus@10.2.2(@nestjs/axios@3.0.2)(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(@nestjs/microservices@10.3.3)(@nestjs/mongoose@10.0.4)(mongoose@8.1.3)(reflect-metadata@0.2.1)(rxjs@7.8.1):
-    resolution: {integrity: sha512-tZdTSqgHyxekN8PJmJJ1ptZG97q/1nBIBwLdMcmB7Dsz4XDTQvYuhs20F1qkEgFuQwarNkb/2AF5Qib31g2bmA==}
+  /@nestjs/terminus@10.2.3(@nestjs/axios@3.0.2)(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(@nestjs/microservices@10.3.3)(@nestjs/mongoose@10.0.4)(mongoose@8.1.3)(reflect-metadata@0.2.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-iX7gXtAooePcyQqFt57aDke5MzgdkBeYgF5YsFNNFwOiAFdIQEhfv3PR0G+HlH9F6D7nBCDZt9U87Pks/qHijg==}
     peerDependencies:
       '@grpc/grpc-js': '*'
       '@grpc/proto-loader': '*'
@@ -3414,8 +3414,8 @@ packages:
       '@xtuc/long': 4.2.2
     dev: true
 
-  /@wenex/sdk@0.4.7(axios@1.6.7)(mongoose@8.1.3):
-    resolution: {integrity: sha512-kUjFzdtsAGESehlN0/D6vXW5imUA3bx3Db2Y+K5N3rK32QP5xIOen4tCA9ekUf9jICEjfSOnz70p2q9gLsmbiA==}
+  /@wenex/sdk@0.4.8(axios@1.6.7)(mongoose@8.1.3):
+    resolution: {integrity: sha512-P4XGqdTUzFApA0sSjwGjrLFLA/GtHy9cp7SLp6B7QgW7+Jb7na1mxjniIU4h3lsZJvIkaR1aE2vRyk7meXVNuA==}
     peerDependencies:
       axios: ^1.5.0
       mongoose: ^8.0.0
