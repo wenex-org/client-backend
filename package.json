@@ -53,7 +53,7 @@
     "@opentelemetry/sdk-trace-node": "^1.22.0",
     "@opentelemetry/semantic-conventions": "^1.22.0",
     "@typegoose/typegoose": "^12.2.0",
-    "@wenex/sdk": "^0.5.6",
+    "@wenex/sdk": "^0.5.7",
     "@willsoto/nestjs-prometheus": "^6.0.0",
     "abacl": "^8.0.7",
     "amqp-connection-manager": "^4.1.14",
