@@ -32,8 +32,8 @@ import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
 import { filterByNotation } from 'abacl';
 import { SdkService } from '@app/sdk';
-import * as crypto from 'crypto';
-import * as qs from 'qs';
+import crypto from 'crypto';
+import qs from 'qs';
 
 import { AuthRepository } from './auth.repository';
 

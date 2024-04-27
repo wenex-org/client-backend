@@ -2,6 +2,8 @@
 require('dotenv').config();
 require('log-node')();
 
+import 'elastic-apm-node/start';
+
 import { setupSwagger } from '@app/common/utils';
 import { NODE_ENV } from '@app/common/configs';
 import { NestFactory } from '@nestjs/core';
