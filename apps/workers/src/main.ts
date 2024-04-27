@@ -2,8 +2,6 @@
 require('dotenv').config();
 require('log-node')();
 
-import 'elastic-apm-node/start';
-
 import { setupSwagger } from '@app/common/utils';
 import { NODE_ENV } from '@app/common/configs';
 import { NestFactory } from '@nestjs/core';
@@ -15,7 +13,10 @@ import { AppModule } from './app.module';
 const { WORKER } = APP;
 
 async function bootstrap() {
-  if (NODE_ENV().IS_PROD) await initTracing(['http']);
+  if (NODE_ENV().IS_PROD) {
+    await initTracing(['http']);
+    require('elastic-apm-node').start();
+  }
 
   const app = await NestFactory.create(AppModule, { cors: true });
 

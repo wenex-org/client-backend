@@ -2,8 +2,6 @@
 require('dotenv').config();
 require('log-node')();
 
-import 'elastic-apm-node/start';
-
 import { setupSwagger } from '@app/common/utils';
 import { NODE_ENV } from '@app/common/configs';
 import { NestFactory } from '@nestjs/core';
@@ -16,7 +14,10 @@ import { AppModule } from './app.module';
 const { GATEWAY } = APP;
 
 async function bootstrap() {
-  if (NODE_ENV().IS_PROD) await initTracing(['http', 'amqp']);
+  if (NODE_ENV().IS_PROD) {
+    require('elastic-apm-node').start();
+    await initTracing(['http', 'amqp']);
+  }
 
   const app = await NestFactory.create(AppModule, { cors: true });
 

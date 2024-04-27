@@ -2,8 +2,6 @@
 require('dotenv').config();
 require('log-node')();
 
-import 'elastic-apm-node/start';
-
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { NODE_ENV, RMQ_CONFIG } from '@app/common/configs';
 import { MACHINE } from '@app/common/helpers';
