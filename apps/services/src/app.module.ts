@@ -15,6 +15,7 @@ import { SdkModule } from '@app/sdk';
 import { AuthModule } from './modules/auth';
 import { MailsModule } from './modules/mails';
 import { PublicModule } from './modules/public';
+import { WalletsModule } from './modules/wallets';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { PublicModule } from './modules/public';
     MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
     HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
 
-    ...[AuthModule, PublicModule, MailsModule],
+    ...[AuthModule, PublicModule, MailsModule, WalletsModule],
   ],
 })
 export class AppModule {}
