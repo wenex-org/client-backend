@@ -28,9 +28,9 @@ export class WalletsController {
 
   @MessagePattern('Before: GET /wallets/sync/?')
   @SetScope(Scope.SyncFinancialWallets)
-  @SetPolicy(Action.Send, Resource.FinancialWallets)
+  @SetPolicy(Action.Sync, Resource.FinancialWallets)
   @UseInterceptors(FieldInterceptor, FilterInterceptor)
-  async send(
+  async sync(
     @Payload('headers') headers: Headers,
     @Payload('params', ParseIdPipe) id: string,
   ) {
