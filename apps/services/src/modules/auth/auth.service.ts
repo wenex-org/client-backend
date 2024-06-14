@@ -110,7 +110,7 @@ export class AuthService
     const { email, phone, username, password } = data;
     expect(
       email || phone || username,
-      'one of the username or password or email is required',
+      'one of the username or phone or email is required',
       HttpStatus.BAD_REQUEST,
     );
 
