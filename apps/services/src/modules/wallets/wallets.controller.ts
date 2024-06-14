@@ -9,11 +9,12 @@ import { FieldInterceptor, FilterInterceptor } from '@app/common/interceptors';
 import { AuthGuard, PolicyGuard, ScopeGuard } from '@app/common/guards';
 import { ParseIdPipe, ValidationPipe } from '@app/common/pipes';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { Action, Resource, Scope } from '@wenex/sdk/common';
 import { SetPolicy, SetScope } from '@app/common/metadatas';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';
+import { Action, Scope } from '@app/common/enums';
 import { Headers } from '@app/common/interfaces';
+import { Resource } from '@wenex/sdk/common';
 import { wrap } from '@app/common/utils';
 
 import { WalletsService } from './wallets.service';
