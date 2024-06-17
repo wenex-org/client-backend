@@ -8,6 +8,7 @@ import {
   SyncEnd,
   Service as ServiceInterface,
   FilterOne,
+  Verification,
 } from '@app/common/interfaces';
 import {
   AuthenticationRequest,
@@ -28,9 +29,9 @@ import {
   VERIFICATION_CODE_LEN,
   VERIFICATION_CODE_TTL,
 } from '@app/common/consts';
+import { code, date, expect, logger, toJSON, toString } from '@app/common/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
-import { code, date, expect, logger } from '@app/common/utils';
 import { toKebabCase } from 'naming-conventions-modeler';
 import { detectFile } from 'file-type-checker';
 import { Service } from '@app/common/classes';
@@ -113,7 +114,7 @@ export class AuthService
     }
   }
 
-  async register(data: Registration, headers?: Headers): Promise<SyncEnd> {
+  async registration(data: Registration, headers?: Headers): Promise<SyncEnd> {
     const { identity, touch } = this.sdkService.client();
 
     // validation check
@@ -152,22 +153,41 @@ export class AuthService
       await touch.mails.send({
         subject: 'Wenex - Verification Code',
         to: [`${String(+user.phone)}@${ROOT_DOMAIN_NAME}`],
-        content: `${verificationCode} is your verification code.`,
+        content: `Dear, ${verificationCode} is your verification code.`,
       });
     } else if (user.email) {
       await touch.mails.send({
         to: [user.email],
-        subject: 'Wenex - Verification Code',
-        content: `<a href="http://localhost:3000/auth/verify?code=${verificationCode}">${verificationCode}</a> is your verification code.`,
+        subject: 'Wenex - Activation Link',
+        content: `Dear, this is your <a href="http://localhost:3000/auth/verify?code=${verificationCode}&email=${user.email}">Activation Link</a>.`,
       });
     }
 
     // store verification code in redis
+    const userIdentity = user.phone || user.email;
+    const key = MD5.hash(`${userIdentity}:${verificationCode}`);
     await this.redisService.setex(
-      `${VERIFICATION_CODE_KEY}:${user.id}`,
+      `${VERIFICATION_CODE_KEY}:${key}`,
       VERIFICATION_CODE_TTL,
-      MD5.hash(String(verificationCode)),
+      toString(user),
     );
+
+    // return projected user information
+    const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
+    return filterByNotation(user, projection);
+  }
+
+  async verification(data: Verification, headers?: Headers): Promise<SyncEnd> {
+    const { identity } = this.sdkService.client();
+
+    const userIdentity = data.phone || data.email;
+    const key = MD5.hash(`${userIdentity}:${data.code}`);
+    const user = toJSON<User>(
+      await this.redisService.get(`${VERIFICATION_CODE_KEY}:${key}`),
+    );
+    expect(user?.id, 'not found', HttpStatus.NOT_FOUND);
+
+    await identity.users.updateById(user.id, { status: Status.Active }, { headers });
 
     // return projected user information
     const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);

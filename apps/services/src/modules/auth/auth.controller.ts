@@ -1,13 +1,12 @@
+import { OAuthRequestDto, RegistrationDto, VerificationDto } from '@app/common/dto';
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
-import { OAuthRequestDto, RegistrationDto } from '@app/common/dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AuthenticationRequest } from '@wenex/sdk/common';
 import { AllExceptionsFilter } from '@app/common/filters';
-import { mapToInstance, wrap } from '@app/common/utils';
 import { ValidationPipe } from '@app/common/pipes';
 import { Headers } from '@app/common/interfaces';
-import { from } from 'rxjs';
+import { wrap } from '@app/common/utils';
 
 import { AuthService } from './auth.service';
 
@@ -19,11 +18,11 @@ export class AuthController {
   constructor(readonly service: AuthService) {}
 
   @MessagePattern('Before: POST /auth/token')
-  token(
+  async token(
     @Payload('headers') headers: Headers,
     @Payload('data') data: AuthenticationRequest,
   ) {
-    return from(this.service.token(data, headers)).pipe(mapToInstance(null, 'body'));
+    return wrap(await this.service.token(data, headers), 'body');
   }
 
   @MessagePattern('Before: POST /auth/oauth')
@@ -34,11 +33,19 @@ export class AuthController {
     return wrap(await this.service.oauth(data, headers), 'end');
   }
 
-  @MessagePattern('Before: POST /auth/register')
-  async register(
+  @MessagePattern('Before: POST /auth/registration')
+  async registration(
     @Payload('headers') headers: Headers,
     @Payload('data') data: RegistrationDto,
   ) {
-    return wrap(await this.service.register(data, headers), 'end');
+    return wrap(await this.service.registration(data, headers), 'end');
+  }
+
+  @MessagePattern('Before: POST /auth/verification')
+  async verification(
+    @Payload('headers') headers: Headers,
+    @Payload('data') data: VerificationDto,
+  ) {
+    return wrap(await this.service.verification(data, headers), 'end');
   }
 }
