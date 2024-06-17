@@ -121,8 +121,8 @@ export class AuthService
       password,
       owner: id,
       created_in: appId,
-      status: Status.Active,
       subjects: [Subject.Guest],
+      status: !phone && !email ? Status.Active : Status.Inactive,
     };
 
     if (email) payload.email = email;
