@@ -187,6 +187,7 @@ export class AuthService
     const { identity } = this.sdkService.client();
 
     const userIdentity = data.phone || data.email;
+    expect(userIdentity, 'phone or email is required', HttpStatus.BAD_REQUEST);
     const key = MD5.hash(`${userIdentity}:${data.code}`);
     const user = toJSON<User>(
       await this.redisService.get(`${VERIFICATION_CODE_KEY}:${key}`),
