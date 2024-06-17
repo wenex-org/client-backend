@@ -150,11 +150,15 @@ export class AuthService
     // send activation code
     const verificationCode = code(VERIFICATION_CODE_LEN);
     if (user.phone) {
+      const email = `${String(+user.phone)}@${ROOT_DOMAIN_NAME}`;
       await touch.mails.send({
+        to: [email],
         subject: 'Wenex - Verification Code',
-        to: [`${String(+user.phone)}@${ROOT_DOMAIN_NAME}`],
         content: `Dear, ${verificationCode} is your verification code.`,
       });
+      this.log
+        .get(this.registration.name)
+        .info(date('verification sms sent to %s'), email);
     } else if (user.email) {
       await touch.mails.send({
         to: [user.email],
