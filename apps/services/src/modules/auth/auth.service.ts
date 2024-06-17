@@ -21,15 +21,23 @@ import {
   UserDto,
   UserOAuth,
 } from '@wenex/sdk/common';
+import {
+  ROOT_DOMAIN_NAME,
+  TOTP_SECRET_BYTE_LENGTH,
+  VERIFICATION_CODE_KEY,
+  VERIFICATION_CODE_LEN,
+  VERIFICATION_CODE_TTL,
+} from '@app/common/consts';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
-import { TOTP_SECRET_BYTE_LENGTH } from '@app/common/consts';
-import { date, expect, logger } from '@app/common/utils';
+import { code, date, expect, logger } from '@app/common/utils';
 import { toKebabCase } from 'naming-conventions-modeler';
 import { detectFile } from 'file-type-checker';
 import { Service } from '@app/common/classes';
 import { HttpService } from '@nestjs/axios';
 import { Subject } from '@app/common/enums';
+import { RedisService } from '@app/redis';
+import { MD5 } from '@app/common/helpers';
 import { filterByNotation } from 'abacl';
 import { SdkService } from '@app/sdk';
 import crypto from 'crypto';
@@ -49,6 +57,7 @@ export class AuthService
 
     private readonly sdkService: SdkService,
     private readonly httpService: HttpService,
+    private readonly redisService: RedisService,
   ) {
     super(repository);
   }
@@ -105,8 +114,9 @@ export class AuthService
   }
 
   async register(data: Registration, headers?: Headers): Promise<SyncEnd> {
-    const { identity } = this.sdkService.client();
+    const { identity, touch } = this.sdkService.client();
 
+    // validation check
     const { email, phone, username, password } = data;
     expect(
       email || phone || username,
@@ -114,6 +124,7 @@ export class AuthService
       HttpStatus.BAD_REQUEST,
     );
 
+    // prepare user schema
     const id = MongoId();
     const { appId } = CLIENT_CONFIG();
     const payload: UserDto = {
@@ -129,8 +140,36 @@ export class AuthService
     if (phone) payload.phone = phone;
     if (username) payload.username = username;
 
-    const user = await identity.users.create(payload, { headers });
+    // find or create user
+    let user = (
+      await identity.users.find({ query: { email, phone, username } }, { headers })
+    ).pop();
+    if (!user) user = await identity.users.create(payload, { headers });
 
+    // send activation code
+    const verificationCode = code(VERIFICATION_CODE_LEN);
+    if (user.phone) {
+      await touch.mails.send({
+        subject: 'Wenex - Verification Code',
+        to: [`${String(+user.phone)}@${ROOT_DOMAIN_NAME}`],
+        content: `${verificationCode} is your verification code.`,
+      });
+    } else if (user.email) {
+      await touch.mails.send({
+        to: [user.email],
+        subject: 'Wenex - Verification Code',
+        content: `<a href="http://localhost:3000/auth/verify?code=${verificationCode}">${verificationCode}</a> is your verification code.`,
+      });
+    }
+
+    // store verification code in redis
+    await this.redisService.setex(
+      `${VERIFICATION_CODE_KEY}:${user.id}`,
+      VERIFICATION_CODE_TTL,
+      MD5.hash(String(verificationCode)),
+    );
+
+    // return projected user information
     const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
     return filterByNotation(user, projection);
   }
