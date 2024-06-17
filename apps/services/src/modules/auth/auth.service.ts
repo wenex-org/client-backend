@@ -124,6 +124,8 @@ export class AuthService
       'one of the username or phone or email is required',
       HttpStatus.BAD_REQUEST,
     );
+    if (!phone && !email)
+      expect(password, 'password is required', HttpStatus.BAD_REQUEST);
 
     // prepare user schema
     const id = MongoId();
