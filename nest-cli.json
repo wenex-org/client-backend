@@ -3,9 +3,11 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/gateway/src",
   "compilerOptions": {
-    "deleteOutDir": true,
     "webpack": true,
+    "watchAssets": true,
+    "deleteOutDir": true,
     "builder": "webpack",
+    "assets": ["**/*.(png|jpg|svg|ico)", "**/*.hbs"],
     "plugins": [
       {
         "name": "@nestjs/swagger",
