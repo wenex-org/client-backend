@@ -1,17 +1,20 @@
-import { Headers, SyncEnd } from '@app/common/interfaces';
+import { Headers, PreMail, SyncEnd } from '@app/common/interfaces';
 import { Injectable } from '@nestjs/common';
 import { Mail } from '@wenex/sdk/common';
 import { SdkService } from '@app/sdk';
+import Handlebars from 'handlebars';
 
 @Injectable()
 export class MailsService {
   constructor(private readonly sdkService: SdkService) {}
 
-  async send(data: any, headers?: Headers): Promise<SyncEnd<Mail>> {
+  async send(data: PreMail, headers?: Headers): Promise<SyncEnd<Mail>> {
     const { touch } = this.sdkService.client();
 
-    console.log(data);
+    const { template, options, context } = data;
+    const plate = Handlebars.compile(`./hbs/${template}.hbs`);
 
-    return touch.mails.send(data, { headers });
+    const html = plate(context);
+    return touch.mails.send({ ...options, html }, { headers });
   }
 }

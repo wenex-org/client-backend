@@ -66,6 +66,7 @@
     "dotenv": "^16.4.5",
     "elastic-apm-node": "^4.7.0",
     "file-type-checker": "^1.1.0",
+    "handlebars": "^4.7.8",
     "helmet": "^7.1.0",
     "ioredis": "^5.4.1",
     "log": "^6.3.1",

@@ -32,11 +32,11 @@ import {
 import { code, date, expect, logger, toJSON, toString } from '@app/common/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
+import { Subject, TemplateType } from '@app/common/enums';
 import { toKebabCase } from 'naming-conventions-modeler';
 import { detectFile } from 'file-type-checker';
 import { Service } from '@app/common/classes';
 import { HttpService } from '@nestjs/axios';
-import { Subject } from '@app/common/enums';
 import { RedisService } from '@app/redis';
 import { MD5 } from '@app/common/helpers';
 import { filterByNotation } from 'abacl';
@@ -44,6 +44,7 @@ import { SdkService } from '@app/sdk';
 import crypto from 'crypto';
 import qs from 'qs';
 
+import { MailsService } from '../mails';
 import { AuthRepository } from './auth.repository';
 
 @Injectable()
@@ -59,6 +60,7 @@ export class AuthService
     private readonly sdkService: SdkService,
     private readonly httpService: HttpService,
     private readonly redisService: RedisService,
+    private readonly mailsService: MailsService,
   ) {
     super(repository);
   }
@@ -162,11 +164,19 @@ export class AuthService
         .get(this.registration.name)
         .info(date('verification sms sent to %s'), email);
     } else if (user.email) {
-      await touch.mails.send({
-        to: [user.email],
-        subject: 'Wenex - Activation Link',
-        html: `Dear, this is your <a href="http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}">Activation Link</a>.`,
-      });
+      await this.mailsService.send(
+        {
+          template: TemplateType.VerifyEmail,
+          options: {
+            to: [user.email],
+            subject: 'Wenex - Activation Link',
+          },
+          context: {
+            verification_url: `http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}`,
+          },
+        },
+        headers,
+      );
     }
 
     // store verification code in redis
