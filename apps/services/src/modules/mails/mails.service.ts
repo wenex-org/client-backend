@@ -15,7 +15,8 @@ export class MailsService {
 
     const { template, options, context } = data;
     const path = `modules/mails/hbs/${template}.hbs`;
-    const plate = hbs.compile(readFileSync(join(__dirname, path)));
+    const file = readFileSync(join(__dirname, path));
+    const plate = hbs.compile(file.toString('utf8'), { noEscape: true });
 
     const html = plate(context);
     return touch.mails.send({ ...options, html }, { headers });
