@@ -81,8 +81,8 @@ importers:
         specifier: ^12.5.0
         version: 12.5.0(mongoose@8.4.1)
       '@wenex/sdk':
-        specifier: ^0.6.1
-        version: 0.6.1(axios@1.7.2)(mongoose@8.4.1)
+        specifier: ^0.6.2
+        version: 0.6.2(axios@1.7.2)(mongoose@8.4.1)
       '@willsoto/nestjs-prometheus':
         specifier: ^6.0.1
         version: 6.0.1(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(prom-client@15.0.0)
@@ -1566,6 +1566,9 @@ packages:
   '@types/node@20.14.2':
     resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
 
+  '@types/node@20.14.5':
+    resolution: {integrity: sha512-aoRR+fJkZT2l0aGOJhuA8frnCSoNX6W7U2mpNq63+BxBIj5BQFt8rHy627kijCmm63ijdSdwvGgpUsU6MBsZZA==}
+
   '@types/pg-pool@2.0.4':
     resolution: {integrity: sha512-qZAvkv1K3QbmHHFYSNRYPkRjOWRLBYrL4B9c+wG0GSVGBw0NtJwPcgx/DSddeDJvRGMHCEQ4VMEVfuJ/0gZ3XQ==}
 
@@ -1723,8 +1726,8 @@ packages:
   '@webassemblyjs/wast-printer@1.11.6':
     resolution: {integrity: sha512-JM7AhRcE+yW2GWYaKeHL5vt4xqee5N2WcezptmgyhNS+ScggqcT1OtXykhAb13Sn5Yas0j2uv9tHgrjwvzAP4A==}
 
-  '@wenex/sdk@0.6.1':
-    resolution: {integrity: sha512-zD4Y8PvrFr5xfItvGRTJz7XOGOEIeja+rXmtgfT9vNvFE7993/qKE+z5aqsYvkBocrY9Ajf/kdIITPiPLai11A==}
+  '@wenex/sdk@0.6.2':
+    resolution: {integrity: sha512-pXPrtJv0/xwSZL7MmEc5mq4MjFiIXYyDxAmUkw9L4uN3dCYPHDD5/Cear7ieVSShZ/PGYhzr7RoaZ2X8yXx3ug==}
     peerDependencies:
       axios: ^1.5.0
       mongoose: ^8.0.0
@@ -2261,6 +2264,15 @@ packages:
 
   debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
+  debug@4.3.5:
+    resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -6271,6 +6283,10 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
+  '@types/node@20.14.5':
+    dependencies:
+      undici-types: 5.26.5
+
   '@types/pg-pool@2.0.4':
     dependencies:
       '@types/pg': 8.6.1
@@ -6317,7 +6333,7 @@ snapshots:
 
   '@types/through@0.0.33':
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.14.5
 
   '@types/validator@13.11.8': {}
 
@@ -6492,7 +6508,7 @@ snapshots:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
 
-  '@wenex/sdk@0.6.1(axios@1.7.2)(mongoose@8.4.1)':
+  '@wenex/sdk@0.6.2(axios@1.7.2)(mongoose@8.4.1)':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
       axios: 1.7.2
@@ -6546,7 +6562,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.5
     transitivePeerDependencies:
       - supports-color
 
@@ -7077,6 +7093,10 @@ snapshots:
       ms: 2.0.0
 
   debug@4.3.4:
+    dependencies:
+      ms: 2.1.2
+
+  debug@4.3.5:
     dependencies:
       ms: 2.1.2
 
@@ -7736,7 +7756,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4
+      debug: 4.3.5
     transitivePeerDependencies:
       - supports-color
 

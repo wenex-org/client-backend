@@ -156,7 +156,7 @@ export class AuthService
       await touch.mails.send({
         to: [email],
         subject: 'Wenex - Verification Code',
-        content: `Dear, ${verificationCode} is your verification code.`,
+        text: `Dear, ${verificationCode} is your verification code.`,
       });
       this.log
         .get(this.registration.name)
@@ -165,7 +165,7 @@ export class AuthService
       await touch.mails.send({
         to: [user.email],
         subject: 'Wenex - Activation Link',
-        content: `Dear, this is your <a href="http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}">Activation Link</a>.`,
+        html: `Dear, this is your <a href="http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}">Activation Link</a>.`,
       });
     }
 
