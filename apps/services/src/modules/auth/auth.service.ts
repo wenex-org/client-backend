@@ -153,13 +153,19 @@ export class AuthService
       user = await identity.users.create(payload, { headers });
 
       if (user.email) {
-        await this.mailsService.send(
-          {
-            template: TemplateType.Welcome,
-            options: { to: [user.email], subject: 'Wenex - Welcome' },
-          },
-          headers,
-        );
+        this.mailsService
+          .send(
+            {
+              template: TemplateType.Welcome,
+              options: { to: [user.email], subject: 'Wenex - Welcome' },
+            },
+            headers,
+          )
+          .catch((err) =>
+            this.log
+              .get(this.registration.name)
+              .info(date('welcome mail failed with error %j'), err),
+          );
       }
     }
 
@@ -167,28 +173,42 @@ export class AuthService
     const verificationCode = code(VERIFICATION_CODE_LEN);
     if (user.phone) {
       const email = `${String(+user.phone)}@${ROOT_DOMAIN_NAME}`;
-      await touch.mails.send({
-        to: [email],
-        subject: 'Wenex - Verification Code',
-        text: `Dear, ${verificationCode} is your verification code.`,
-      });
-      this.log
-        .get(this.registration.name)
-        .info(date('verification sms sent to %s'), email);
+      touch.mails
+        .send({
+          to: [email],
+          subject: 'Wenex - Verification Code',
+          text: `Dear, ${verificationCode} is your verification code.`,
+        })
+        .then(() =>
+          this.log
+            .get(this.registration.name)
+            .info(date('verification sms sent to %s'), email),
+        )
+        .catch((err) =>
+          this.log
+            .get(this.registration.name)
+            .info(date('verify phone failed with error %j'), err),
+        );
     } else if (user.email) {
-      await this.mailsService.send(
-        {
-          template: TemplateType.VerifyEmail,
-          options: {
-            to: [user.email],
-            subject: 'Wenex - Activation Link',
+      this.mailsService
+        .send(
+          {
+            template: TemplateType.VerifyEmail,
+            options: {
+              to: [user.email],
+              subject: 'Wenex - Activation Link',
+            },
+            context: {
+              verification_url: `http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}`,
+            },
           },
-          context: {
-            verification_url: `http://localhost:3000/auth/verification?code=${verificationCode}&email=${user.email}`,
-          },
-        },
-        headers,
-      );
+          headers,
+        )
+        .catch((err) =>
+          this.log
+            .get(this.registration.name)
+            .info(date('verify email failed with error %j'), err),
+        );
     }
 
     // store verification code in redis
