@@ -21,6 +21,7 @@ import { WalletsModule } from './modules/wallets';
   imports: [
     SdkModule.forRoot({
       baseURL: process.env.PLATFORM_URL,
+      timeout: +(process.env.TIMEOUT || 30000),
       headers: { 'x-api-key': process.env.API_KEY },
     }),
 
