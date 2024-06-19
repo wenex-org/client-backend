@@ -149,7 +149,16 @@ export class AuthService
     let user = (
       await identity.users.find({ query: { email, phone, username } }, { headers })
     ).pop();
-    if (!user) user = await identity.users.create(payload, { headers });
+    if (!user) {
+      user = await identity.users.create(payload, { headers });
+
+      if (user.email) {
+        await this.mailsService.send({
+          template: TemplateType.Welcome,
+          options: { to: [user.email], subject: 'Wenex - Welcome' },
+        });
+      }
+    }
 
     // send activation code
     const verificationCode = code(VERIFICATION_CODE_LEN);
