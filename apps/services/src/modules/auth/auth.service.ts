@@ -153,10 +153,13 @@ export class AuthService
       user = await identity.users.create(payload, { headers });
 
       if (user.email) {
-        await this.mailsService.send({
-          template: TemplateType.Welcome,
-          options: { to: [user.email], subject: 'Wenex - Welcome' },
-        });
+        await this.mailsService.send(
+          {
+            template: TemplateType.Welcome,
+            options: { to: [user.email], subject: 'Wenex - Welcome' },
+          },
+          headers,
+        );
       }
     }
 
