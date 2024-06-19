@@ -164,7 +164,7 @@ export class AuthService
           .catch((err) =>
             this.log
               .get(this.registration.name)
-              .info(date('welcome mail failed with error %j'), err),
+              .error(date('welcome mail failed with error %j'), err),
           );
       }
     }
@@ -187,7 +187,7 @@ export class AuthService
         .catch((err) =>
           this.log
             .get(this.registration.name)
-            .info(date('verify phone failed with error %j'), err),
+            .error(date('verify phone failed with error %j'), err),
         );
     } else if (user.email) {
       this.mailsService
@@ -207,7 +207,7 @@ export class AuthService
         .catch((err) =>
           this.log
             .get(this.registration.name)
-            .info(date('verify email failed with error %j'), err),
+            .error(date('verify email failed with error %j'), err),
         );
     }
 
