@@ -10,7 +10,7 @@ import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [
-    HttpModule.register({ timeout: +(process.env.TIMEOUT || 30000) }),
+    HttpModule.register({ timeout: +(process.env.TIMEOUT || 90000) }),
     MongooseModule.forFeature([{ name: Auth.name, schema: AuthSchema }]),
 
     ...[MailsModule],
