@@ -4,6 +4,7 @@ require('log-node')();
 
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { NODE_ENV, RMQ_CONFIG } from '@app/common/configs';
+import { prototyping } from '@app/common/utils';
 import { MACHINE } from '@app/common/helpers';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common/consts';
@@ -13,6 +14,7 @@ import { AppModule } from './app.module';
 
 const { SERVICE } = APP;
 
+prototyping();
 async function bootstrap() {
   if (NODE_ENV().IS_PROD) await initTracing(['http', 'amqp']);
 

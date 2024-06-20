@@ -12,6 +12,7 @@ import { Action, Resource, Scope } from '@wenex/sdk/common';
 import { SetPolicy, SetScope } from '@app/common/metadatas';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';
+import { EndSerializer } from '@app/common/serializers';
 import { Headers, Mail } from '@app/common/interfaces';
 import { ValidationPipe } from '@app/common/pipes';
 import { MailDto } from '@app/common/dto';
@@ -31,7 +32,10 @@ export class MailsController {
   @SetScope(Scope.SendTouchMails)
   @SetPolicy(Action.Send, Resource.TouchMails)
   @UseInterceptors(FieldInterceptor, FilterInterceptor)
-  async send(@Payload('data') data: MailDto, @Payload('headers') headers: Headers) {
+  async send(
+    @Payload('data') data: MailDto,
+    @Payload('headers') headers: Headers,
+  ): Promise<EndSerializer<Mail>> {
     return wrap(await this.service.send(data as Mail, headers), 'end');
   }
 }
