@@ -70,7 +70,7 @@ export class ProxyService implements OnModuleInit {
         } else throw new HttpException(err.message, HttpStatus.BAD_GATEWAY);
       } else {
         if (err !== 'There is no matching message handler defined in the remote service.')
-          throw new HttpException('timeout exceeded', HttpStatus.GATEWAY_TIMEOUT);
+          throw new HttpException(err?.message ?? err, HttpStatus.BAD_GATEWAY);
       }
     }
   }

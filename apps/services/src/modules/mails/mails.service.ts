@@ -1,6 +1,6 @@
-import { Headers, PreMail, SyncEnd } from '@app/common/interfaces';
+import { Headers, Mail, SyncEnd } from '@app/common/interfaces';
+import { Mail as WenexMail } from '@wenex/sdk/common';
 import { Injectable } from '@nestjs/common';
-import { Mail } from '@wenex/sdk/common';
 import { SdkService } from '@app/sdk';
 import { readFileSync } from 'fs';
 import hbs from 'handlebars';
@@ -10,7 +10,7 @@ import { join } from 'path';
 export class MailsService {
   constructor(private readonly sdkService: SdkService) {}
 
-  async send(data: PreMail, headers?: Headers): Promise<SyncEnd<Mail>> {
+  async send(data: Mail, headers?: Headers): Promise<SyncEnd<WenexMail>> {
     const { touch } = this.sdkService.client();
 
     const { template, options, context } = data;
