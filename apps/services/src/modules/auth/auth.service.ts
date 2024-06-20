@@ -9,6 +9,7 @@ import {
   Service as ServiceInterface,
   FilterOne,
   Verification,
+  ForgotPassword,
 } from '@app/common/interfaces';
 import {
   AuthenticationRequest,
@@ -23,6 +24,9 @@ import {
   UserOAuth,
 } from '@wenex/sdk/common';
 import {
+  CHANGE_PASSWORD_CODE_KEY,
+  CHANGE_PASSWORD_CODE_LEN,
+  CHANGE_PASSWORD_CODE_TTL,
   ROOT_DOMAIN_NAME,
   TOTP_SECRET_BYTE_LENGTH,
   VERIFICATION_CODE_KEY,
@@ -237,6 +241,86 @@ export class AuthService
     expect(user?.id, 'not found', HttpStatus.NOT_FOUND);
 
     await identity.users.updateById(user.id, { status: Status.Active }, { headers });
+
+    // return projected user information
+    const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
+    return filterByNotation(user, projection);
+  }
+
+  async forgotPassword(data: ForgotPassword, headers?: Headers): Promise<SyncEnd> {
+    const { identity, touch } = this.sdkService.client();
+
+    // validation check
+    const { email, phone, username } = data;
+    expect(
+      email || phone || username,
+      'one of the username or phone or email is required',
+      HttpStatus.BAD_REQUEST,
+    );
+
+    // find user
+    const user = (
+      await identity.users.find({ query: { email, phone, username } }, { headers })
+    ).pop();
+    expect(user?.id, 'user not found', HttpStatus.NOT_FOUND);
+    expect(
+      user.phone || user.email,
+      'phone or email is required',
+      HttpStatus.BAD_REQUEST,
+    );
+
+    // send reset code
+    const resetCode = code(CHANGE_PASSWORD_CODE_LEN);
+    if (phone) {
+      const email = `${String(+user.phone)}@${ROOT_DOMAIN_NAME}`;
+      touch.mails
+        .send({
+          to: [email],
+          subject: 'Wenex - Reset Your Password',
+          text: `Dear, ${resetCode} is your reset password code.`,
+        })
+        .then(() =>
+          this.log
+            .get(this.registration.name)
+            .info(date('reset password sms sent to %s'), email),
+        )
+        .catch((err) =>
+          this.log
+            .get(this.registration.name)
+            .error(date('forgot password failed with error %j'), err),
+        );
+    } else if (email) {
+      this.mailsService
+        .send(
+          {
+            template: TemplateType.ResetPassword,
+            options: {
+              to: [user.email],
+              subject: 'Wenex - Reset Your Password',
+            },
+            context: {
+              reset_password_url: `http://localhost:3000/auth/reset-password?code=${resetCode}&email=${user.email}`,
+            },
+          },
+          headers,
+        )
+        .catch((err) =>
+          this.log
+            .get(this.registration.name)
+            .error(date('forgot password failed with error %j'), err),
+        );
+    } else {
+      // TODO
+    }
+
+    // store reset code in redis
+    const userIdentity = username || phone || email;
+    const key = MD5.hash(`${userIdentity}:${resetCode}`);
+    await this.redisService.setex(
+      `${CHANGE_PASSWORD_CODE_KEY}:${key}`,
+      CHANGE_PASSWORD_CODE_TTL,
+      toString(user),
+    );
 
     // return projected user information
     const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
