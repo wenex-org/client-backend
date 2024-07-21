@@ -18,34 +18,22 @@ export class AuthController {
   constructor(readonly service: AuthService) {}
 
   @MessagePattern('Before: POST /auth/token')
-  async token(
-    @Payload('headers') headers: Headers,
-    @Payload('data') data: AuthenticationRequest,
-  ) {
+  async token(@Payload('headers') headers: Headers, @Payload('data') data: AuthenticationRequest) {
     return wrap(await this.service.token(data, headers), 'body');
   }
 
   @MessagePattern('Before: POST /auth/oauth')
-  async oauth(
-    @Payload('headers') headers: Headers,
-    @Payload('data') data: OAuthRequestDto,
-  ) {
+  async oauth(@Payload('headers') headers: Headers, @Payload('data') data: OAuthRequestDto) {
     return wrap(await this.service.oauth(data, headers), 'end');
   }
 
   @MessagePattern('Before: POST /auth/registration')
-  async registration(
-    @Payload('headers') headers: Headers,
-    @Payload('data') data: RegistrationDto,
-  ) {
+  async registration(@Payload('headers') headers: Headers, @Payload('data') data: RegistrationDto) {
     return wrap(await this.service.registration(data, headers), 'end');
   }
 
   @MessagePattern('Before: POST /auth/verification')
-  async verification(
-    @Payload('headers') headers: Headers,
-    @Payload('data') data: VerificationDto,
-  ) {
+  async verification(@Payload('headers') headers: Headers, @Payload('data') data: VerificationDto) {
     return wrap(await this.service.verification(data, headers), 'end');
   }
 }

@@ -52,10 +52,7 @@ import { MailsService } from '../mails';
 import { AuthRepository } from './auth.repository';
 
 @Injectable()
-export class AuthService
-  extends Service<Auth, Auth>
-  implements ServiceInterface<Auth, Auth>
-{
+export class AuthService extends Service<Auth, Auth> implements ServiceInterface<Auth, Auth> {
   private readonly log = logger(AuthService.name);
 
   constructor(
@@ -75,11 +72,7 @@ export class AuthService
 
     if (data.grant_type === GrantType.OTP) {
       const { email, phone, username } = data;
-      expect(
-        email || phone || username,
-        'one of the username or password or email is required',
-        HttpStatus.BAD_REQUEST,
-      );
+      expect(email || phone || username, 'one of the username or password or email is required', HttpStatus.BAD_REQUEST);
 
       const findQuery: FilterOne<Auth> = { query: {} };
       if (email) findQuery.query.email = email;
@@ -112,9 +105,7 @@ export class AuthService
 
       return await this.repository.create({ ...auth, secret });
     } else {
-      this.log
-        .get(toKebabCase(this.userSecret.name))
-        .info(date('user already had a secret: %s'), user.secret);
+      this.log.get(toKebabCase(this.userSecret.name)).info(date('user already had a secret: %s'), user.secret);
 
       return await this.repository.create(auth);
     }
@@ -125,13 +116,8 @@ export class AuthService
 
     // validation check
     const { email, phone, username, password } = data;
-    expect(
-      email || phone || username,
-      'one of the username or phone or email is required',
-      HttpStatus.BAD_REQUEST,
-    );
-    if (!phone && !email)
-      expect(password, 'password is required', HttpStatus.BAD_REQUEST);
+    expect(email || phone || username, 'one of the username or phone or email is required', HttpStatus.BAD_REQUEST);
+    if (!phone && !email) expect(password, 'password is required', HttpStatus.BAD_REQUEST);
 
     // prepare user schema
     const id = MongoId();
@@ -150,9 +136,7 @@ export class AuthService
     if (username) payload.username = username;
 
     // find or create user
-    let user = (
-      await identity.users.find({ query: { email, phone, username } }, { headers })
-    ).pop();
+    let user = (await identity.users.find({ query: { email, phone, username } }, { headers })).pop();
     if (!user) {
       user = await identity.users.create(payload, { headers });
 
@@ -165,11 +149,7 @@ export class AuthService
             },
             headers,
           )
-          .catch((err) =>
-            this.log
-              .get(this.registration.name)
-              .error(date('welcome mail failed with error %j'), err),
-          );
+          .catch((err) => this.log.get(this.registration.name).error(date('welcome mail failed with error %j'), err));
       }
     }
 
@@ -183,16 +163,8 @@ export class AuthService
           subject: 'Wenex - Verification Code',
           text: `Dear, ${verificationCode} is your verification code.`,
         })
-        .then(() =>
-          this.log
-            .get(this.registration.name)
-            .info(date('verification sms sent to %s'), email),
-        )
-        .catch((err) =>
-          this.log
-            .get(this.registration.name)
-            .error(date('verify phone failed with error %j'), err),
-        );
+        .then(() => this.log.get(this.registration.name).info(date('verification sms sent to %s'), email))
+        .catch((err) => this.log.get(this.registration.name).error(date('verify phone failed with error %j'), err));
     } else if (user.email) {
       this.mailsService
         .send(
@@ -208,21 +180,13 @@ export class AuthService
           },
           headers,
         )
-        .catch((err) =>
-          this.log
-            .get(this.registration.name)
-            .error(date('verify email failed with error %j'), err),
-        );
+        .catch((err) => this.log.get(this.registration.name).error(date('verify email failed with error %j'), err));
     }
 
     // store verification code in redis
     const userIdentity = user.phone || user.email;
     const key = MD5.hash(`${userIdentity}:${verificationCode}`);
-    await this.redisService.setex(
-      `${VERIFICATION_CODE_KEY}:${key}`,
-      VERIFICATION_CODE_TTL,
-      toString(user),
-    );
+    await this.redisService.setex(`${VERIFICATION_CODE_KEY}:${key}`, VERIFICATION_CODE_TTL, toString(user));
 
     // return projected user information
     const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
@@ -235,9 +199,7 @@ export class AuthService
     const userIdentity = data.phone || data.email;
     expect(userIdentity, 'phone or email is required', HttpStatus.BAD_REQUEST);
     const key = MD5.hash(`${userIdentity}:${data.code}`);
-    const user = toJSON<User>(
-      await this.redisService.get(`${VERIFICATION_CODE_KEY}:${key}`),
-    );
+    const user = toJSON<User>(await this.redisService.get(`${VERIFICATION_CODE_KEY}:${key}`));
     expect(user?.id, 'not found', HttpStatus.NOT_FOUND);
 
     await identity.users.updateById(user.id, { status: Status.Active }, { headers });
@@ -252,22 +214,12 @@ export class AuthService
 
     // validation check
     const { email, phone, username } = data;
-    expect(
-      email || phone || username,
-      'one of the username or phone or email is required',
-      HttpStatus.BAD_REQUEST,
-    );
+    expect(email || phone || username, 'one of the username or phone or email is required', HttpStatus.BAD_REQUEST);
 
     // find user
-    const user = (
-      await identity.users.find({ query: { email, phone, username } }, { headers })
-    ).pop();
+    const user = (await identity.users.find({ query: { email, phone, username } }, { headers })).pop();
     expect(user?.id, 'user not found', HttpStatus.NOT_FOUND);
-    expect(
-      user.phone || user.email,
-      'phone or email is required',
-      HttpStatus.BAD_REQUEST,
-    );
+    expect(user.phone || user.email, 'phone or email is required', HttpStatus.BAD_REQUEST);
 
     // send reset code
     const resetCode = code(CHANGE_PASSWORD_CODE_LEN);
@@ -279,16 +231,8 @@ export class AuthService
           subject: 'Wenex - Reset Your Password',
           text: `Dear, ${resetCode} is your reset password code.`,
         })
-        .then(() =>
-          this.log
-            .get(this.registration.name)
-            .info(date('reset password sms sent to %s'), email),
-        )
-        .catch((err) =>
-          this.log
-            .get(this.registration.name)
-            .error(date('forgot password failed with error %j'), err),
-        );
+        .then(() => this.log.get(this.registration.name).info(date('reset password sms sent to %s'), email))
+        .catch((err) => this.log.get(this.registration.name).error(date('forgot password failed with error %j'), err));
     } else if (email) {
       this.mailsService
         .send(
@@ -304,11 +248,7 @@ export class AuthService
           },
           headers,
         )
-        .catch((err) =>
-          this.log
-            .get(this.registration.name)
-            .error(date('forgot password failed with error %j'), err),
-        );
+        .catch((err) => this.log.get(this.registration.name).error(date('forgot password failed with error %j'), err));
     } else {
       // TODO
     }
@@ -316,11 +256,7 @@ export class AuthService
     // store reset code in redis
     const userIdentity = username || phone || email;
     const key = MD5.hash(`${userIdentity}:${resetCode}`);
-    await this.redisService.setex(
-      `${CHANGE_PASSWORD_CODE_KEY}:${key}`,
-      CHANGE_PASSWORD_CODE_TTL,
-      toString(user),
-    );
+    await this.redisService.setex(`${CHANGE_PASSWORD_CODE_KEY}:${key}`, CHANGE_PASSWORD_CODE_TTL, toString(user));
 
     // return projected user information
     const projection = 'id owner clients created_at created_by created_in'.split(/\s+/g);
@@ -394,18 +330,11 @@ export class AuthService
       const { name, avatar } = info;
       await this.upsertProfile(user, name, avatar, headers);
     } catch (error) {
-      this.log
-        .get(toKebabCase(this.userCredential.name))
-        .error(date('upsert profile failed with error %j'), error);
+      this.log.get(toKebabCase(this.userCredential.name)).error(date('upsert profile failed with error %j'), error);
     }
   }
 
-  protected async upsertProfile(
-    user: User,
-    name: string,
-    avatar: string,
-    headers?: Headers,
-  ) {
+  protected async upsertProfile(user: User, name: string, avatar: string, headers?: Headers) {
     if (!avatar || !user?.id) return;
 
     const { identity } = this.sdkService.client();
@@ -447,11 +376,7 @@ export class AuthService
     const buffer = Buffer.from(blb.data, 'binary');
     const { extension: ext } = detectFile(buffer);
     const file = (
-      await special.files.upload(
-        [{ value: new Blob([buffer]), filename: `avatar.${ext}` }],
-        'private',
-        { headers },
-      )
+      await special.files.upload([{ value: new Blob([buffer]), filename: `avatar.${ext}` }], 'private', { headers })
     ).pop();
 
     if (file?.id) {
@@ -473,10 +398,7 @@ export class AuthService
       client_secret: GITHUB.clientSecret,
     };
 
-    const { data } = await this.httpService.axiosRef.post<string>(
-      'https://github.com/login/oauth/access_token',
-      payload,
-    );
+    const { data } = await this.httpService.axiosRef.post<string>('https://github.com/login/oauth/access_token', payload);
 
     const { access_token } = qs.parse(data);
     expect(String(access_token), 'access_token not found', HttpStatus.NOT_FOUND);
@@ -511,10 +433,7 @@ export class AuthService
 
     const {
       data: { access_token },
-    } = await this.httpService.axiosRef.post<{ access_token: string }>(
-      'https://oauth2.googleapis.com/token',
-      payload,
-    );
+    } = await this.httpService.axiosRef.post<{ access_token: string }>('https://oauth2.googleapis.com/token', payload);
     expect(access_token, 'access_token not found', HttpStatus.NOT_FOUND);
 
     const { data: userInfo } = await this.httpService.axiosRef.get<{
@@ -527,8 +446,7 @@ export class AuthService
       headers: { 'Content-Type': ' application/json' },
     });
 
-    if (!userInfo.verified_email)
-      throw new HttpException('email not verified', HttpStatus.NOT_ACCEPTABLE);
+    if (!userInfo.verified_email) throw new HttpException('email not verified', HttpStatus.NOT_ACCEPTABLE);
     expect(userInfo.email, 'email not verified', HttpStatus.NOT_FOUND);
 
     const { email, picture, name } = userInfo;

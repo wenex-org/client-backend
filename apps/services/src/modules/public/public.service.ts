@@ -24,8 +24,7 @@ export class PublicService {
         {
           headers,
           params: {
-            projection:
-              'id url plan site logo name state status slogan created_at domains.name domains.status domains.subjects',
+            projection: 'id url plan site logo name state status slogan created_at domains.name domains.status domains.subjects',
           },
         },
       )

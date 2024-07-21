@@ -15,27 +15,13 @@ export class MirrorService {
     const { source, data, id } = payload;
 
     if (data) {
-      this.connection.db
-        .collection(source.collection)
-        .replaceOne({ _id: ObjectId(id) }, fixIn(data), { upsert: true });
+      this.connection.db.collection(source.collection).replaceOne({ _id: ObjectId(id) }, fixIn(data), { upsert: true });
 
-      this.log
-        .get(this.mirror.name)
-        .notice(
-          date(`Replaced %s document into the %s collection`),
-          id,
-          source.collection,
-        );
+      this.log.get(this.mirror.name).notice(date(`Replaced %s document into the %s collection`), id, source.collection);
     } else {
       this.connection.db.collection(source.collection).deleteOne({ _id: ObjectId(id) });
 
-      this.log
-        .get(this.mirror.name)
-        .notice(
-          date(`Removed %s document from the %s collection`),
-          id,
-          source.collection,
-        );
+      this.log.get(this.mirror.name).notice(date(`Removed %s document from the %s collection`), id, source.collection);
     }
   }
 }

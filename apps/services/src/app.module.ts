@@ -1,9 +1,4 @@
-import {
-  MONGO_CONFIG,
-  MONGO_OPTIONS,
-  REDIS_CONFIG,
-  SENTRY_CONFIG,
-} from '@app/common/configs';
+import { MONGO_CONFIG, MONGO_OPTIONS, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/configs';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -33,4 +28,4 @@ import { PublicModule } from './modules/public';
     ...[AuthModule, PublicModule, MailsModule],
   ],
 })
-export class AppModule { }
+export class AppModule {}

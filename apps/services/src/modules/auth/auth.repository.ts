@@ -1,7 +1,4 @@
-import {
-  Auth as AuthInterface,
-  Repository as RepositoryInterface,
-} from '@app/common/interfaces';
+import { Auth as AuthInterface, Repository as RepositoryInterface } from '@app/common/interfaces';
 import { Repository } from '@app/common/classes';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';

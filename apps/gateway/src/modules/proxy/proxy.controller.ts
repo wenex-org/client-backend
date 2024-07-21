@@ -1,12 +1,4 @@
-import {
-  All,
-  Controller,
-  HttpStatus,
-  Req,
-  Res,
-  UseFilters,
-  UseInterceptors,
-} from '@nestjs/common';
+import { All, Controller, HttpStatus, Req, Res, UseFilters, UseInterceptors } from '@nestjs/common';
 import { LoggerInterceptor } from '@app/common/interceptors';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { AllExceptionsFilter } from '@app/common/filters';

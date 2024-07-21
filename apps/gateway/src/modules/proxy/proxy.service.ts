@@ -1,19 +1,5 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  OnModuleInit,
-  Scope,
-} from '@nestjs/common';
-import {
-  date,
-  getHeaders,
-  getPath,
-  getRequestInfo,
-  logger,
-  toJSON,
-} from '@app/common/utils';
+import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import { date, getHeaders, getPath, getRequestInfo, logger, toJSON } from '@app/common/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/interfaces';
 import { toKebabCase } from 'naming-conventions-modeler';
 import { ClientProxy } from '@nestjs/microservices';
@@ -58,9 +44,7 @@ export class ProxyService implements OnModuleInit {
       this.mergeRequest(result);
       return result;
     } catch (err) {
-      this.log
-        .get(toKebabCase(this.beforeSync.name))
-        .error(date('rabbitmq exception occurred with error %o'), err);
+      this.log.get(toKebabCase(this.beforeSync.name)).error(date('rabbitmq exception occurred with error %o'), err);
 
       if (typeof err?.message === 'string') {
         const error = toJSON(err.message);

@@ -15,10 +15,7 @@ export class PublicController {
   constructor(readonly service: PublicService) {}
 
   @MessagePattern('Before: GET /public/host/?')
-  async getHost(
-    @Payload('headers') headers: Headers,
-    @Payload('params', ParseIdPipe) id: string,
-  ) {
+  async getHost(@Payload('headers') headers: Headers, @Payload('params', ParseIdPipe) id: string) {
     return wrap(await this.service.getHost(id, headers), 'end');
   }
 }

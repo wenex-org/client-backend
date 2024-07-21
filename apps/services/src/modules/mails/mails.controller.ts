@@ -1,10 +1,4 @@
-import {
-  Controller,
-  UseFilters,
-  UseGuards,
-  UseInterceptors,
-  UsePipes,
-} from '@nestjs/common';
+import { Controller, UseFilters, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { FieldInterceptor, FilterInterceptor } from '@app/common/interceptors';
 import { AuthGuard, PolicyGuard, ScopeGuard } from '@app/common/guards';
 import { MessagePattern, Payload } from '@nestjs/microservices';
@@ -32,10 +26,7 @@ export class MailsController {
   @SetScope(Scope.SendTouchMails)
   @SetPolicy(Action.Send, Resource.TouchMails)
   @UseInterceptors(FieldInterceptor, FilterInterceptor)
-  async send(
-    @Payload('data') data: MailDto,
-    @Payload('headers') headers: Headers,
-  ): Promise<EndSerializer<Mail>> {
+  async send(@Payload('data') data: MailDto, @Payload('headers') headers: Headers): Promise<EndSerializer<Mail>> {
     return wrap(await this.service.send(data as Mail, headers), 'end');
   }
 }
