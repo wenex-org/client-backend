@@ -27,7 +27,7 @@
     "platform:seed": "npm run command -- platform seed",
     "platform:raise": "npm run command -- platform raise",
     "platform:debug": "npm run command:debug -- platform",
-    "serve:static": "npx http-server ./dist/apps/services/modules/mails/hbs/images -p 8099 --cors"
+    "serve:static": "npx http-server assets -p 8099 --cors"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.2",
