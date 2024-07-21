@@ -78,8 +78,8 @@ importers:
         specifier: ^12.5.0
         version: 12.5.0(mongoose@8.4.1)
       '@wenex/sdk':
-        specifier: ^0.6.2
-        version: 0.6.2(axios@1.7.2)(mongoose@8.4.1)
+        specifier: ^0.6.4
+        version: 0.6.4(axios@1.7.2)(mongoose@8.4.1)
       '@willsoto/nestjs-prometheus':
         specifier: ^6.0.1
         version: 6.0.1(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(prom-client@15.0.0)
@@ -1687,8 +1687,8 @@ packages:
   '@webassemblyjs/wast-printer@1.11.6':
     resolution: {integrity: sha512-JM7AhRcE+yW2GWYaKeHL5vt4xqee5N2WcezptmgyhNS+ScggqcT1OtXykhAb13Sn5Yas0j2uv9tHgrjwvzAP4A==}
 
-  '@wenex/sdk@0.6.2':
-    resolution: {integrity: sha512-pXPrtJv0/xwSZL7MmEc5mq4MjFiIXYyDxAmUkw9L4uN3dCYPHDD5/Cear7ieVSShZ/PGYhzr7RoaZ2X8yXx3ug==}
+  '@wenex/sdk@0.6.4':
+    resolution: {integrity: sha512-PJNu05jOulGvZ7GtyorP8iS+R6Fp2DllXhTzkNRYj1RTMTDwER7vAaVrz1LDbcWyvV3Ly5ElVg9OZYHEKQ6LPQ==}
     peerDependencies:
       axios: ^1.5.0
       mongoose: ^8.0.0
@@ -6416,7 +6416,7 @@ snapshots:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
 
-  '@wenex/sdk@0.6.2(axios@1.7.2)(mongoose@8.4.1)':
+  '@wenex/sdk@0.6.4(axios@1.7.2)(mongoose@8.4.1)':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
       axios: 1.7.2
