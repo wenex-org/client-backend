@@ -127,7 +127,7 @@ export class AuthService extends Service<Auth, Auth> implements ServiceInterface
       password,
       owner: id,
       created_in: appId,
-      subjects: [Subject.Guest],
+      subjects: [],
       status: !phone && !email ? Status.Active : Status.Inactive,
     };
 
@@ -299,7 +299,7 @@ export class AuthService extends Service<Auth, Auth> implements ServiceInterface
           oauth: [source],
           created_in: appId,
           status: Status.Active,
-          subjects: [Subject.Guest],
+          subjects: [],
           props:
             source === UserOAuth.Google
               ? { google_avatar: avatar, google_name: name }
