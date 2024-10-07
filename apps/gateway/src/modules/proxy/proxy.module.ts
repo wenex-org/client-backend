@@ -1,5 +1,5 @@
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { RMQ_CONFIG } from '@app/common/configs';
+import { RMQ_CONFIG } from '@app/common/envs';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 

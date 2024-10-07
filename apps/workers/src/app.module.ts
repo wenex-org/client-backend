@@ -1,4 +1,4 @@
-import { MONGO_CONFIG, MONGO_OPTIONS, SENTRY_CONFIG } from '@app/common/configs';
+import { MONGO_CONFIG, MONGO_OPTIONS, SENTRY_CONFIG } from '@app/common/envs';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { MongooseModule } from '@nestjs/mongoose';

@@ -1,4 +1,4 @@
-import { REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/configs';
+import { REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/envs';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { HealthModule } from '@app/health';

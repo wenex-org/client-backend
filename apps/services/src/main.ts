@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 require('dotenv').config();
 require('log-node')();
 
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { NODE_ENV, RMQ_CONFIG } from '@app/common/configs';
+import { NODE_ENV, RMQ_CONFIG } from '@app/common/envs';
 import { prototyping } from '@app/common/utils';
 import { MACHINE } from '@app/common/helpers';
 import { NestFactory } from '@nestjs/core';

@@ -35,9 +35,9 @@ import {
 } from '@app/common/consts';
 import { code, date, expect, logger, toJSON, toString } from '@app/common/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/configs';
-import { Subject, TemplateType } from '@app/common/enums';
+import { CLIENT_CONFIG, OAUTH_CONFIG } from '@app/common/envs';
 import { toKebabCase } from 'naming-conventions-modeler';
+import { TemplateType } from '@app/common/enums';
 import { detectFile } from 'file-type-checker';
 import { Service } from '@app/common/classes';
 import { HttpService } from '@nestjs/axios';

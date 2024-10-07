@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 require('dotenv').config();
 require('log-node')();
 
 import { setupSwagger } from '@app/common/utils';
-import { NODE_ENV } from '@app/common/configs';
+import { NODE_ENV } from '@app/common/envs';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common/consts';
 import { initTracing } from 'tracing';
