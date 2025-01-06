@@ -20,8 +20,6 @@
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./jest-e2e.config.ts",
     "test:e2e:cov": "jest --config ./jest-e2e.config.ts --coverage",
-    "command": "node -r tsconfig-paths/register -r ts-node/register libs/command/src/main.ts",
-    "command:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register libs/command/src/main.ts",
     "check": "bash ./scripts/circular-dependencies.sh",
     "dpdm": "dpdm -T --skip-dynamic-imports circular --no-warning --no-tree --circular",
     "dpdm:ts": "dpdm --skip-dynamic-imports circular --no-warning --no-tree --circular",

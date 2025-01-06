@@ -48,15 +48,6 @@
         "tsConfigPath": "apps/workers/tsconfig.app.json"
       }
     },
-    "command": {
-      "type": "library",
-      "root": "libs/command",
-      "entryFile": "index",
-      "sourceRoot": "libs/command/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/command/tsconfig.lib.json"
-      }
-    },
     "common": {
       "type": "library",
       "root": "libs/common",
