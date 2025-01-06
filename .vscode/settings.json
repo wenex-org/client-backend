@@ -1,4 +1,17 @@
 {
-  "cSpell.words": ["bitnami", "dpdm", "localnet", "nestjs", "tseslint", "Vahid", "Wenex", "zipkin"],
+  "cSpell.words": [
+    "abacl",
+    "bitnami",
+    "dpdm",
+    "localnet",
+    "metatype",
+    "nestjs",
+    "ntegral",
+    "tseslint",
+    "Vahid",
+    "Wenex",
+    "willsoto",
+    "zipkin"
+  ],
   "editor.formatOnSave": true
 }

@@ -3,11 +3,29 @@ services:
   # CACHE
   #######################
 
-  # Redis
   redis:
     extends:
       file: docker-compose.rds.yml
       service: redis
+
+  #######################
+  # BROKER
+  #######################
+
+  nats:
+    extends:
+      file: docker-compose.nat.yml
+      service: nats
+
+  nats-1:
+    extends:
+      file: docker-compose.nat.yml
+      service: nats-1
+
+  nats-2:
+    extends:
+      file: docker-compose.nat.yml
+      service: nats-2
 
   #######################
   # DATABASE
