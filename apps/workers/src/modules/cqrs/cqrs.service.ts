@@ -11,13 +11,14 @@ export class CqrsService {
 
   constructor(@InjectConnection() private readonly conn: Connection) {}
 
-  async cqrs(payload: CqrsPayload) {
-    const { source, after, id } = payload;
+  async cqrs({ id, ...payload }: CqrsPayload) {
+    const { source, after } = payload;
+    const query = { _id: ObjectId(id) };
     if (after) {
-      await this.conn.collection(source.collection).replaceOne({ _id: ObjectId(id) }, fixIn(after), { upsert: true });
+      await this.conn.collection(source.collection).replaceOne(query, fixIn(after), { upsert: true });
       this.log.extend(this.cqrs.name)(`Replaced %s document into the %s collection`, id, source.collection);
     } else {
-      await this.conn.collection(source.collection).deleteOne({ _id: ObjectId(id) });
+      await this.conn.collection(source.collection).deleteOne(query);
       this.log.extend(this.cqrs.name)(`Removed %s document from the %s collection`, id, source.collection);
     }
   }
