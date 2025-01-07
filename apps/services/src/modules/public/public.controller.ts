@@ -1,16 +1,17 @@
-import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
+import { ParseIdPipe, ValidationPipe } from '@app/common/core/pipes';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllExceptionsFilter } from '@app/common/core/filters';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { SyncData } from '@app/common/core/interfaces';
-import { ParseIdPipe } from '@app/common/core/pipes';
 import { wrap } from '@wenex/sdk/common/core/utils';
 import { from, map, Observable } from 'rxjs';
 
 import { PublicService } from './public.service';
 
 @Controller()
+@UsePipes(ValidationPipe)
 @UseFilters(AllExceptionsFilter)
 @UseInterceptors(new SentryInterceptor())
 export class PublicController {
