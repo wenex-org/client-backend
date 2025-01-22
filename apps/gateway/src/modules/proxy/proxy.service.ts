@@ -28,7 +28,7 @@ export class ProxyService implements OnModuleInit {
 
   async beforeSync(res: Response): Promise<SyncData> {
     try {
-      const { params, pattern } = getRequestInfo(this.req, 'Before');
+      const { params, pattern } = getRequestInfo(this.req, 'before');
 
       const result = await lastValueFrom<SyncData>(
         this.client.send(pattern, {
