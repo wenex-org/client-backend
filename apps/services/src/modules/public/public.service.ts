@@ -17,7 +17,7 @@ export class PublicService {
     });
     const client = (
       await domain.clients.find(
-        { query: { $or: [app?.cid ? { id: app.cid } : { id }, { client_id: id }] } },
+        { query: { $or: [{ id: app?.cid ?? id }, { client_id: id }] } },
         {
           params: {
             projection: 'id url plan site logo name state status slogan created_at domains.name domains.status domains.subjects',
