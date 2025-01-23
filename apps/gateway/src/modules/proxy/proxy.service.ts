@@ -41,8 +41,7 @@ export class ProxyService implements OnModuleInit {
         } as ProxyData),
       );
 
-      this.mergeRequest(result);
-      return result;
+      return this.mergeRequest(result);
     } catch (err) {
       this.log.extend(this.beforeSync.name)('exception occurred with error %o', err);
       res.status(toJSON(err.message ?? '{}').status ?? HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,9 +65,7 @@ export class ProxyService implements OnModuleInit {
     } else res.json(before.end);
   }
 
-  private mergeRequest(syncData?: SyncData) {
-    if (!syncData) return;
-
+  private mergeRequest(syncData: SyncData): SyncData {
     const merge = (key: keyof Pick<SyncData, 'body' | 'query'>, type: SyncType) => {
       if (syncData[key]?.data) {
         if (type === 'assign') Object.assign(this.req[key], syncData[key].data);
@@ -78,5 +75,7 @@ export class ProxyService implements OnModuleInit {
 
     if (syncData?.body) merge('body', syncData.body.type);
     if (syncData?.query) merge('query', syncData.query.type);
+
+    return syncData;
   }
 }
