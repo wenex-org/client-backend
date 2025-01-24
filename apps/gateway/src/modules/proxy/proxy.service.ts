@@ -43,6 +43,10 @@ export class ProxyService implements OnModuleInit {
 
       return this.mergeRequest(result);
     } catch (err) {
+      if (typeof err.message === 'string') {
+        if (err.message.startsWith('Empty response. There are no subscribers listening to that message')) return {};
+      }
+
       this.log.extend(this.beforeSync.name)('exception occurred with error %o', err);
       res.status(toJSON(err.message ?? '{}').status ?? HttpStatus.INTERNAL_SERVER_ERROR);
       throw new HttpException(toString(err.message ?? err), HttpStatus.INTERNAL_SERVER_ERROR);
