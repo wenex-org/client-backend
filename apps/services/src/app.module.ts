@@ -7,6 +7,7 @@ import { SdkModule } from '@app/module/sdk';
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from './modules/auth';
+import { TouchModule } from './modules/touch';
 import { PublicModule } from './modules/public';
 
 @Module({
@@ -18,7 +19,7 @@ import { PublicModule } from './modules/public';
     SentryModule.forRoot(SENTRY_CONFIG()),
     HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
 
-    ...[AuthModule, PublicModule],
+    ...[AuthModule, PublicModule, TouchModule],
   ],
 })
 export class AppModule {}

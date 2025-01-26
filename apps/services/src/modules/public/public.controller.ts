@@ -5,8 +5,8 @@ import { AllExceptionsFilter } from '@app/common/core/filters';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { SyncData } from '@app/common/core/interfaces';
-import { wrap } from '@wenex/sdk/common/core/utils';
-import { from, map, Observable } from 'rxjs';
+import { mapTo } from '@app/common/core/utils';
+import { from, Observable } from 'rxjs';
 
 import { PublicService } from './public.service';
 
@@ -19,6 +19,6 @@ export class PublicController {
 
   @MessagePattern('before.get.public.?.agent')
   agent(@Payload('headers') headers: Headers, @Payload('params', ParseIdPipe) id: string): Observable<SyncData> {
-    return from(this.service.agent(id, headers)).pipe(map((val) => wrap(val, (obj) => ({ end: obj }))));
+    return from(this.service.agent(id, headers)).pipe(mapTo('end'));
   }
 }
