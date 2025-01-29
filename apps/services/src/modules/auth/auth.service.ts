@@ -32,15 +32,15 @@ export class AuthService {
   }
 
   async register(data: RegisterRequest, headers?: Headers): Promise<SyncEnd<RegisterResponse>> {
-    const model = RegisterModel.build(data).check();
-    await model.verifyCaptcha(get('x-user-ip', headers));
+    const model = RegisterModel.build(data).check(headers);
+    await model.verifyCaptcha();
 
     const { users } = this.sdkService.client.identity;
-    const result = await model.register(users, this.redisService, headers);
+    const result = await model.register(users, this.redisService);
 
     const { smss } = this.sdkService.client.touch;
     const services = { smss, mails: this.touchService.mails };
-    void model.sendVerification(services, headers);
+    void model.sendVerification(services);
 
     return result;
   }
