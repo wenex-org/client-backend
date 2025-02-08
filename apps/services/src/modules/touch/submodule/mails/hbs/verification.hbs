@@ -8,7 +8,7 @@
     <!--[if mso]>
     <xml><o:officedocumentsettings><o:pixelsperinch>96</o:pixelsperinch></o:officedocumentsettings></xml>
   <![endif]-->
-    <title>Verification Mail</title>
+    <title>Email Verification</title>
     <link
       href='https://fonts.googleapis.com/css?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700'
       rel='stylesheet'
@@ -51,7 +51,7 @@
                 >
                   <a href='#' style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly;">
                     <img
-                      src='http://localhost:8099/logo.svg'
+                      src='{{assets_url}}/logo.svg'
                       width='155'
                       alt='Wenex'
                       style='max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;'
@@ -76,28 +76,27 @@
                         <p
                           style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin: 0; margin-bottom: 24px;"
                         >
-                          Please verify your email address by clicking the below button and join our creative community, start
-                          exploring the resources or showcasing your work.
+                          Please verify your email address by clicking the below button and join our creative community.
                         </p>
                         <p
                           style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin: 0; margin-bottom: 24px;"
                         >
-                          If you did not sign up to Wenex, please ignore this email or contact us at
-                          <a
-                            href='mailto:support@wenex.org'
-                            class='hover-underline'
-                            style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;"
-                          >support@wenex.org</a>
+                          If you did not sign up to Wenex, please ignore this email.
                         </p>
                         <table cellpadding='0' cellspacing='0' role='presentation'>
+                          <tr>
+                            <td style='padding: 16px 0;'>
+                              <span style='font-size: 32px;'>{{confirmation_code}}</span>
+                            </td>
+                          </tr>
                           <tr>
                             <td
                               style="mso-line-height-rule: exactly; mso-padding-alt: 16px 24px; border-radius: 4px; background-color: #7367f0; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;"
                             >
                               <a
-                                href='{{verification}}'
+                                href='{{verification_url}}'
                                 style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #ffffff; text-decoration: none;"
-                              >Verify Email Now &rarr;</a>
+                              >Verify Email &rarr;</a>
                             </td>
                           </tr>
                         </table>
@@ -142,7 +141,7 @@
                             href='#'
                             style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"
                           ><img
-                              src='http://localhost:8099/facebook.png'
+                              src='{{assets_url}}/images/facebook.png'
                               width='17'
                               alt='Facebook'
                               style='max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;'
@@ -152,7 +151,7 @@
                             href='#'
                             style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"
                           ><img
-                              src='http://localhost:8099/twitter.png'
+                              src='{{assets_url}}/images/twitter.png'
                               width='17'
                               alt='Twitter'
                               style='max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;'
@@ -162,7 +161,7 @@
                             href='#'
                             style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"
                           ><img
-                              src='http://localhost:8099/instagram.png'
+                              src='{{assets_url}}/images/instagram.png'
                               width='17'
                               alt='Instagram'
                               style='max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; margin-right: 12px;'
