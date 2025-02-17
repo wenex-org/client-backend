@@ -1,4 +1,5 @@
-import { Headers } from '@wenex/sdk/common/core/interfaces';
+import { Headers, Serializer } from '@wenex/sdk/common/core/interfaces';
+import { Email } from '@wenex/sdk/common/interfaces/touch';
 import { toKebabCase } from 'naming-conventions-modeler';
 import { SyncEnd } from '@app/common/core/interfaces';
 import { contextGen } from '@app/common/utils/touch';
@@ -13,7 +14,11 @@ import { join } from 'path';
 export class MailsService {
   constructor(private readonly sdkService: SdkService) {}
 
-  send(data: Mail, headers?: Headers): Promise<SyncEnd> {
+  get emails() {
+    return this.sdkService.client.touch.emails;
+  }
+
+  send(data: Mail, headers?: Headers): Promise<SyncEnd<Serializer<Email>>> {
     const { touch } = this.sdkService.client;
     const { template, options, context } = data;
     const path = `modules/touch/submodule/mails/hbs/${toKebabCase(template)}.hbs`;
