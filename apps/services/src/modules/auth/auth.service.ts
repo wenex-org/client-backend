@@ -3,6 +3,7 @@ import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { AuthModel, RegisterModel } from '@app/common/models/auth';
 import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
+import { GrantType } from '@wenex/sdk/common/core/enums';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
 import { get } from '@wenex/sdk/common/core/utils';
 import { RedisService } from '@app/module/redis';
@@ -23,10 +24,13 @@ export class AuthService {
 
   async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody<AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;
-    data.client_secret = CLIENT_SECRET;
 
     const model = AuthModel.build(data).check();
     await model.verifyCaptcha(get('x-user-ip', headers));
+
+    if (data.grant_type !== GrantType.client_credential) {
+      data.client_secret = CLIENT_SECRET;
+    }
 
     return { data, type: 'assign' };
   }

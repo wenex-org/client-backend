@@ -1,5 +1,6 @@
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
 import { ParseIdPipe, ValidationPipe } from '@app/common/core/pipes';
+import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllExceptionsFilter } from '@app/common/core/filters';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
@@ -13,7 +14,7 @@ import { PublicService } from './public.service';
 @Controller()
 @UsePipes(ValidationPipe)
 @UseFilters(AllExceptionsFilter)
-@UseInterceptors(new SentryInterceptor())
+@UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class PublicController {
   constructor(readonly service: PublicService) {}
 

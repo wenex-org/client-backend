@@ -1,6 +1,7 @@
 import { Controller, UseFilters, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { FieldInterceptor, FilterInterceptor } from '@app/common/core/interceptors/flow';
 import { AuthGuard, PolicyGuard, ScopeGuard } from '@app/common/core/guards';
+import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { SetPolicy, SetScope } from '@app/common/core/metadatas';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllExceptionsFilter } from '@app/common/core/filters';
@@ -19,8 +20,8 @@ import { MailsService } from './mails.service';
 @Controller()
 @UsePipes(ValidationPipe)
 @UseFilters(AllExceptionsFilter)
-@UseInterceptors(new SentryInterceptor())
 @UseGuards(AuthGuard, ScopeGuard, PolicyGuard)
+@UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class MailsController {
   constructor(readonly service: MailsService) {}
 

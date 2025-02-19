@@ -1,6 +1,7 @@
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
 import { ConfirmationDto, RegisterDto } from '@app/common/dto/auth/register';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
+import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllExceptionsFilter } from '@app/common/core/filters';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
@@ -15,7 +16,7 @@ import { AuthService } from './auth.service';
 @Controller()
 @UsePipes(ValidationPipe)
 @UseFilters(AllExceptionsFilter)
-@UseInterceptors(new SentryInterceptor())
+@UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class AuthController {
   constructor(readonly service: AuthService) {}
 
