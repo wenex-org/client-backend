@@ -1,7 +1,8 @@
 import { Headers } from '@wenex/sdk/common/core/interfaces';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { SyncEnd } from '@app/common/core/interfaces';
+import { assertion } from '@app/common/core/utils';
 import { SdkService } from '@app/module/sdk';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PublicService {
@@ -26,6 +27,7 @@ export class PublicService {
         },
       )
     )?.pop();
+    assertion(client, 'client not found', HttpStatus.NOT_FOUND);
     return app?.id ? { app, client } : { client };
   }
 }
