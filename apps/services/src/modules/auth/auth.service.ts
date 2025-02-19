@@ -2,10 +2,13 @@ import { ConfirmRegister, RegisterRequest, RegisterResponse } from '@app/common/
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { AuthModel, RegisterModel } from '@app/common/models/auth';
+import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
 import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
+import { get, logger } from '@wenex/sdk/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
+import { TemplateType } from '@app/common/enums/touch';
+import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
-import { get } from '@wenex/sdk/common/core/utils';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
 import { Injectable } from '@nestjs/common';
@@ -16,6 +19,8 @@ const { STRICT_TOKEN, CLIENT_SECRET } = CLIENT_CONFIG();
 
 @Injectable()
 export class AuthService {
+  private readonly log = logger(AuthService.name);
+
   constructor(
     private readonly sdkService: SdkService,
     private readonly redisService: RedisService,
@@ -51,7 +56,16 @@ export class AuthService {
 
   async confirmation(data: ConfirmRegister, headers?: Headers): Promise<SyncEnd<Result>> {
     const { users } = this.sdkService.client.identity;
-    await RegisterModel.confirmation(data, { users, redis: this.redisService }, headers);
+    const { email } = await RegisterModel.confirmation(data, { users, redis: this.redisService }, headers);
+
+    void (async () => {
+      if (email) {
+        const options: Omit<EmailSendDto, 'html' | 'text'> = { from: MAIL_FROM, to: [email], subject: 'Welcome' };
+        const result = await this.touchService.mails.send({ template: TemplateType.WELCOME, options }, headers);
+        this.log.extend(this.confirmation.name)(`welcome email sent to ${email} with result %o`, result);
+      }
+    })();
+
     return { result: 'OK' };
   }
 }

@@ -33,4 +33,4 @@ async function bootstrap() {
   console.log(`OpenApi Spec is running on: ${url}/api-json`);
   console.log(`Workers Micro Successfully Started`);
 }
-bootstrap();
+void bootstrap();

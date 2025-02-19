@@ -33,4 +33,4 @@ async function bootstrap() {
   console.log(`Health check is running on ${url}/status`);
   console.log(`OpenApi Spec is running on: ${url}/api-json`);
 }
-bootstrap();
+void bootstrap();

@@ -32,4 +32,4 @@ async function bootstrap() {
   console.log(`Services NATS Micro Successfully Started`);
   console.log('\x1b[32m%s\x1b[0m', 'MachineID:', Machine.STATIC_ID);
 }
-bootstrap();
+void bootstrap();
