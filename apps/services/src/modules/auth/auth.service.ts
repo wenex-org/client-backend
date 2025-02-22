@@ -1,4 +1,4 @@
-import { ConfirmRegister, RegisterRequest, RegisterResponse } from '@app/common/interfaces/auth';
+import { ConfirmRegister, OtpRequest, RegisterRequest, RegisterResponse } from '@app/common/interfaces/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { AuthModel, RegisterModel } from '@app/common/models/auth';
@@ -26,6 +26,14 @@ export class AuthService {
     private readonly redisService: RedisService,
     private readonly touchService: TouchService,
   ) {}
+
+  async otp(data: OtpRequest, headers?: Headers): Promise<SyncEnd<Result>> {
+    const model = AuthModel.build(data).check();
+    await model.verifyCaptcha(get('x-user-ip', headers));
+
+    // const { users } = this.sdkService.client.identity;
+    return { result: 'NOK' }; // model.otp(users, headers);
+  }
 
   async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody<AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;

@@ -22,7 +22,9 @@
       "@app/common": ["libs/common/src"],
       "@app/common/*": ["libs/common/src/*"],
       "@app/module": ["libs/module/src"],
-      "@app/module/*": ["libs/module/src/*"]
+      "@app/module/*": ["libs/module/src/*"],
+      "@app/services": ["apps/services/src"],
+      "@app/services/*": ["apps/services/src/*"]
     }
   }
 }

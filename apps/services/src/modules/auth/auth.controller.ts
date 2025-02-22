@@ -1,5 +1,5 @@
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
-import { ConfirmationDto, RegisterDto } from '@app/common/dto/auth/register';
+import { ConfirmationDto, OtpDto, RegisterDto } from '@app/common/dto/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { MessagePattern, Payload } from '@nestjs/microservices';
@@ -19,6 +19,11 @@ import { AuthService } from './auth.service';
 @UseInterceptors(LoggerInterceptor, new SentryInterceptor())
 export class AuthController {
   constructor(readonly service: AuthService) {}
+
+  @MessagePattern('before.post.auth.otp')
+  otp(@Payload('headers') headers: Headers, @Payload('data') data: OtpDto): Observable<SyncData> {
+    return from(this.service.otp(data, headers)).pipe(mapTo('end'));
+  }
 
   @MessagePattern('before.post.auth.token')
   token(@Payload('headers') headers: Headers, @Payload('data') data: AuthenticationRequest): Observable<SyncData> {
