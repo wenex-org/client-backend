@@ -69,8 +69,8 @@ importers:
         specifier: ^1.28.0
         version: 1.28.0
       '@wenex/sdk':
-        specifier: ^1.0.17
-        version: 1.0.17
+        specifier: ^1.0.27
+        version: 1.0.27
       '@willsoto/nestjs-prometheus':
         specifier: ^6.0.2
         version: 6.0.2(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(prom-client@15.1.3)
@@ -2328,8 +2328,8 @@ packages:
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
 
-  '@wenex/sdk@1.0.17':
-    resolution: {integrity: sha512-GN70jv/fQz32bgLfo9ZZUUOOrbt1BrGoowIHB+9GmvbCs4iNh+8NC/a3lto0p4D8YNrWAzcL3N4bFaxiy02zGA==}
+  '@wenex/sdk@1.0.27':
+    resolution: {integrity: sha512-R5+kxeabDkYoqk5E9jwzTvVrKs5ncwtfJe95iuQaqAYHqvMx4ccIIIxOse/kopn3rgdES/1obGg8/xAb/fKCxw==}
 
   '@willsoto/nestjs-prometheus@6.0.2':
     resolution: {integrity: sha512-ePyLZYdIrOOdlOWovzzMisIgviXqhPVzFpSMKNNhn6xajhRHeBsjAzSdpxZTc6pnjR9hw1lNAHyKnKl7lAPaVg==}
@@ -8748,7 +8748,7 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@wenex/sdk@1.0.17':
+  '@wenex/sdk@1.0.27':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
       axios: 1.7.9(debug@4.4.0)
