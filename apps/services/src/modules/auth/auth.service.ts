@@ -9,6 +9,7 @@ import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
 import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
+import { BackupService } from '@app/module/backup';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
 import { Injectable } from '@nestjs/common';
@@ -22,17 +23,22 @@ export class AuthService {
   private readonly log = logger(AuthService.name);
 
   constructor(
+    private readonly db: BackupService,
     private readonly sdkService: SdkService,
     private readonly redisService: RedisService,
     private readonly touchService: TouchService,
   ) {}
 
   async otp(data: OtpRequest, headers?: Headers): Promise<SyncEnd<Result>> {
-    const model = AuthModel.build(data).check();
+    const model = AuthModel.build(data).check(headers);
     await model.verifyCaptcha(get('x-user-ip', headers));
 
-    // const { users } = this.sdkService.client.identity;
-    return { result: 'NOK' }; // model.otp(users, headers);
+    const { users } = this.sdkService.client.identity;
+    const options = await model.userSecret(this.db, users, headers);
+
+    const { smss } = this.sdkService.client.touch;
+    const services = { mails: this.touchService.mails, smss };
+    return model.otp(services, options, headers);
   }
 
   async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody<AuthenticationRequest>> {
