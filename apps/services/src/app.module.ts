@@ -1,6 +1,7 @@
-import { PLATFORM_CONFIG, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/core/envs';
+import { MONGO_CONFIG, MONGO_OPTIONS, PLATFORM_CONFIG, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/core/envs';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import { MongooseModule } from '@nestjs/mongoose';
 import { BackupModule } from '@app/module/backup';
 import { HealthModule } from '@app/module/health';
 import { RedisModule } from '@app/module/redis';
@@ -20,6 +21,7 @@ import { PublicModule } from './modules/public';
 
     RedisModule.forRoot(REDIS_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
+    MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
     HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
 
     ...[AuthModule, PublicModule, TouchModule],
