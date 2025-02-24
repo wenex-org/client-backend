@@ -1,7 +1,14 @@
-import { ConfirmRegister, OtpRequest, RegisterRequest, RegisterResponse } from '@app/common/interfaces/auth';
+import {
+  ConfirmRegister,
+  OtpRequest,
+  RegisterRequest,
+  RegisterResponse,
+  RepassRequest,
+  RepassResponse,
+} from '@app/common/interfaces/auth';
+import { AuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
-import { AuthModel, RegisterModel } from '@app/common/models/auth';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
 import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
 import { get, logger } from '@wenex/sdk/common/core/utils';
@@ -54,6 +61,20 @@ export class AuthService {
     }
 
     return { data, type: 'assign' };
+  }
+
+  async repass(data: RepassRequest, headers?: Headers): Promise<SyncEnd<RepassResponse>> {
+    const model = RepassModel.build(data).check(headers);
+    await model.verifyCaptcha();
+
+    const { users } = this.sdkService.client.identity;
+    const result = await model.repass(users, this.redisService);
+
+    const { smss } = this.sdkService.client.touch;
+    const services = { smss, mails: this.touchService.mails };
+    void model.sendResetLink(services);
+
+    return result;
   }
 
   async register(data: RegisterRequest, headers?: Headers): Promise<SyncEnd<RegisterResponse>> {

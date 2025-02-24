@@ -1,5 +1,5 @@
+import { ConfirmationDto, OtpDto, RegisterDto, RepassDto } from '@app/common/dto/auth';
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
-import { ConfirmationDto, OtpDto, RegisterDto } from '@app/common/dto/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { MessagePattern, Payload } from '@nestjs/microservices';
@@ -28,6 +28,11 @@ export class AuthController {
   @MessagePattern('before.post.auth.token')
   token(@Payload('headers') headers: Headers, @Payload('data') data: AuthenticationRequest): Observable<SyncData> {
     return from(this.service.token(data, headers)).pipe(mapTo('body'));
+  }
+
+  @MessagePattern('before.post.auth.repass')
+  repass(@Payload('headers') headers: Headers, @Payload('data') data: RepassDto): Observable<SyncData> {
+    return from(this.service.repass(data, headers)).pipe(mapTo('end'));
   }
 
   @MessagePattern('before.post.auth.register')
