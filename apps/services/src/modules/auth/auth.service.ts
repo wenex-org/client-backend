@@ -16,6 +16,7 @@ import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
 import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
+import { RepassType } from '@app/common/enums/auth';
 import { BackupService } from '@app/module/backup';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
@@ -70,9 +71,11 @@ export class AuthService {
     const { users } = this.sdkService.client.identity;
     const result = await model.repass(users, this.redisService);
 
-    const { smss } = this.sdkService.client.touch;
-    const services = { smss, mails: this.touchService.mails };
-    void model.sendResetLink(services);
+    if (data.type === RepassType.FORGOT) {
+      const { smss } = this.sdkService.client.touch;
+      const services = { smss, mails: this.touchService.mails };
+      void model.sendResetLink(services);
+    }
 
     return result;
   }
