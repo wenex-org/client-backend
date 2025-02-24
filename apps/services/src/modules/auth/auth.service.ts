@@ -18,6 +18,7 @@ import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
 import { RepassType } from '@app/common/enums/auth';
 import { BackupService } from '@app/module/backup';
+import { rpcCatch } from '@app/common/core/utils';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
 import { Injectable } from '@nestjs/common';
@@ -74,7 +75,7 @@ export class AuthService {
     if (data.type === RepassType.FORGOT) {
       const { smss } = this.sdkService.client.touch;
       const services = { smss, mails: this.touchService.mails };
-      void model.sendResetLink(services);
+      void model.sendResetLink(services).catch(rpcCatch);
     }
 
     return result;
@@ -89,7 +90,7 @@ export class AuthService {
 
     const { smss } = this.sdkService.client.touch;
     const services = { smss, mails: this.touchService.mails };
-    void model.sendVerification(services);
+    void model.sendVerification(services).catch(rpcCatch);
 
     return result;
   }
@@ -104,7 +105,7 @@ export class AuthService {
         const result = await this.touchService.mails.send({ template: TemplateType.WELCOME, options }, headers);
         this.log.extend(this.confirmation.name)(`welcome email sent to ${email} with result %o`, result);
       }
-    })();
+    })().catch(rpcCatch);
 
     return { result: 'OK' };
   }
