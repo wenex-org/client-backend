@@ -44,8 +44,10 @@ export class AuthService {
   async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody<AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;
 
-    const model = AuthModel.build(data).check();
-    await model.verifyCaptcha(get('x-user-ip', headers));
+    if (data.grant_type !== GrantType.refresh_token) {
+      const model = AuthModel.build(data).check();
+      await model.verifyCaptcha(get('x-user-ip', headers));
+    }
 
     if (data.grant_type !== GrantType.client_credential) {
       data.client_secret = CLIENT_SECRET;
