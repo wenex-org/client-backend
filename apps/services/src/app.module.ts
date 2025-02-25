@@ -15,14 +15,13 @@ import { PublicModule } from './modules/public';
 @Module({
   imports: [
     PrometheusModule.register(),
-
-    BackupModule.forRoot(),
-    SdkModule.forRoot(PLATFORM_CONFIG()),
-
     RedisModule.forRoot(REDIS_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
     MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
     HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
+
+    BackupModule.forRoot(),
+    SdkModule.forRoot(PLATFORM_CONFIG()),
 
     ...[AuthModule, PublicModule, TouchModule],
   ],
