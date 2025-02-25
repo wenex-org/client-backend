@@ -1,4 +1,4 @@
-import { ConfirmationDto, OtpDto, RegisterDto, RepassDto } from '@app/common/dto/auth';
+import { ConfirmationDto, OAuthDto, OtpDto, RegisterDto, RepassDto } from '@app/common/dto/auth';
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { LoggerInterceptor } from '@app/common/core/interceptors';
@@ -28,6 +28,11 @@ export class AuthController {
   @MessagePattern('before.post.auth.token')
   token(@Payload('headers') headers: Headers, @Payload('data') data: AuthenticationRequest): Observable<SyncData> {
     return from(this.service.token(data, headers)).pipe(mapTo('body'));
+  }
+
+  @MessagePattern('before.post.auth.oauth')
+  oauth(@Payload('headers') headers: Headers, @Payload('data') data: OAuthDto): Observable<SyncData> {
+    return from(this.service.oauth(data, headers)).pipe(mapTo('end'));
   }
 
   @MessagePattern('before.post.auth.repass')
