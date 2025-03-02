@@ -1,4 +1,3 @@
-# App Image
 FROM node:22-alpine AS build
 
 WORKDIR /app
@@ -7,10 +6,9 @@ COPY . .
 
 RUN apk update && apk add bash
 
-RUN npm install -g pnpm && \
+RUN npm install -g pnpm@10.5.2 && \
   pnpm install --frozen-lockfile
 
-# Service Image
 FROM build
 
 ARG SERVICE_NAME
