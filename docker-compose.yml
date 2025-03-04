@@ -1,6 +1,10 @@
 x-common: &common
   env_file:
     - .env
+  environment:
+    KAFKA_HOST: kafka
+    REDIS_HOST: redis
+    MINIO_HOST: minio
   networks:
     - localnet
 
@@ -11,10 +15,7 @@ services:
         SERVICE_NAME: gateway
       context: .
     ports:
-      - 3010:3010 # Rest
-    environment:
-      NODE_ENV: prod
-      SENTRY_DSN: # Sentry
+      - 6010:6010 # Rest
     <<: *common
 
 networks:
