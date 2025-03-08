@@ -26,7 +26,7 @@ export class ProxyService implements OnModuleInit {
     return this.client.connect();
   }
 
-  async afterSync<T extends object = object>(res: Response, data: AxiosResponse<T>): Promise<AxiosResponse<T> | undefined> {
+  async afterSync(res: Response, data: AxiosResponse): Promise<AxiosResponse | undefined> {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'after');
 
@@ -107,12 +107,12 @@ export class ProxyService implements OnModuleInit {
           headers: getHeaders(this.req),
           baseURL: process.env.PLATFORM_URL,
         });
-        return this.afterSync(res, result);
+        return this.afterSync(res, result as any);
       }
     } else res.json(before.end);
   }
 
-  private mergeResponse<T extends object = object>(data: AxiosResponse<T>, syncData: SyncData): AxiosResponse<T> {
+  private mergeResponse(data: AxiosResponse, syncData: SyncData): AxiosResponse {
     const merge = (key: keyof Pick<SyncData, 'body' | 'query'>, type: SyncType) => {
       if (syncData[key]?.data) {
         if (type === 'assign') Object.assign(data[key === 'body' ? 'data' : 'headers'], syncData[key].data);
