@@ -26,6 +26,34 @@ export class ProxyService implements OnModuleInit {
     return this.client.connect();
   }
 
+  async afterSync<T extends object = object>(res: Response, data: AxiosResponse<T>): Promise<AxiosResponse<T> | undefined> {
+    try {
+      const { params, pattern } = getRequestInfo(this.req, 'after');
+
+      const result = await lastValueFrom<SyncData>(
+        this.client.send(pattern, {
+          params,
+          data: data.data,
+          query: this.req.query,
+          method: this.req.method,
+          url: this.req.originalUrl,
+          headers: getHeaders(this.req),
+        } as ProxyData),
+      );
+
+      return this.mergeResponse(data, result);
+    } catch (err) {
+      if (typeof err.message === 'string') {
+        this.log.extend(this.beforeSync.name)('exception occurred with error message %s', err.message);
+        if (err.message.startsWith('Empty response. There are no subscribers listening to that message')) return;
+      }
+
+      this.log.extend(this.beforeSync.name)('exception occurred with error %o', err);
+      res.status(toJSON(err.message ?? '{}').status ?? HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(toString(err.message ?? err), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async beforeSync(res: Response): Promise<SyncData> {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'before');
@@ -58,16 +86,44 @@ export class ProxyService implements OnModuleInit {
     const before = await this.beforeSync(res);
 
     if (!before?.end) {
-      return await this.http.axiosRef.request({
-        responseType: 'stream',
-        data: this.req.body,
-        url: getPath(this.req),
-        params: this.req.query,
-        method: this.req.method,
-        headers: getHeaders(this.req),
-        baseURL: process.env.PLATFORM_URL,
-      });
+      const path = getPath(this.req);
+      if (/(cursor|upload|download)/.test(path)) {
+        return this.http.axiosRef.request({
+          responseType: 'stream',
+          url: path,
+          data: this.req.body,
+          params: this.req.query,
+          method: this.req.method,
+          headers: getHeaders(this.req),
+          baseURL: process.env.PLATFORM_URL,
+        });
+      } else {
+        const result = await this.http.axiosRef.request({
+          responseType: 'json',
+          url: path,
+          data: this.req.body,
+          params: this.req.query,
+          method: this.req.method,
+          headers: getHeaders(this.req),
+          baseURL: process.env.PLATFORM_URL,
+        });
+        return this.afterSync(res, result);
+      }
     } else res.json(before.end);
+  }
+
+  private mergeResponse<T extends object = object>(data: AxiosResponse<T>, syncData: SyncData): AxiosResponse<T> {
+    const merge = (key: keyof Pick<SyncData, 'body' | 'query'>, type: SyncType) => {
+      if (syncData[key]?.data) {
+        if (type === 'assign') Object.assign(data[key === 'body' ? 'data' : 'headers'], syncData[key].data);
+        else if (type === 'replace') data[key === 'body' ? 'data' : 'headers'] = syncData[key].data;
+      }
+    };
+
+    if (syncData?.body) merge('body', syncData.body.type);
+    if (syncData?.query) merge('query', syncData.query.type);
+
+    return data;
   }
 
   private mergeRequest(syncData: SyncData): SyncData {
