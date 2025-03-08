@@ -41,7 +41,7 @@ export class AuthService {
   ) {}
 
   async otp(data: OtpRequest, headers?: Headers): Promise<SyncEnd<Result>> {
-    const model = AuthModel.build(data).check(headers);
+    const model = AuthModel.build(data).check();
     await model.verifyCaptcha(get('x-user-ip', headers));
 
     const { users } = this.sdkService.client.identity;

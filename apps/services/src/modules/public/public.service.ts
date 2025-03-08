@@ -1,7 +1,7 @@
+import { assertion, clientConfig } from '@app/common/core/utils';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { SyncEnd } from '@app/common/core/interfaces';
-import { assertion } from '@app/common/core/utils';
 import { SdkService } from '@app/module/sdk';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class PublicService {
       params: {
         projection: 'id cid url site type name logo status slogan version created_at',
       },
-      headers,
+      ...clientConfig(headers),
     });
     const client = (
       await domain.clients.find(
@@ -23,7 +23,7 @@ export class PublicService {
           params: {
             projection: 'id url plan site logo name state status slogan created_at domains.name domains.status',
           },
-          headers,
+          ...clientConfig(headers),
         },
       )
     )?.pop();
