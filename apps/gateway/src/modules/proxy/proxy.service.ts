@@ -45,7 +45,7 @@ export class ProxyService implements OnModuleInit {
     } catch (err) {
       if (typeof err.message === 'string') {
         this.log.extend(this.beforeSync.name)('exception occurred with error message %s', err.message);
-        if (err.message.startsWith('Empty response. There are no subscribers listening to that message')) return;
+        if (err.message.startsWith('Empty response. There are no subscribers listening to that message')) return data;
       }
 
       this.log.extend(this.beforeSync.name)('exception occurred with error %o', err);
