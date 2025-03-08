@@ -19,7 +19,7 @@ export class ProxyController {
 
   @All('*')
   async all(@Req() req: Request, @Res() res: Response) {
-    const { data, status, headers } = (await this.proxyService.all(res)) ?? {};
+    const { data, status, headers, config } = (await this.proxyService.all(res)) ?? {};
 
     if (data || status || headers) {
       if (headers?.['etag'] && req.header('if-none-match') === headers['etag']) {
@@ -27,7 +27,8 @@ export class ProxyController {
       } else {
         res.status(status ?? HttpStatus.INTERNAL_SERVER_ERROR);
         setHeaders(res, headers as AxiosResponseHeaders);
-        if (data) data.pipe(res);
+        if (data && config?.responseType === 'stream') data.pipe(res);
+        else if (data && config?.responseType === 'json') res.send(data);
       }
     } else res.end();
   }

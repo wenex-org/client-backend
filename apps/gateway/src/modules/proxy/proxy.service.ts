@@ -87,6 +87,7 @@ export class ProxyService implements OnModuleInit {
 
     if (!before?.end) {
       const path = getPath(this.req);
+      this.log.extend(this.all.name)('path %s', path);
       if (/(cursor|upload|download)/.test(path)) {
         return this.http.axiosRef.request({
           responseType: 'stream',
