@@ -6,18 +6,9 @@
 
 Clone the necessary repositories by running:
 
+### 2. Start Docker Containers
 ```sh
-npm run git:clone
-```
-
-### 2. Start Services
-
-Run the following commands to start the backend services in development mode:
-
-```sh
-npm run start:dev gateway
-npm run start:dev services
-npm run start:dev worker
+docker-compose -f docker/docker-compose.yml up -d  
 ```
 
 ### 3. Initialize Platform
@@ -27,6 +18,17 @@ Seed and raise the platform with:
 ```sh
 npm run platform:seed && npm run platform:raise
 ```
+
+### 4. Start Services
+
+Run the following commands to start the backend services in development mode:
+
+```sh
+npm run start:dev gateway
+npm run start:dev services
+npm run start:dev worker
+```
+
 
 ## Notes
 
