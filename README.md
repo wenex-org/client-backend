@@ -1,12 +1,16 @@
-# Client Backend
+# How To Run Wenex Client Backend
 
 ## Installation
 
 ### 1. Clone the Repository
 
 Clone the necessary repositories by running:
+```sh
+npm run git:clone
+```
 
 ### 2. Start Docker Containers
+Create and run docker containers with following command:
 ```sh
 docker-compose -f docker/docker-compose.yml up -d  
 ```
