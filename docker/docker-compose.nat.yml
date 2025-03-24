@@ -1,6 +1,6 @@
 services:
   nats:
-    image: nats:2.10-alpine
+    image: nats:2.11-alpine
     container_name: nats
     ports:
       - "4222:4222"
@@ -10,7 +10,7 @@ services:
       - localnet
 
   nats-1:
-    image: nats:2.10-alpine
+    image: nats:2.11-alpine
     container_name: nats1
     command: "--server_name nats1 --cluster_name NATS --cluster nats://0.0.0.0:6222 --routes=nats://nats:6222 -js"
     depends_on:
@@ -19,7 +19,7 @@ services:
       - localnet
 
   nats-2:
-    image: nats:2.10-alpine
+    image: nats:2.11-alpine
     container_name: nats2
     command: "--server_name nats2 --cluster_name NATS --cluster nats://0.0.0.0:6222 --routes=nats://nats:6222 -js"
     depends_on:
