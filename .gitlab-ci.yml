@@ -1,0 +1,79 @@
+stages:
+  - build
+  - test
+  - sonar
+  - publish
+
+variables:
+  NODE_IMAGE: "wenex/node:22-base" # Use Node.js 22 for build and test
+  KANIKO_IMAGE: "gcr.io/kaniko-project/executor:v1.23.2-debug" # Kaniko debug image for publishing (includes sh)
+
+before_script:
+  - echo "Starting GitLab CI/CD pipeline..."
+
+build:
+  stage: build
+  image: $NODE_IMAGE
+  before_script:
+    - echo "Starting build..."
+  script:
+    - npm run git:clone
+    - npm install -g pnpm@10.5.2
+    - pnpm install --frozen-lockfile
+    - npm run script:build
+  artifacts:
+    paths:
+      - libs
+      - dist
+      - node_modules
+    when: on_success
+    expire_in: 1 hrs 30 min
+
+test:
+  stage: test
+  image: $NODE_IMAGE
+  needs:
+    - job: build
+      artifacts: true
+  before_script:
+    - npm run script:setup
+    - echo "Starting tests..."
+  script:
+    - npm run test
+
+sonar:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:11
+  needs:
+    - job: build
+      artifacts: true
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
+    GIT_DEPTH: "0" # Tells git to fetch all the branches of the project, required by the analysis task
+  before_script:
+    - echo "Starting SonarQube analysis..."
+  allow_failure: true
+  cache:
+    policy: pull-push
+    key: "sonar-cache-$CI_COMMIT_REF_SLUG"
+    paths:
+      - "${SONAR_USER_HOME}/cache"
+      - sonar-scanner/
+  script:
+    - sonar-scanner -Dsonar.sources=. -Dsonar.host.url="${SONAR_HOST_URL}"
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+
+publish:
+  stage: publish
+  image: $KANIKO_IMAGE
+  needs: ["test"]
+  before_script:
+    - mkdir -p /kaniko/.docker
+  variables:
+    KANIKO_ARGS: "--registry-mirror=docker.arvancloud.ir"
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $KANIKO_ARGS
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/'

@@ -41,6 +41,35 @@ services:
       <<: *env
     <<: *common
 
+  # ---------
+  # Commands
+  # ---------
+
+  platform-clean:
+    profiles:
+      - platform-clean
+    entrypoint: ['bash', '-c', 'npm run platform:clean']
+    environment:
+      <<: *env
+    <<: *common
+
+  platform-seed:
+    profiles:
+      - platform-seed
+    entrypoint: ['bash', '-c', 'npm run platform:seed']
+    environment:
+      <<: *env
+    <<: *common
+
+  platform-raise:
+    profiles:
+      - platform-raise
+    entrypoint: ['bash', '-c', 'npm run platform:raise']
+    environment:
+      <<: *env
+    <<: *common
+
 networks:
   localnet:
     driver: bridge
+    name: wenex-network

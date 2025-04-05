@@ -12,3 +12,4 @@ services:
 networks:
   localnet:
     driver: bridge
+    name: wenex-network
