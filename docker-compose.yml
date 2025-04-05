@@ -1,21 +1,44 @@
+# docker build -t wenex/client:latest .
 x-common: &common
+  image: wenex/client:latest
   env_file:
     - .env
-  environment:
-    KAFKA_HOST: kafka
-    REDIS_HOST: redis
-    MINIO_HOST: minio
   networks:
     - localnet
 
+x-env: &env
+  REDIS_HOST: redis
+  NATS_SERVERS: nats://nats:4222
+
 services:
   gateway:
-    build:
-      args:
-        SERVICE_NAME: gateway
-      context: .
+    profiles: [gateway, client]
+    container_name: client-gateway
     ports:
       - 6010:6010 # Rest
+    environment:
+      SERVICE_NAME: gateway
+      <<: *env
+    <<: *common
+
+  services:
+    profiles: [services, client]
+    container_name: client-services
+    ports:
+      - 7010:7010 # Rest
+    environment:
+      SERVICE_NAME: services
+      <<: *env
+    <<: *common
+
+  workers:
+    profiles: [workers, client]
+    container_name: client-workers
+    ports:
+      - 8010:8010 # Rest
+    environment:
+      SERVICE_NAME: workers
+      <<: *env
     <<: *common
 
 networks:

@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 require('dotenv').config();
 
+if (process.env.NODE_ENV?.toLowerCase().startsWith('prod')) {
+  require('tracing').init(['http']);
+}
+
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { NATS_CONFIG, NODE_ENV } from '@app/common/core/envs';
 import { Machine } from '@wenex/sdk/common/core/helpers';
 import { prototyping } from '@app/common/core/utils';
+import { NATS_CONFIG } from '@app/common/core/envs';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common/core';
-import { initTracing } from 'tracing';
 
 prototyping('SERVICES');
 import { AppModule } from './app.module';
 
 const { SERVICES } = APP;
 async function bootstrap() {
-  if (NODE_ENV().IS_PROD) initTracing(['http']);
-
   const app = await NestFactory.create(AppModule, { cors: true });
 
   app.connectMicroservice<MicroserviceOptions>({
