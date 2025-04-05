@@ -17,6 +17,7 @@
     "remoteip",
     "setex",
     "smss",
+    "sonarqube",
     "sonarsource",
     "tseslint",
     "Vahid",
