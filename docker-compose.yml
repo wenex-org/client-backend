@@ -45,6 +45,11 @@ services:
   # Commands
   # ---------
 
+  serve-static:
+    profiles:
+      - serve-static
+    entrypoint: ['bash', '-c', 'npm run serve:static']
+
   platform-clean:
     profiles:
       - platform-clean
