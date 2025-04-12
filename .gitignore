@@ -1,3 +1,5 @@
+.env
+
 # compiled output
 /docs
 /dist
