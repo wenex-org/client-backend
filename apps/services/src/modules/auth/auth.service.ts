@@ -11,19 +11,20 @@ import {
 import { AuthModel, OAuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
+import { get, logger, toJSON } from '@wenex/sdk/common/core/utils';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
 import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
-import { get, logger } from '@wenex/sdk/common/core/utils';
+import { assertion, rpcCatch } from '@app/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
 import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
 import { RepassType } from '@app/common/enums/auth';
 import { BackupService } from '@app/module/backup';
-import { rpcCatch } from '@app/common/core/utils';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
 import { Injectable } from '@nestjs/common';
+import { isJSON } from 'class-validator';
 
 import { TouchService } from '../touch';
 
@@ -61,7 +62,16 @@ export class AuthService {
     }
 
     if (data.grant_type !== GrantType.client_credential) {
-      data.client_secret = CLIENT_SECRET;
+      if (isJSON(process.env.COWORKERS)) {
+        const coworkers = toJSON<string[]>(process.env.COWORKERS);
+        const cond = (c: any) => typeof c === 'string' && /^([a-z]+:\w+;)+(\w+)$/.test(c);
+        assertion(Array.isArray(coworkers) && coworkers.every(cond), 'invalid COWORKERS env');
+
+        const patterns = [RegExp(`:${data.client_id};`)];
+        if (data.app_id) patterns.push(RegExp(`:${data.app_id};`));
+        const client = coworkers.find((c) => patterns.some((p) => p.test(c)));
+        data.client_secret = client?.split(';').pop() || CLIENT_SECRET;
+      } else data.client_secret = CLIENT_SECRET;
     }
 
     return { data, type: 'assign' };
