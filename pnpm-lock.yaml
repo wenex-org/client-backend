@@ -74,6 +74,9 @@ importers:
       abacl:
         specifier: ^8.0.7
         version: 8.0.7
+      altcha-lib:
+        specifier: ^1.2.0
+        version: 1.2.0
       axios:
         specifier: ^1.7.9
         version: 1.7.9(debug@4.4.0)
@@ -2414,6 +2417,9 @@ packages:
 
   ajv@8.17.1:
     resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
+
+  altcha-lib@1.2.0:
+    resolution: {integrity: sha512-S5WF8QLNRaM1hvK24XPhOLfu9is2EBCvH7+nv50sM5CaIdUCqQCd0WV/qm/ZZFGTdSoKLuDp+IapZxBLvC+SNg==}
 
   ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
@@ -8863,6 +8869,8 @@ snapshots:
       fast-uri: 3.0.3
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
+
+  altcha-lib@1.2.0: {}
 
   ansi-align@3.0.1:
     dependencies:

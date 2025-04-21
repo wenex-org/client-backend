@@ -69,6 +69,7 @@
     "@wenex/sdk": "^1.0.42",
     "@willsoto/nestjs-prometheus": "^6.0.2",
     "abacl": "^8.0.7",
+    "altcha-lib": "^1.2.0",
     "axios": "^1.7.9",
     "base-x": "^5.0.0",
     "class-transformer": "^0.5.1",
