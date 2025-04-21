@@ -64,7 +64,7 @@ export class AuthService {
     if (data.grant_type !== GrantType.client_credential) {
       if (isJSON(process.env.COWORKERS)) {
         const coworkers = toJSON<string[]>(process.env.COWORKERS);
-        const cond = (c: any) => typeof c === 'string' && /^([a-z]+:\w+;)+(\w+)$/.test(c);
+        const cond = (c: any) => typeof c === 'string' && /^([a-z]+:\w+,)+(\w+)$/.test(c);
         assertion(Array.isArray(coworkers) && coworkers.every(cond), 'invalid COWORKERS env');
 
         const patterns = [RegExp(`:${data.client_id};`)];
