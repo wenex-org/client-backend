@@ -26,8 +26,8 @@ export class AuthController {
   }
 
   @MessagePattern('before.post.auth.token')
-  token(@Payload('headers') headers: Headers, @Payload('data') data: AuthenticationRequest): Observable<SyncData> {
-    return from(this.service.token(data, headers)).pipe(mapTo('body'));
+  token(@Payload('data') data: AuthenticationRequest & { captcha: string }): Observable<SyncData> {
+    return from(this.service.token(data)).pipe(mapTo('body'));
   }
 
   @MessagePattern('before.post.auth.oauth')
