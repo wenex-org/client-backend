@@ -11,9 +11,9 @@ import {
 import { AuthModel, OAuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
-import { get, logger, toJSON } from '@wenex/sdk/common/core/utils';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
 import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
+import { logger, toJSON } from '@wenex/sdk/common/core/utils';
 import { assertion, rpcCatch } from '@app/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
@@ -21,6 +21,7 @@ import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
 import { RepassType } from '@app/common/enums/auth';
 import { BackupService } from '@app/module/backup';
+import { AltchaService } from '@app/module/altcha';
 import { RedisService } from '@app/module/redis';
 import { SdkService } from '@app/module/sdk';
 import { Injectable } from '@nestjs/common';
@@ -39,11 +40,12 @@ export class AuthService {
     private readonly sdkService: SdkService,
     private readonly redisService: RedisService,
     private readonly touchService: TouchService,
+    private readonly altchaService: AltchaService,
   ) {}
 
   async otp(data: OtpRequest, headers?: Headers): Promise<SyncEnd<Result>> {
     const model = AuthModel.build(data).check();
-    await model.verifyCaptcha(get('x-user-ip', headers));
+    await this.altchaService.verify(data.captcha);
 
     const { users } = this.sdkService.client.identity;
     const options = await model.userSecret(this.db, users, headers);
@@ -53,12 +55,11 @@ export class AuthService {
     return model.otp(services, options, headers);
   }
 
-  async token(data: AuthenticationRequest, headers?: Headers): Promise<SyncBody<AuthenticationRequest>> {
+  async token(data: AuthenticationRequest & { captcha: string }): Promise<SyncBody<AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;
 
     if (data.grant_type !== GrantType.refresh_token) {
-      const model = AuthModel.build(data).check();
-      await model.verifyCaptcha(get('x-user-ip', headers));
+      await this.altchaService.verify(data.captcha);
     }
 
     if (data.grant_type !== GrantType.client_credential) {
@@ -79,13 +80,14 @@ export class AuthService {
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd<OAuthResponse>> {
     const model = OAuthModel.build(data).check();
+    await this.altchaService.verify(data.captcha);
     const { users } = this.sdkService.client.identity;
-    return model.sso(users, headers);
+    return model.oauth(users, headers);
   }
 
   async repass(data: RepassRequest, headers?: Headers): Promise<SyncEnd<RepassResponse>> {
     const model = RepassModel.build(data).check(headers);
-    await model.verifyCaptcha();
+    await this.altchaService.verify(data.captcha);
 
     const { users } = this.sdkService.client.identity;
     const result = await model.repass(users, this.redisService);
@@ -101,7 +103,7 @@ export class AuthService {
 
   async register(data: RegisterRequest, headers?: Headers): Promise<SyncEnd<RegisterResponse>> {
     const model = RegisterModel.build(data).check(headers);
-    await model.verifyCaptcha();
+    await this.altchaService.verify(data.captcha);
 
     const { users } = this.sdkService.client.identity;
     const result = await model.register(users, this.redisService);
@@ -114,6 +116,8 @@ export class AuthService {
   }
 
   async confirmation(data: ConfirmRegister, headers?: Headers): Promise<SyncEnd<Result>> {
+    await this.altchaService.verify(data.captcha);
+
     const { users } = this.sdkService.client.identity;
     const { email } = await RegisterModel.confirmation(data, { users, redis: this.redisService }, headers);
 
