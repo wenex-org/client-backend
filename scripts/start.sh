@@ -9,5 +9,5 @@ elif [ $SERVICE_NAME == "services" ]; then
 elif [ $SERVICE_NAME == "workers" ]; then
   node --stack-size=4096 dist/apps/workers/main.js
 else
-    echo -e "Service or Worker not found...!\n" && exit 1
+  echo -e "Service or Worker not found...!\n" && exit 1
 fi
