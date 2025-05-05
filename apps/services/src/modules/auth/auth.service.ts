@@ -68,10 +68,10 @@ export class AuthService {
         const cond = (c: any) => typeof c === 'string' && /^([a-z]+:\w+,)+(\w+)$/.test(c);
         assertion(Array.isArray(coworkers) && coworkers.every(cond), 'invalid COWORKERS env');
 
-        const patterns = [RegExp(`:${data.client_id};`)];
-        if (data.app_id) patterns.push(RegExp(`:${data.app_id};`));
+        const patterns = [RegExp(`:${data.client_id},`)];
+        if (data.app_id) patterns.push(RegExp(`:${data.app_id},`));
         const client = coworkers.find((c) => patterns.some((p) => p.test(c)));
-        data.client_secret = client?.split(';').pop() || CLIENT_SECRET;
+        data.client_secret = client?.split(',').pop() || CLIENT_SECRET;
       } else data.client_secret = CLIENT_SECRET;
     }
 
