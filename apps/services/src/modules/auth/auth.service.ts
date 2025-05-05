@@ -10,10 +10,10 @@ import {
 } from '@app/common/interfaces/auth';
 import { AuthModel, OAuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
+import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
-import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
-import { logger, toJSON } from '@wenex/sdk/common/core/utils';
+import { SyncEnd, SyncObject } from '@app/common/core/interfaces';
 import { assertion, rpcCatch } from '@app/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
@@ -55,8 +55,9 @@ export class AuthService {
     return model.otp(services, options, headers);
   }
 
-  async token(data: AuthenticationRequest & { captcha: string }): Promise<SyncBody<AuthenticationRequest>> {
+  async token(data: AuthenticationRequest & { captcha: string }): Promise<SyncObject<'body' | 'headers', AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;
+    const result: SyncObject<'body' | 'headers', AuthenticationRequest> = { body: { data, type: 'assign' } };
 
     if (data.grant_type !== GrantType.refresh_token) {
       await this.altchaService.verify(data.captcha);
@@ -65,17 +66,19 @@ export class AuthService {
     if (data.grant_type !== GrantType.client_credential) {
       if (isJSON(process.env.COWORKERS)) {
         const coworkers = toJSON<string[]>(process.env.COWORKERS);
-        const cond = (c: any) => typeof c === 'string' && /^([a-z]+:\w+,)+(\w+)$/.test(c);
+        const cond = (c: any) => /^([a-z]+:\w+,)+(\w+[@]\w+[.]\w+)$/.test(toString(c));
         assertion(Array.isArray(coworkers) && coworkers.every(cond), 'invalid COWORKERS env');
 
         const patterns = [RegExp(`:${data.client_id},`)];
         if (data.app_id) patterns.push(RegExp(`:${data.app_id},`));
         const client = coworkers.find((c) => patterns.some((p) => p.test(c)));
-        data.client_secret = client?.split(',').pop() || CLIENT_SECRET;
+        const [secret, apiKey] = client?.split(',').pop()?.split('@') ?? [];
+        data.client_secret = secret || CLIENT_SECRET;
+        result.headers = { data: { 'x-api-key': apiKey }, type: 'assign' };
       } else data.client_secret = CLIENT_SECRET;
     }
 
-    return { data, type: 'assign' };
+    return result;
   }
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd<OAuthResponse>> {

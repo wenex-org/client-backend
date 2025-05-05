@@ -114,7 +114,7 @@ export class ProxyService implements OnModuleInit {
   }
 
   private mergeResponse(data: AxiosResponse, syncData: SyncData): AxiosResponse {
-    const merge = (key: keyof Pick<SyncData, 'body' | 'query'>, type: SyncType) => {
+    const merge = (key: keyof Pick<SyncData, 'body' | 'query' | 'headers'>, type: SyncType) => {
       if (syncData[key]?.data) {
         if (type === 'assign') Object.assign(data[key === 'body' ? 'data' : 'headers'], syncData[key].data);
         else if (type === 'replace') data[key === 'body' ? 'data' : 'headers'] = syncData[key].data;
@@ -123,12 +123,13 @@ export class ProxyService implements OnModuleInit {
 
     if (syncData?.body) merge('body', syncData.body.type);
     if (syncData?.query) merge('query', syncData.query.type);
+    if (syncData?.headers) merge('headers', syncData.headers.type);
 
     return data;
   }
 
   private mergeRequest(syncData: SyncData): SyncData {
-    const merge = (key: keyof Pick<SyncData, 'body' | 'query'>, type: SyncType) => {
+    const merge = (key: keyof Pick<SyncData, 'body' | 'query' | 'headers'>, type: SyncType) => {
       if (syncData[key]?.data) {
         if (type === 'assign') Object.assign(this.req[key], syncData[key].data);
         else if (type === 'replace') this.req[key] = syncData[key].data;
@@ -137,6 +138,7 @@ export class ProxyService implements OnModuleInit {
 
     if (syncData?.body) merge('body', syncData.body.type);
     if (syncData?.query) merge('query', syncData.query.type);
+    if (syncData?.headers) merge('headers', syncData.headers.type);
 
     return syncData;
   }
