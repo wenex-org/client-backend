@@ -16,7 +16,7 @@ import { ProxyController } from './proxy.controller';
         transport: Transport.NATS,
       },
     ]),
-    HttpModule.register(PLATFORM_CONFIG(false)),
+    HttpModule.register(PLATFORM_CONFIG()),
   ],
   controllers: [ProxyController],
   providers: [ProxyService],
