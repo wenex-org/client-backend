@@ -13,7 +13,7 @@ import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
-import { SyncEnd, SyncObject } from '@app/common/core/interfaces';
+import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
 import { assertion, rpcCatch } from '@app/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
@@ -55,9 +55,8 @@ export class AuthService {
     return model.otp(services, options, headers);
   }
 
-  async token(data: AuthenticationRequest & { captcha: string }): Promise<SyncObject<'body' | 'headers', AuthenticationRequest>> {
+  async token(data: AuthenticationRequest & { captcha: string }): Promise<SyncBody<AuthenticationRequest>> {
     data.strict = STRICT_TOKEN;
-    const result: SyncObject<'body' | 'headers', AuthenticationRequest> = { body: { data, type: 'assign' } };
 
     if (data.grant_type !== GrantType.refresh_token) {
       await this.altchaService.verify(data.captcha);
@@ -72,13 +71,13 @@ export class AuthService {
         const patterns = [RegExp(`:${data.client_id},`)];
         if (data.app_id) patterns.push(RegExp(`:${data.app_id},`));
         const client = coworkers.find((c) => patterns.some((p) => p.test(c)));
-        const [secret, apiKey] = client?.split(',').pop()?.split('@') ?? [];
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [secret, _] = client?.split(',').pop()?.split('@') ?? [];
         data.client_secret = secret || CLIENT_SECRET;
-        result.headers = { data: { 'x-api-key': apiKey }, type: 'assign' };
       } else data.client_secret = CLIENT_SECRET;
     }
 
-    return result;
+    return { data, type: 'assign' };
   }
 
   async oauth(data: OAuthRequest, headers?: Headers): Promise<SyncEnd<OAuthResponse>> {

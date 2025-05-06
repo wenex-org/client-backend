@@ -1,13 +1,13 @@
 import { ConfirmationDto, OAuthDto, OtpDto, RegisterDto, RepassDto } from '@app/common/dto/auth';
 import { Controller, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
-import { SyncData, SyncObject } from '@app/common/core/interfaces';
 import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AllExceptionsFilter } from '@app/common/core/filters';
 import { Headers } from '@wenex/sdk/common/core/interfaces';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { ValidationPipe } from '@app/common/core/pipes';
+import { SyncData } from '@app/common/core/interfaces';
 import { mapTo } from '@app/common/core/utils';
 import { from, Observable } from 'rxjs';
 
@@ -26,8 +26,8 @@ export class AuthController {
   }
 
   @MessagePattern('before.post.auth.token')
-  token(@Payload('data') data: AuthenticationRequest & { captcha: string }): Observable<SyncObject<'body' | 'headers'>> {
-    return from(this.service.token(data));
+  token(@Payload('data') data: AuthenticationRequest & { captcha: string }): Observable<SyncData> {
+    return from(this.service.token(data)).pipe(mapTo('body'));
   }
 
   @MessagePattern('before.post.auth.oauth')
