@@ -1,11 +1,13 @@
 import { All, Controller, HttpStatus, Req, Res, UseFilters, UseInterceptors } from '@nestjs/common';
 import { LoggerInterceptor } from '@app/common/core/interceptors';
 import { AllExceptionsFilter } from '@app/common/core/filters';
+import { assertion, setHeaders } from '@app/common/core/utils';
 import { SentryInterceptor } from '@ntegral/nestjs-sentry';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { setHeaders } from '@app/common/core/utils';
+import { isAlive } from '@wenex/sdk/common/core/utils';
 import { AxiosResponseHeaders } from 'axios';
 import { Request, Response } from 'express';
+import { APP } from '@app/common/core';
 
 import { ProxyService } from './proxy.service';
 
@@ -19,8 +21,8 @@ export class ProxyController {
 
   @All('*')
   async all(@Req() req: Request, @Res() res: Response) {
+    assertion(await isAlive(APP.SERVICES.HOST), 'Service is not alive', HttpStatus.SERVICE_UNAVAILABLE);
     const { data, status, headers, config } = (await this.proxyService.all(res)) ?? {};
-
     if (data || status || headers) {
       if (headers?.['etag'] && req.header('if-none-match') === headers['etag']) {
         res.status(HttpStatus.NOT_MODIFIED).end();
