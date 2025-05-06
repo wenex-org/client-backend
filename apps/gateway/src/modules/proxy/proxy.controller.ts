@@ -21,7 +21,9 @@ export class ProxyController {
 
   @All('*')
   async all(@Req() req: Request, @Res() res: Response) {
-    assertion(await isAlive(APP.SERVICES.HOST), 'Service is not alive', HttpStatus.SERVICE_UNAVAILABLE);
+    const serviceUrl = `http://${APP.SERVICES.HOST}:${APP.SERVICES.API_PORT}`;
+    assertion(await isAlive(serviceUrl), 'Service is not alive', HttpStatus.SERVICE_UNAVAILABLE);
+
     const { data, status, headers, config } = (await this.proxyService.all(res)) ?? {};
     if (data || status || headers) {
       if (headers?.['etag'] && req.header('if-none-match') === headers['etag']) {
