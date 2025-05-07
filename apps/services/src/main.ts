@@ -25,7 +25,7 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-  await app.listen(SERVICES.API_PORT);
+  await app.listen(SERVICES.API_PORT, '0.0.0.0');
 
   const url = await app.getUrl();
   console.log(`Prometheus is running on ${url}/metrics`);

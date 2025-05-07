@@ -23,7 +23,7 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  await app.listen(WORKERS.API_PORT);
+  await app.listen(WORKERS.API_PORT, '0.0.0.0');
 
   const url = await app.getUrl();
   console.log(`Swagger UI is running on: ${url}/api`);
