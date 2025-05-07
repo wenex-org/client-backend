@@ -10,6 +10,7 @@ import {
 } from '@app/common/interfaces/auth';
 import { AuthModel, OAuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
+import { COWORKERS_REGEX, MAIL_FROM } from '@app/common/core/constants';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
@@ -17,7 +18,6 @@ import { SyncBody, SyncEnd } from '@app/common/core/interfaces';
 import { assertion, rpcCatch } from '@app/common/core/utils';
 import { GrantType } from '@wenex/sdk/common/core/enums';
 import { TemplateType } from '@app/common/enums/touch';
-import { MAIL_FROM } from '@app/common/core/constants';
 import { CLIENT_CONFIG } from '@app/common/core/envs';
 import { RepassType } from '@app/common/enums/auth';
 import { BackupService } from '@app/module/backup';
@@ -65,7 +65,7 @@ export class AuthService {
     if (data.grant_type !== GrantType.client_credential) {
       if (isJSON(process.env.COWORKERS)) {
         const coworkers = toJSON<string[]>(process.env.COWORKERS);
-        const cond = (c: any) => /^([a-z]+:\w+,)+(\w+[@]\w+[.]\w+)$/.test(toString(c));
+        const cond = (c: any) => COWORKERS_REGEX.test(toString(c));
         assertion(Array.isArray(coworkers) && coworkers.every(cond), 'invalid COWORKERS env');
 
         const patterns = [RegExp(`:${data.client_id},`)];
