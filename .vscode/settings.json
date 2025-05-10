@@ -28,5 +28,9 @@
     "willsoto",
     "zipkin"
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "sonarqube-w3x",
+    "projectKey": "wenex_client-backend_6db00f72-b7ba-4705-8b13-7ce8ccea24a5"
+  }
 }
