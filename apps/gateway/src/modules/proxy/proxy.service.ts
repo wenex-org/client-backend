@@ -3,11 +3,13 @@ import { getHeaders, getPath, getRequestInfo } from '@app/common/core/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/core/interfaces';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { ClientProxy } from '@nestjs/microservices';
+import formidable, { File } from 'formidable';
 import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
+import fs from 'fs/promises';
 
 import { PROXY_GATEWAY } from './proxy.const';
 
@@ -54,17 +56,17 @@ export class ProxyService implements OnModuleInit {
     }
   }
 
-  async beforeSync(res: Response): Promise<SyncData> {
+  async beforeSync(res: Response, files?: File[]): Promise<SyncData> {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'before');
 
       const result = await lastValueFrom<SyncData>(
         this.client.send(pattern, {
           params,
-          data: this.req.body,
           query: this.req.query,
           method: this.req.method,
           url: this.req.originalUrl,
+          data: files || this.req.body,
           headers: getHeaders(this.req),
         } as ProxyData),
       );
@@ -83,12 +85,44 @@ export class ProxyService implements OnModuleInit {
   }
 
   async all(res: Response): Promise<AxiosResponse | undefined> {
-    const before = await this.beforeSync(res);
+    const path = getPath(this.req);
+
+    let before: SyncData;
+    const formData = new FormData();
+    if (/upload/.test(path)) {
+      const form = formidable({ multiples: true });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, files] = await form.parse(this.req);
+      for (const file of files.file ?? []) {
+        const buffer = Buffer.from(await fs.readFile(file.filepath));
+
+        formData.append('file', new Blob([buffer]), file.originalFilename!);
+        await fs.unlink(file.filepath); // delete the file after reading
+        this.log.extend(this.all.name)('file %s processid', file.filepath);
+      }
+      before = await this.beforeSync(res, files.file);
+    } else before = await this.beforeSync(res);
 
     if (!before?.end) {
-      const path = getPath(this.req);
       this.log.extend(this.all.name)('path %s', path);
-      if (/(cursor|upload|download)/.test(path)) {
+      if (/upload/.test(path)) {
+        const result = await this.http.axiosRef.request({
+          responseType: 'json',
+          url: path,
+          data: formData,
+          params: this.req.query,
+          method: this.req.method,
+          headers: {
+            'x-user-ip': this.req.ip,
+            'x-api-key': process.env.API_KEY,
+            'Content-Type': 'multipart/form-data',
+            'x-user-agent': this.req.header('user-agent'),
+            Authorization: this.req.header('authorization'),
+          },
+          baseURL: process.env.PLATFORM_URL,
+        });
+        return this.afterSync(res, result as any);
+      } else if (/(cursor|download)/.test(path)) {
         return this.http.axiosRef.request({
           responseType: 'stream',
           url: path,
