@@ -95,7 +95,6 @@ export class ProxyService implements OnModuleInit {
       const [_, files] = await form.parse(this.req);
       for (const file of files.file ?? []) {
         const buffer = Buffer.from(await fs.readFile(file.filepath));
-
         formData.append('file', new Blob([buffer]), file.originalFilename!);
         await fs.unlink(file.filepath); // delete the file after reading
         this.log.extend(this.all.name)('file %s processid', file.filepath);
