@@ -1,14 +1,5 @@
 services:
   #######################
-  # CACHE
-  #######################
-
-  redis:
-    extends:
-      file: docker-compose.rds.yml
-      service: redis
-
-  #######################
   # BROKER
   #######################
 
@@ -26,30 +17,6 @@ services:
     extends:
       file: docker-compose.nat.yml
       service: nats-2
-
-  #######################
-  # DATABASE
-  #######################
-
-  mongodb-primary:
-    extends:
-      file: docker-compose.mg.yml
-      service: mongodb-primary
-
-  mongodb-secondary:
-    extends:
-      file: docker-compose.mg.yml
-      service: mongodb-secondary
-    depends_on:
-      - mongodb-primary
-
-  mongodb-arbiter:
-    extends:
-      file: docker-compose.mg.yml
-      service: mongodb-arbiter
-    depends_on:
-      - mongodb-primary
-      - mongodb-secondary
 
 networks:
   localnet:
