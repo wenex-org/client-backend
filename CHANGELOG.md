@@ -26,6 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/platform-sdk/compare/1.1.0...HEAD
-[1.1.0]: https://github.com/wenex-org/platform-sdk/compare/1.0.21...1.1.0
-[1.0.X]: https://github.com/wenex-org/platform-sdk/releases/tag/1.0.21
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/wenex-org/client-backend/compare/1.0.21...1.1.0
+[1.0.X]: https://github.com/wenex-org/client-backend/releases/tag/1.0.21
