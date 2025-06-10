@@ -90,7 +90,7 @@ export class ProxyService implements OnModuleInit {
     let before: SyncData;
     const formData = new FormData();
     if (/upload/.test(path)) {
-      const form = formidable({ multiples: true });
+      const form = formidable({ multiples: true, uploadDir: '.data', keepExtensions: false });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, files] = await form.parse(this.req);
       for (const file of files.file ?? []) {
