@@ -1,40 +1,88 @@
-# How To Run Wenex Client Backend
+# Quick Start
 
-## Installation
-
-### 1. Clone the Repository
-
-Clone the necessary repositories by running:
 ```sh
+git clone git@github.com:wenex-org/client-backend.git
+```
+
+```sh
+cd client-backend
+cp .env.example .env
+
+# Clone git submodules
 npm run git:clone
+npm run git checkout main
+
+# Install node dependencies
+pnpm install --frozen-lockfile
 ```
 
-### 2. Start Docker Containers
-Create and run docker containers with following command:
+**Next Step**:
+
+- [Add Remote (Optional)](#add-remote-optional)
+- [Start Essential Utilities](#start-essential-utilities)
+- [DB Seeding and Initialization](#db-seeding-and-initialization)
+- [Start Up and Running using Docker](#start-up-and-running-using-docker)
+- [Manually Start Up and Running Wenex](#manually-start-up-and-running-wenex)
+
+## Add Remote (Optional)
+
 ```sh
-docker-compose -f docker/docker-compose.yml up -d  
+npm run git:remote:add staging example.com
 ```
 
-### 3. Initialize Platform
+> Note: stage must be `staging` or `production`.
 
-Seed and raise the platform with:
+## Start Essential Utilities
 
 ```sh
-npm run platform:seed && npm run platform:raise
+docker-compose -f docker/docker-compose.yml up -d
+# The other `yml` files in `docker` directory are optional
 ```
 
-### 4. Start Services
+## DB Seeding and Initialization
 
-Run the following commands to start the backend services in development mode:
+- [Using Docker](#using-docker)
+- [Manual Seeding](#manual-seeding)
+
+### Using Docker
+
+> Note: run `docker build -t wenex/client:latest .` before using docker solution.
 
 ```sh
+docker-compose --profile platform-seed up
+docker-compose --profile platform-raise up
+# docker-compose --profile platform-clean up
+```
+
+### Manual Seeding
+
+```sh
+npm run platform:seed
+npm run platform:raise
+# npm run platform:clean
+```
+
+## Start Up and Running using Docker
+
+> Note: run `docker build -t wenex/client:latest .` before using docker solution.
+
+Start all services at once
+
+```sh
+docker-compose --profile client up -d
+```
+
+## Manually Start Up and Running Wenex
+
+Start each service you want using the following command
+
+```sh
+# Gateway
 npm run start:dev gateway
+
+# Services
 npm run start:dev services
-npm run start:dev worker
+
+# Workers
+npm run start:dev workers
 ```
-
-
-## Notes
-
-- Ensure all dependencies are installed before running the services.
-- Make sure required external services (e.g., databases, message queues) are running before starting the backend.

@@ -3,12 +3,7 @@ x-common: &common
   image: wenex/client:latest
   env_file:
     - .env
-  networks:
-    - localnet
-
-x-env: &env
-  REDIS_HOST: redis
-  NATS_SERVERS: nats://nats:4222
+  network_mode: host
 
 services:
   gateway:
@@ -18,7 +13,6 @@ services:
       - 6010:6010 # Rest
     environment:
       SERVICE_NAME: gateway
-      <<: *env
     <<: *common
 
   services:
@@ -28,7 +22,6 @@ services:
       - 7010:7010 # Rest
     environment:
       SERVICE_NAME: services
-      <<: *env
     <<: *common
 
   workers:
@@ -38,7 +31,6 @@ services:
       - 8010:8010 # Rest
     environment:
       SERVICE_NAME: workers
-      <<: *env
     <<: *common
 
   # ---------
@@ -54,27 +46,16 @@ services:
     profiles:
       - platform-clean
     entrypoint: ['bash', '-c', 'npm run platform:clean']
-    environment:
-      <<: *env
     <<: *common
 
   platform-seed:
     profiles:
       - platform-seed
     entrypoint: ['bash', '-c', 'npm run platform:seed']
-    environment:
-      <<: *env
     <<: *common
 
   platform-raise:
     profiles:
       - platform-raise
     entrypoint: ['bash', '-c', 'npm run platform:raise']
-    environment:
-      <<: *env
     <<: *common
-
-networks:
-  localnet:
-    driver: bridge
-    name: wenex-network
