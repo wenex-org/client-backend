@@ -22,7 +22,7 @@ pnpm install --frozen-lockfile
 - [Start Essential Utilities](#start-essential-utilities)
 - [DB Seeding and Initialization](#db-seeding-and-initialization)
 - [Start Up and Running using Docker](#start-up-and-running-using-docker)
-- [Manually Start Up and Running Wenex](#manually-start-up-and-running-wenex)
+- [Manually Start Up and Running Client](#manually-start-up-and-running-client)
 
 ## Add Remote (Optional)
 
@@ -72,7 +72,7 @@ Start all services at once
 docker-compose --profile client up -d
 ```
 
-## Manually Start Up and Running Wenex
+## Manually Start Up and Running Client
 
 Start each service you want using the following command
 
