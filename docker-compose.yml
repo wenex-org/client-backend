@@ -1,6 +1,6 @@
-# docker build -t wenex/client:latest .
+# docker build -t wenex/client-backend:latest .
 x-common: &common
-  image: wenex/client:latest
+  image: wenex/client-backend:latest
   env_file:
     - .env
   network_mode: host

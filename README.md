@@ -46,7 +46,7 @@ docker-compose -f docker/docker-compose.yml up -d
 
 ### Using Docker
 
-> Note: run `docker build -t wenex/client:latest .` before using docker solution.
+> Note: run `docker build -t wenex/client-backend:latest .` before using docker solution.
 
 ```sh
 docker-compose --profile platform-seed up
@@ -64,7 +64,7 @@ npm run platform:raise
 
 ## Start Up and Running using Docker
 
-> Note: run `docker build -t wenex/client:latest .` before using docker solution.
+> Note: run `docker build -t wenex/client-backend:latest .` before using docker solution.
 
 Start all services at once
 
