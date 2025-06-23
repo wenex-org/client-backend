@@ -79,12 +79,15 @@ Start each service you want using the following command
 ```sh
 # Gateway
 npm run start:dev gateway
+#npm run start:debug[2] gateway
 
 # Services
 npm run start:dev services
+#npm run start:debug[2] services
 
 # Workers
 npm run start:dev workers
+#npm run start:debug[2] workers
 ```
 
 Serve static files located at `assets` directory
