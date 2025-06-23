@@ -90,7 +90,7 @@ npm run start:dev workers
 #npm run start:debug[2] workers
 ```
 
-Serve static files located at `assets` directory
+Serve static files located at the `assets` directory
 
 ```sh
 npm run serve:static
