@@ -10,7 +10,7 @@ services:
     profiles: [gateway, client]
     container_name: client-gateway
     ports:
-      - 6010:6010 # Rest
+      - 6010:6010 # REST
     environment:
       SERVICE_NAME: gateway
     <<: *common
@@ -19,7 +19,7 @@ services:
     profiles: [services, client]
     container_name: client-services
     ports:
-      - 7010:7010 # Rest
+      - 7010:7010 # REST
     environment:
       SERVICE_NAME: services
     <<: *common
@@ -28,7 +28,7 @@ services:
     profiles: [workers, client]
     container_name: client-workers
     ports:
-      - 8010:8010 # Rest
+      - 8010:8010 # REST
     environment:
       SERVICE_NAME: workers
     <<: *common
