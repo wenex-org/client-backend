@@ -38,24 +38,22 @@ services:
   # ---------
 
   serve-static:
-    profiles:
-      - serve-static
+    profiles: [serve-static]
+    container_name: serve-static
     entrypoint: ['bash', '-c', 'npm run serve:static']
+    <<: *common
 
   platform-clean:
-    profiles:
-      - platform-clean
+    profiles: [platform-clean]
     entrypoint: ['bash', '-c', 'npm run platform:clean']
     <<: *common
 
   platform-seed:
-    profiles:
-      - platform-seed
+    profiles: [platform-seed]
     entrypoint: ['bash', '-c', 'npm run platform:seed']
     <<: *common
 
   platform-raise:
-    profiles:
-      - platform-raise
+    profiles: [platform-raise]
     entrypoint: ['bash', '-c', 'npm run platform:raise']
     <<: *common
