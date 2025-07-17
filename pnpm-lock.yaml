@@ -66,8 +66,8 @@ importers:
         specifier: ^1.28.0
         version: 1.28.0
       '@wenex/sdk':
-        specifier: ^1.1.19
-        version: 1.1.19
+        specifier: ^1.1.20
+        version: 1.1.20
       '@willsoto/nestjs-prometheus':
         specifier: ^6.0.2
         version: 6.0.2(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(prom-client@15.1.3)
@@ -79,7 +79,7 @@ importers:
         version: 1.2.0
       axios:
         specifier: ^1.7.9
-        version: 1.7.9(debug@4.4.0)
+        version: 1.7.9(debug@4.4.1)
       base-x:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2354,8 +2354,8 @@ packages:
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
 
-  '@wenex/sdk@1.1.19':
-    resolution: {integrity: sha512-BzTZpx7GXKPlZWqIAEB6419GtFvgJB+xh9eX2ADECczfgK/wZtp15yt1e6stuJozM0O+5IFdCk5zzG/kfks+YQ==}
+  '@wenex/sdk@1.1.20':
+    resolution: {integrity: sha512-7SOm9u+uKZ4tvdyYrXndD73mdF6mkCXrvUzNG4caHekvChgX0Y0KDhCmv+ta2dK9f9BfQoW9WnX5HLXWEThvjg==}
     engines: {node: '>=22.x.x <23', npm: ~10.9.2}
     os: ['!win32']
 
@@ -7381,7 +7381,7 @@ snapshots:
   '@nestjs/axios@4.0.0(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.9)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      axios: 1.7.9(debug@4.4.0)
+      axios: 1.7.9(debug@4.4.1)
       rxjs: 7.8.1
 
   '@nestjs/cli@11.0.2(@types/node@22.12.0)':
@@ -8838,15 +8838,15 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@wenex/sdk@1.1.19':
+  '@wenex/sdk@1.1.20':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
-      axios: 1.7.9(debug@4.4.0)
+      axios: 1.7.9(debug@4.4.1)
       base-x: 5.0.0
       class-transformer: 0.5.1
       class-validator: 0.14.1
       cron-validate: 1.4.5
-      debug: 4.4.0
+      debug: 4.4.1
       emoji-regex: 10.4.0
       lodash: 4.17.21
       luxon: 3.5.0
@@ -8855,7 +8855,7 @@ snapshots:
       node-emoji: 2.2.0
       phone: 3.1.57
       qs: 6.13.1
-      rxjs: 7.8.1
+      rxjs: 7.8.2
     transitivePeerDependencies:
       - supports-color
 
@@ -9023,9 +9023,9 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
-  axios@1.7.9(debug@4.4.0):
+  axios@1.7.9(debug@4.4.1):
     dependencies:
-      follow-redirects: 1.15.9(debug@4.4.0)
+      follow-redirects: 1.15.9(debug@4.4.1)
       form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -10185,9 +10185,9 @@ snapshots:
 
   flatted@3.3.2: {}
 
-  follow-redirects@1.15.9(debug@4.4.0):
+  follow-redirects@1.15.9(debug@4.4.1):
     optionalDependencies:
-      debug: 4.4.0
+      debug: 4.4.1
 
   foreground-child@3.3.0:
     dependencies:
