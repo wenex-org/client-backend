@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-07-17
+
 ### Added
 
-- conjoint services.
+- coworkers command for `PHC Client` @vhidvz
 
 ## [1.1.0] - 2025-06-02
 
@@ -26,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.0...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.1...HEAD
+[1.1.1]: https://github.com/wenex-org/client-backend/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/wenex-org/client-backend/compare/1.0.21...1.1.0
 [1.0.X]: https://github.com/wenex-org/client-backend/releases/tag/1.0.21

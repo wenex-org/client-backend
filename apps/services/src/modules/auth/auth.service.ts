@@ -9,8 +9,8 @@ import {
   RepassResponse,
 } from '@app/common/interfaces/auth';
 import { AuthModel, OAuthModel, RegisterModel, RepassModel } from '@app/common/models/auth';
+import { COWORKERS_REGEX, NO_REPLY_MAIL } from '@app/common/core/constants';
 import { AuthenticationRequest } from '@wenex/sdk/common/interfaces/auth';
-import { COWORKERS_REGEX, MAIL_FROM } from '@app/common/core/constants';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { Headers, Result } from '@wenex/sdk/common/core/interfaces';
 import { EmailSendDto } from '@wenex/sdk/common/interfaces/touch';
@@ -125,7 +125,7 @@ export class AuthService {
 
     void (async () => {
       if (email) {
-        const options: Omit<EmailSendDto, 'html' | 'text'> = { from: MAIL_FROM, to: [email], subject: 'Welcome' };
+        const options: Omit<EmailSendDto, 'html' | 'text'> = { from: NO_REPLY_MAIL, to: [email], subject: 'Welcome' };
         const result = await this.touchService.mails.send({ template: TemplateType.WELCOME, options }, headers);
         this.log.extend(this.confirmation.name)(`welcome email sent to ${email} with result %o`, result);
       }
