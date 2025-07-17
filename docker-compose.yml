@@ -57,3 +57,18 @@ services:
     profiles: [platform-raise]
     entrypoint: ['bash', '-c', 'npm run platform:raise']
     <<: *common
+
+  coworkers-clean:
+    profiles: [coworkers-clean]
+    entrypoint: ['bash', '-c', 'npm run coworkers:clean']
+    <<: *common
+
+  coworkers-seed:
+    profiles: [coworkers-seed]
+    entrypoint: ['bash', '-c', 'npm run coworkers:seed']
+    <<: *common
+
+  coworkers-raise:
+    profiles: [coworkers-raise]
+    entrypoint: ['bash', '-c', 'npm run coworkers:raise']
+    <<: *common

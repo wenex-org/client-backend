@@ -43,6 +43,7 @@ docker-compose -f docker/docker-compose.yml up -d
 
 - [Using Docker](#using-docker)
 - [Manual Seeding](#manual-seeding)
+- [Coworkers Seeding](#coworkers-seeding)
 
 ### Using Docker
 
@@ -60,6 +61,24 @@ docker-compose --profile platform-raise up
 npm run platform:seed
 npm run platform:raise
 # npm run platform:clean
+```
+
+### Coworkers Seeding
+
+Manual:
+
+```sh
+npm run coworkers:seed
+npm run coworkers:raise
+# npm run coworkers:clean
+```
+
+Using Docker:
+
+```sh
+docker-compose --profile coworkers-seed up
+docker-compose --profile coworkers-raise up
+# docker-compose --profile coworkers-clean up
 ```
 
 ## Start Up and Running using Docker
