@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.5] - 2025-07-19
+
+### Changed
+
+- support initialization envs for coworkers @vhidvz
+
 ## [1.1.4] - 2025-07-17
 
 ### Changed
@@ -46,7 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.4...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.5...HEAD
+[1.1.5]: https://github.com/wenex-org/client-backend/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/wenex-org/client-backend/compare/1.1.3...1.1.4
 [1.1.3]: https://github.com/wenex-org/client-backend/compare/1.1.2...1.1.3
 [1.1.2]: https://github.com/wenex-org/client-backend/compare/1.1.1...1.1.2
