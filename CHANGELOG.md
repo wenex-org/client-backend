@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- phc coworker financial currencies command @vhidvz
+
 ## [1.1.8] - 2025-07-24
 
 ### Changed
