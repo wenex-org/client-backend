@@ -39,7 +39,7 @@ services:
 
   serve-static:
     profiles: [serve-static, client]
-    container_name: serve-static
+    container_name: client-serve-static
     entrypoint: ['bash', '-c', 'npm run serve:static']
     <<: *common
 
