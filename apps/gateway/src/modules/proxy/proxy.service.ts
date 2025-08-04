@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
-import { deepCopy, logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
-import { getHeaders, getPath, getRequestInfo } from '@app/common/core/utils';
+import { getHeaders, getPath, getRequestInfo, getXHeaders } from '@app/common/core/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/core/interfaces';
+import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { ClientProxy } from '@nestjs/microservices';
 import formidable, { File } from 'formidable';
 import { Request, Response } from 'express';
@@ -32,14 +32,15 @@ export class ProxyService implements OnModuleInit {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'after');
 
+      const headers = Object.assign(getXHeaders(data.headers), getHeaders(this.req));
       const result = await lastValueFrom<SyncData>(
         this.client.send(pattern, {
           params,
+          headers,
           data: data.data,
           query: this.req.query,
           method: this.req.method,
           url: this.req.originalUrl,
-          headers: deepCopy(data.headers),
         } as ProxyData),
       );
 
@@ -86,6 +87,10 @@ export class ProxyService implements OnModuleInit {
 
   async all(res: Response): Promise<AxiosResponse | undefined> {
     const path = getPath(this.req);
+
+    if (path.startsWith('/graphql') && this.req.body?.mutation) {
+      throw new HttpException('GraphQL mutations are not allowed', HttpStatus.METHOD_NOT_ALLOWED);
+    }
 
     let before: SyncData;
     const formData = new FormData();

@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - financial coworker commands @vhidvz
 - new `Essential` scope to `PHC Client` @iranmanesh-dev
 
+### Fixed
+
+- `afterSync` mixed headers from platform issues @vhidvz
+
 ## [1.1.9] - 2025-07-30
 
 ### Added
