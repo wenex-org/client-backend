@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit, Scope } from '@nestjs/common';
+import { deepCopy, logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { getHeaders, getPath, getRequestInfo } from '@app/common/core/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/core/interfaces';
-import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { ClientProxy } from '@nestjs/microservices';
 import formidable, { File } from 'formidable';
 import { Request, Response } from 'express';
@@ -39,7 +39,7 @@ export class ProxyService implements OnModuleInit {
           query: this.req.query,
           method: this.req.method,
           url: this.req.originalUrl,
-          headers: getHeaders(this.req),
+          headers: deepCopy(data.headers),
         } as ProxyData),
       );
 
@@ -90,7 +90,7 @@ export class ProxyService implements OnModuleInit {
     let before: SyncData;
     const formData = new FormData();
     if (/upload/.test(path)) {
-      const form = formidable({ multiples: true, uploadDir: '.data', keepExtensions: false });
+      const form = formidable({ multiples: true });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, files] = await form.parse(this.req);
       for (const file of files.file ?? []) {
