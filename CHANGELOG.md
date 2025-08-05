@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - financial coworker commands @vhidvz
 - new `Essential` scope to `PHC Client` @iranmanesh-dev
 
+### Changed
+
+- altcha max number default to 100000 with `ALTCHA_MAX_NUMBER` env @vhidvz
+
 ### Fixed
 
 - `afterSync` mixed headers from platform issues @vhidvz
