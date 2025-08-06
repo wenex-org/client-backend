@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - financial coworker commands @vhidvz
+- cqrs config command for phc coworker @vhidvz
 - new `Essential` scope to `PHC Client` @iranmanesh-dev
 
 ### Changed
