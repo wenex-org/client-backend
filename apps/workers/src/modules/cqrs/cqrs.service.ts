@@ -1,18 +1,26 @@
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { fixIn, ObjectId } from '@app/common/core/utils/mongo';
 import { COLLECTION, Database } from '@wenex/sdk/common/core';
 import { CqrsPayload } from '@app/common/core/interfaces';
-import { logger } from '@wenex/sdk/common/core/utils';
 import { InjectConnection } from '@nestjs/mongoose';
-import { Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { Connection } from 'mongoose';
+import { lastValueFrom } from 'rxjs';
+
+import { getOperation } from './cqrs.util';
+import { CQRS_GATEWAY } from './cqrs.constant';
 
 @Injectable()
 export class CqrsService {
   private readonly log = logger(CqrsService.name);
 
-  constructor(@InjectConnection() private readonly conn: Connection) {}
+  constructor(
+    @InjectConnection() private readonly conn: Connection,
+    @Inject(CQRS_GATEWAY) private readonly client: ClientProxy,
+  ) {}
 
-  async cqrs({ id, source, after }: CqrsPayload) {
+  async cqrs({ id, op, source, after, ...rest }: CqrsPayload): Promise<void> {
     const { db, collection } = source;
     const query = { _id: ObjectId(id) };
     const coll = COLLECTION(collection, db.split('-').pop() as Database).replace('/', '.');
@@ -22,6 +30,22 @@ export class CqrsService {
     } else {
       await this.conn.collection(coll).deleteOne(query);
       this.log.extend(this.cqrs.name)(`Removed %s document from the %s collection`, id, coll);
+    }
+
+    // Notify subscribers about the CQRS operation
+    const operation = getOperation(op);
+    const topic = [coll, operation].join('.');
+    await this.notify(topic, { id, op, source, after, ...rest });
+  }
+
+  protected async notify(topic: string, { id, op, source, after, ...rest }: CqrsPayload) {
+    try {
+      await lastValueFrom(this.client.send(topic, { id, op, source, after, ...rest }));
+    } catch (err) {
+      this.log.extend(this.notify.name)('exception occurred with error %o', toJSON(err.message ?? err));
+      if (!err.message?.startsWith('Empty response. There are no subscribers listening to that message')) {
+        throw new HttpException(toString(err.message ?? err), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
   }
 }

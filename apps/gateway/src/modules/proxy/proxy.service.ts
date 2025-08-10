@@ -11,7 +11,7 @@ import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
 import fs from 'fs/promises';
 
-import { PROXY_GATEWAY } from './proxy.const';
+import { PROXY_GATEWAY } from './proxy.constant';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProxyService implements OnModuleInit {

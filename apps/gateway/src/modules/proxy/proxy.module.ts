@@ -3,8 +3,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
-import { PROXY_GATEWAY } from './proxy.const';
 import { ProxyService } from './proxy.service';
+import { PROXY_GATEWAY } from './proxy.constant';
 import { ProxyController } from './proxy.controller';
 
 @Module({
