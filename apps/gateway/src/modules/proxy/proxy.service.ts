@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit, Scope } fr
 import { getHeaders, getPath, getRequestInfo, getXHeaders } from '@app/common/core/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/core/interfaces';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
+import { ENV } from '@wenex/sdk/common/core/env.util';
 import { ClientProxy } from '@nestjs/microservices';
 import formidable, { File } from 'formidable';
 import { Request, Response } from 'express';
@@ -88,7 +89,7 @@ export class ProxyService implements OnModuleInit {
   async all(res: Response): Promise<AxiosResponse | undefined> {
     const path = getPath(this.req);
 
-    if (path.startsWith('/graphql') && this.req.body?.mutation) {
+    if (path.startsWith('/graphql') && this.req.body?.mutation && !ENV('GRAPHQL_MUTATION_SUPPORT')) {
       throw new HttpException('GraphQL mutations are not allowed', HttpStatus.METHOD_NOT_ALLOWED);
     }
 
