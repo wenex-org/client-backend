@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `GRAPHQL_MUTATION_SUPPORT` added to environments @vhidvz
+- `ManageCareerBranch` scope added to `PHC Client` @iranmanesh-dev
 
 ## [1.1.10] - 2025-08-06
 
