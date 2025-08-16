@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Updated
+
+- improve error handling in sdk module @vhidvz
+
 ## [1.1.12] - 2025-08-14
 
 ### Added
