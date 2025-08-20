@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- `ManageIdentityProfiles` scope added to phc coworker @vhidvz
-
 ### Changed
 
 - improve error logging in SdkService and adjust constructor formatting @vhidvz
