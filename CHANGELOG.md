@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.14] - 2025-08-23
+
 ### Changed
 
 - improve error logging in SdkService and adjust constructor formatting @vhidvz
@@ -115,7 +117,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.13...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.14...HEAD
+[1.1.14]: https://github.com/wenex-org/client-backend/compare/1.1.13...1.1.14
 [1.1.13]: https://github.com/wenex-org/client-backend/compare/1.1.12...1.1.13
 [1.1.12]: https://github.com/wenex-org/client-backend/compare/1.1.11...1.1.12
 [1.1.11]: https://github.com/wenex-org/client-backend/compare/1.1.10...1.1.11
