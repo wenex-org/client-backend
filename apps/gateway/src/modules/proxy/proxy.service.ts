@@ -36,6 +36,7 @@ export class ProxyService implements OnModuleInit {
       const headers = Object.assign(getXHeaders(data.headers), getHeaders(this.req));
       const result = await lastValueFrom<SyncData>(
         this.client.send(pattern, {
+          ip: this.req.ip,
           params,
           headers,
           data: data.data,
@@ -64,6 +65,7 @@ export class ProxyService implements OnModuleInit {
 
       const result = await lastValueFrom<SyncData>(
         this.client.send(pattern, {
+          ip: this.req.ip,
           params,
           query: this.req.query,
           method: this.req.method,
