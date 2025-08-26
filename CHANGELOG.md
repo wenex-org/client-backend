@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- remove text index from backup @fdaei
+
+### Changed
+
 - improve error logging in SdkService and adjust constructor formatting @vhidvz
 
 ## [1.1.13] - 2025-08-19
