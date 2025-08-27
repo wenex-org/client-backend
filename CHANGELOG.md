@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- remove text indexs from backup @fdaei
+- remove text indexes from backup @fdaei
 
 ## [1.1.14] - 2025-08-23
 
