@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- add git update script and update package.json @vhidvz
 - Added `ManageConjoint` to the PHC backend scope @fdaei
 
 ## [1.1.15] - 2025-08-28
