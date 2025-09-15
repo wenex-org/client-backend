@@ -14,6 +14,7 @@
     "script:machine": "bash ./scripts/machine.sh",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "update": "bash ./scripts/git-update.sh",
+    "update:docker": "npm run update -- docker",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
