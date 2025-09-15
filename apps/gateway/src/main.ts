@@ -9,7 +9,7 @@ if (process.env.NODE_ENV?.toLowerCase().startsWith('prod')) {
 
 import { prototyping, setupSwagger } from '@app/common/core/utils';
 import { NestFactory } from '@nestjs/core';
-import { APP } from '@app/common/core';
+import { APP } from '@app/common';
 import helmet from 'helmet';
 
 prototyping();

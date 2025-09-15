@@ -7,7 +7,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { isAlive } from '@wenex/sdk/common/core/utils';
 import { AxiosResponseHeaders } from 'axios';
 import { Request, Response } from 'express';
-import { APP } from '@app/common/core';
+import { APP } from '@app/common';
 
 import { ProxyService } from './proxy.service';
 

@@ -10,7 +10,7 @@ import { Machine } from '@wenex/sdk/common/core/helpers';
 import { prototyping } from '@app/common/core/utils';
 import { NATS_CONFIG } from '@app/common/core/envs';
 import { NestFactory } from '@nestjs/core';
-import { APP } from '@app/common/core';
+import { APP } from '@app/common';
 
 prototyping('SERVICES');
 import { AppModule } from './app.module';
