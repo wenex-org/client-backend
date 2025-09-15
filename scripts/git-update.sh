@@ -10,7 +10,7 @@ fi
 git fetch backend-template main
 
 # Check out only the subdirectory from the remote
-if [ -d "$1" ]; then
+if [ -d "$TARGET" ]; then
   tmpdir=$(mktemp -d)
 
   # 1. Create a temporary worktree with the remote branch
@@ -23,6 +23,6 @@ if [ -d "$1" ]; then
   # 3. Clean up
   git worktree remove "$tmpdir" && rm -rf "$tmpdir"
 else
-  echo "Error: '$1' is not an existing directory."
+  echo "Error: '$TARGET' is not an existing directory."
   exit 1
 fi
