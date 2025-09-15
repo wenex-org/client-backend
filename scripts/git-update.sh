@@ -5,5 +5,9 @@ fi
 git fetch backend-template main
 
 # Check out only the subdirectory from the remote
-git checkout backend-template/main -- scripts
-git checkout backend-template/main -- libs/module
+if [ -d "$1" ]; then
+  git checkout backend-template/main -- "$1"
+else
+  echo "Error: '$1' is not an existing directory."
+  exit 1
+fi
