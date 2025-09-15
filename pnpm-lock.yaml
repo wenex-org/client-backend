@@ -80,6 +80,9 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9(debug@4.4.1)
+      axios-retry:
+        specifier: ^4.5.0
+        version: 4.5.0(axios@1.7.9)
       base-x:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2552,6 +2555,11 @@ packages:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
 
+  axios-retry@4.5.0:
+    resolution: {integrity: sha512-aR99oXhpEDGo0UuAlYcn2iGRds30k366Zfa05XWScR9QaQD4JYiP3/1Qt1u7YlefUOK+cn0CcwoL1oefavQUlQ==}
+    peerDependencies:
+      axios: 0.x || 1.x
+
   axios@1.7.9:
     resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
 
@@ -3979,6 +3987,10 @@ packages:
   is-regexp@1.0.0:
     resolution: {integrity: sha512-7zjFAPO4/gwyQAAgRRmqeEeyIICSdmCqa3tsVHMdBzaXXRiqopZL4Cyghg/XulGWrtABTpbnYYzzIRffLkP4oA==}
     engines: {node: '>=0.10.0'}
+
+  is-retry-allowed@2.2.0:
+    resolution: {integrity: sha512-XVm7LOeLpTW4jV19QSH38vkswxoLud8sQ57YwJVTPWdiaI9I8keEhGFpBlslyVsgdQy4Opg8QOLb8YRgsyZiQg==}
+    engines: {node: '>=10'}
 
   is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
@@ -9023,6 +9035,11 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
+  axios-retry@4.5.0(axios@1.7.9):
+    dependencies:
+      axios: 1.7.9(debug@4.4.1)
+      is-retry-allowed: 2.2.0
+
   axios@1.7.9(debug@4.4.1):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.1)
@@ -10613,6 +10630,8 @@ snapshots:
   is-promise@4.0.0: {}
 
   is-regexp@1.0.0: {}
+
+  is-retry-allowed@2.2.0: {}
 
   is-stream@2.0.1: {}
 

@@ -83,6 +83,7 @@
     "abacl": "^8.0.7",
     "altcha-lib": "^1.2.0",
     "axios": "^1.7.9",
+    "axios-retry": "^4.5.0",
     "base-x": "^5.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
