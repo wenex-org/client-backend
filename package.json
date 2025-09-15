@@ -20,7 +20,6 @@
     "update:libs-common-core": "npm run update -- libs/common/src/core",
     "update:apps-gateway-modules": "npm run update -- apps/gateway/src/modules",
     "update:apps-workers-modules": "npm run update -- apps/workers/src/modules",
-    "update:all": "npm run update:docker && npm run update:scripts && npm run update:libs-module && npm run update:libs-common-core && npm run update:apps-gateway-modules && npm run update:apps-workers-modules",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
