@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.18] - 2025-09-27
+
+### Changed
+
+- update docker file and start script to handle termination signal @vhidvz
+
 ## [1.1.17] - 2025-09-18
 
 ### Added
@@ -136,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.17...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.18...HEAD
+[1.1.18]: https://github.com/wenex-org/client-backend/compare/1.1.17...1.1.18
 [1.1.17]: https://github.com/wenex-org/client-backend/compare/1.1.16...1.1.17
 [1.1.16]: https://github.com/wenex-org/client-backend/compare/1.1.15...1.1.16
 [1.1.15]: https://github.com/wenex-org/client-backend/compare/1.1.14...1.1.15
