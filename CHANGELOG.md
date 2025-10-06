@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- enable trust proxy for real client IP @fdaei
 - `PaymentFinancialInvoices` scope added to the PHC client scope @winkcor
 
 ## [1.1.19] - 2025-09-28

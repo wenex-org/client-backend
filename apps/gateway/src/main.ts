@@ -21,6 +21,9 @@ async function bootstrap() {
 
   app.use(helmet({ contentSecurityPolicy: false }));
 
+  const express = app.getHttpAdapter().getInstance();
+  express.set('trust proxy', true);
+
   setupSwagger(app);
 
   await app.listen(GATEWAY.API_PORT, '0.0.0.0');
