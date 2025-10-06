@@ -155,7 +155,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.19...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.20...HEAD
+[1.1.20]: https://github.com/wenex-org/client-backend/compare/1.1.19...1.1.20
 [1.1.19]: https://github.com/wenex-org/client-backend/compare/1.1.18...1.1.19
 [1.1.18]: https://github.com/wenex-org/client-backend/compare/1.1.17...1.1.18
 [1.1.17]: https://github.com/wenex-org/client-backend/compare/1.1.16...1.1.17
