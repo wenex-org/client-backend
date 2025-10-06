@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.20] - 2025-10-6
+## [1.1.21] - 2025-10-06
+
+### Changed
+
+- add `MONGO_LOAD_BALANCED` env @vhidvz
+
+## [1.1.20] - 2025-10-06
 
 ### Added
 
@@ -155,7 +161,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.20...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.21...HEAD
+[1.1.21]: https://github.com/wenex-org/client-backend/compare/1.1.20...1.1.21
 [1.1.20]: https://github.com/wenex-org/client-backend/compare/1.1.19...1.1.20
 [1.1.19]: https://github.com/wenex-org/client-backend/compare/1.1.18...1.1.19
 [1.1.18]: https://github.com/wenex-org/client-backend/compare/1.1.17...1.1.18
