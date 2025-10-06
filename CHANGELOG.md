@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.22] - 2025-10-06
+
+### Fixed
+
+- `loadBalanced is only a valid option in the URI` issue @vhidvz
+
 ## [1.1.21] - 2025-10-06
 
 ### Changed
@@ -161,7 +167,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.21...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.22...HEAD
+[1.1.22]: https://github.com/wenex-org/client-backend/compare/1.1.21...1.1.22
 [1.1.21]: https://github.com/wenex-org/client-backend/compare/1.1.20...1.1.21
 [1.1.20]: https://github.com/wenex-org/client-backend/compare/1.1.19...1.1.20
 [1.1.19]: https://github.com/wenex-org/client-backend/compare/1.1.18...1.1.19
