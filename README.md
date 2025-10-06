@@ -114,9 +114,3 @@ Serve static files located at the `assets` directory
 ```sh
 npm run serve:static
 ```
-
-## Mock Data
-
-```sh
-npm run platform:mock
-```
