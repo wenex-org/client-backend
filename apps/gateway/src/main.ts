@@ -11,6 +11,7 @@ import { prototyping, setupSwagger } from '@app/common/core/utils';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common';
 import helmet from 'helmet';
+import qs from 'qs';
 
 prototyping();
 import { AppModule } from './app.module';
@@ -22,6 +23,7 @@ async function bootstrap() {
   app.use(helmet({ contentSecurityPolicy: false }));
 
   const express = app.getHttpAdapter().getInstance();
+  express.set('query parser', qs.parse);
   express.set('trust proxy', true);
 
   setupSwagger(app);
