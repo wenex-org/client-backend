@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.25] - 2025-10-07
+
+### Added
+
+- added `queue` to nats options @vhidvz
+
 ## [1.1.24] - 2025-10-07
 
 ### Changed
@@ -179,7 +185,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.24...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.25...HEAD
+[1.1.25]: https://github.com/wenex-org/client-backend/compare/1.1.24...1.1.25
 [1.1.24]: https://github.com/wenex-org/client-backend/compare/1.1.23...1.1.24
 [1.1.23]: https://github.com/wenex-org/client-backend/compare/1.1.22...1.1.23
 [1.1.22]: https://github.com/wenex-org/client-backend/compare/1.1.21...1.1.22
