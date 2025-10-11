@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - add `special/files.share` scope to `PHC Client` @vhidvz
 
+### Changed
+
+- add phc client id to all phc coworker data @vhidvz
+
 ## [1.1.25] - 2025-10-07
 
 ### Added
