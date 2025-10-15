@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.27] - 2025-10-15
+
 ### Added
 
 - add `rsch` client to coworker clients @vhidvz
@@ -199,7 +201,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.26...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.27...HEAD
+[1.1.27]: https://github.com/wenex-org/client-backend/compare/1.1.26...1.1.27
 [1.1.26]: https://github.com/wenex-org/client-backend/compare/1.1.25...1.1.26
 [1.1.25]: https://github.com/wenex-org/client-backend/compare/1.1.24...1.1.25
 [1.1.24]: https://github.com/wenex-org/client-backend/compare/1.1.23...1.1.24
