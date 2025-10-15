@@ -14,7 +14,7 @@ import { ProxyModule } from './modules/proxy';
     RedisModule.forRoot(REDIS_CONFIG()),
     AltchaModule.forRoot(ALTCHA_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
-    HealthModule.forRoot(['disk', 'memory', 'redis']),
+    HealthModule.forRoot(['redis', 'nats']),
 
     ...[ProxyModule],
   ],

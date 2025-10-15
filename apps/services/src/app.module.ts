@@ -18,7 +18,7 @@ import { PublicModule } from './modules/public';
     RedisModule.forRoot(REDIS_CONFIG()),
     AltchaModule.forRoot(ALTCHA_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
-    HealthModule.forRoot(['disk', 'memory', 'redis', 'mongo']),
+    HealthModule.forRoot(['redis', 'nats']),
 
     BackupModule.forRoot(),
     SdkModule.forRoot(PLATFORM_CONFIG()),

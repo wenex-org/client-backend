@@ -11,7 +11,7 @@ import { CqrsModule } from './modules/cqrs';
   imports: [
     PrometheusModule.register(),
     SentryModule.forRoot(SENTRY_CONFIG()),
-    HealthModule.forRoot(['disk', 'memory', 'mongo']),
+    HealthModule.forRoot(['redis', 'mongo', 'nats']),
     MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
 
     ...[CqrsModule],
