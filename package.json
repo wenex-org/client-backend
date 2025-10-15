@@ -44,6 +44,7 @@
     "coworkers:clean": "npm run command -- coworkers clean",
     "coworkers:seed": "npm run command -- coworkers seed",
     "coworkers:raise": "npm run command -- coworkers raise",
+    "coworkers:sync": "npm run command -- coworkers sync",
     "coworkers:debug": "npm run command:debug -- coworkers",
     "git": "bash ./scripts/git-submodule.sh",
     "git:clone": "git submodule update --init --recursive",

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add `coworkers:sync` command @vhidvz
+
 ## [1.1.27] - 2025-10-15
 
 ### Added
