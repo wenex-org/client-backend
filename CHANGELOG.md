@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.28] - 2025-10-20
+
 ### Added
 
 - add `coworkers:sync` command @vhidvz
@@ -205,7 +207,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.27...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.28...HEAD
+[1.1.28]: https://github.com/wenex-org/client-backend/compare/1.1.27...1.1.28
 [1.1.27]: https://github.com/wenex-org/client-backend/compare/1.1.26...1.1.27
 [1.1.26]: https://github.com/wenex-org/client-backend/compare/1.1.25...1.1.26
 [1.1.25]: https://github.com/wenex-org/client-backend/compare/1.1.24...1.1.25
