@@ -66,8 +66,8 @@ importers:
         specifier: ^1.28.0
         version: 1.28.0
       '@wenex/sdk':
-        specifier: ^1.1.47
-        version: 1.1.47
+        specifier: ^1.2.3
+        version: 1.2.3
       '@willsoto/nestjs-prometheus':
         specifier: ^6.0.2
         version: 6.0.2(@nestjs/common@11.0.6(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(prom-client@15.1.3)
@@ -1946,6 +1946,9 @@ packages:
   '@paralleldrive/cuid2@2.2.2':
     resolution: {integrity: sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA==}
 
+  '@piercefreeman/brotli-compress@1.3.3':
+    resolution: {integrity: sha512-/CmyS8qkprSR8+r36OVWX+yqo8QFa1qkELXFCuaKLE8YWdMvQo/PKl4ep9vmZglAuSm/d/nAe59hdsT18u9RgA==}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -2179,11 +2182,14 @@ packages:
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
 
+  '@types/node@17.0.45':
+    resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
+
   '@types/node@22.12.0':
     resolution: {integrity: sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==}
 
-  '@types/node@22.18.8':
-    resolution: {integrity: sha512-pAZSHMiagDR7cARo/cch1f3rXy0AEXwsVsVH09FcyeJVAzCnGgmYis7P3JidtTUjyadhTeSo8TgRPswstghDaw==}
+  '@types/node@22.18.12':
+    resolution: {integrity: sha512-BICHQ67iqxQGFSzfCFTT7MRQ5XcBjG5aeKh5Ok38UBbPe5fxTyE+aHFxwVrGyr8GNlqFMLKD1D3P2K/1ks8tog==}
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
@@ -2360,10 +2366,15 @@ packages:
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
 
-  '@wenex/sdk@1.1.47':
-    resolution: {integrity: sha512-PYgZMQKp8nQFGTH78jKjuRPwWQAUOzBe21oNd1BmfLIVen2Vc9NIpiShO+J4lJqmA+dmZ7V+yxoKLRemNjbWaw==}
+  '@wenex/sdk@1.2.3':
+    resolution: {integrity: sha512-WLJEqWJucqEzu6RbvEsymGiW3CX8wVs2+w0uSsXlUjkIZPldupAK19TT4HhNVh9Vcl/OSiy8924Sd+I4cjp37Q==}
     engines: {node: '>=22.x.x <23', npm: ~10.9.2}
     os: ['!win32']
+    peerDependencies:
+      brotli-wasm: ^3.0.1
+    peerDependenciesMeta:
+      brotli-wasm:
+        optional: true
 
   '@willsoto/nestjs-prometheus@6.0.2':
     resolution: {integrity: sha512-ePyLZYdIrOOdlOWovzzMisIgviXqhPVzFpSMKNNhn6xajhRHeBsjAzSdpxZTc6pnjR9hw1lNAHyKnKl7lAPaVg==}
@@ -2670,6 +2681,9 @@ packages:
 
   breadth-filter@2.0.0:
     resolution: {integrity: sha512-thQShDXnFWSk2oVBixRCyrWsFoV5tfOpWKHmxwafHQDNxCfDBk539utpvytNjmlFrTMqz41poLwJvA1MW3z0MQ==}
+
+  brotli-wasm@1.3.1:
+    resolution: {integrity: sha512-Vp+v3QXddvy39Ycbmvd3/Y1kUvKhwtnprzeABcKWN4jmyg6W3W5MhGPCfXBMHeSQnizgpV59iWmkSRp7ykOnDQ==}
 
   browserslist@4.24.2:
     resolution: {integrity: sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==}
@@ -8379,6 +8393,11 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.8.0
 
+  '@piercefreeman/brotli-compress@1.3.3':
+    dependencies:
+      '@types/node': 17.0.45
+      brotli-wasm: 1.3.1
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -8631,11 +8650,13 @@ snapshots:
     dependencies:
       '@types/node': 22.12.0
 
+  '@types/node@17.0.45': {}
+
   '@types/node@22.12.0':
     dependencies:
       undici-types: 6.20.0
 
-  '@types/node@22.18.8':
+  '@types/node@22.18.12':
     dependencies:
       undici-types: 6.21.0
 
@@ -8686,7 +8707,7 @@ snapshots:
 
   '@types/through@0.0.33':
     dependencies:
-      '@types/node': 22.18.8
+      '@types/node': 22.18.12
 
   '@types/validator@13.12.2': {}
 
@@ -8909,9 +8930,10 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
 
-  '@wenex/sdk@1.1.47':
+  '@wenex/sdk@1.2.3':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
+      '@piercefreeman/brotli-compress': 1.3.3
       axios: 1.7.9(debug@4.4.1)
       base-x: 5.0.0
       class-transformer: 0.5.1
@@ -9273,6 +9295,8 @@ snapshots:
   breadth-filter@2.0.0:
     dependencies:
       object.entries: 1.1.8
+
+  brotli-wasm@1.3.1: {}
 
   browserslist@4.24.2:
     dependencies:
