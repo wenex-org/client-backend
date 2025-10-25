@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add `lnd` client to coworker clients @vhidvz
+
 ## [1.1.28] - 2025-10-20
 
 ### Added
