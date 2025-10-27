@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit, Scope } fr
 import { getHeaders, getPath, getRequestInfo, getXHeaders } from '@app/common/core/utils';
 import { ProxyData, SyncData, SyncType } from '@app/common/core/interfaces';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
+import { NATS_GATEWAY } from '@app/common/core/constants';
 import { ENV } from '@wenex/sdk/common/core/env.util';
 import { ClientProxy } from '@nestjs/microservices';
 import formidable, { File } from 'formidable';
@@ -12,8 +13,6 @@ import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
 import fs from 'fs/promises';
 
-import { PROXY_GATEWAY } from './proxy.constant';
-
 @Injectable({ scope: Scope.REQUEST })
 export class ProxyService implements OnModuleInit {
   private readonly log = logger(ProxyService.name);
@@ -22,7 +21,7 @@ export class ProxyService implements OnModuleInit {
     protected readonly http: HttpService,
 
     @Inject(REQUEST) private readonly req: Request,
-    @Inject(PROXY_GATEWAY) private readonly client: ClientProxy,
+    @Inject(NATS_GATEWAY) private readonly client: ClientProxy,
   ) {}
 
   onModuleInit() {
@@ -119,13 +118,7 @@ export class ProxyService implements OnModuleInit {
           data: formData,
           params: this.req.query,
           method: this.req.method,
-          headers: {
-            'x-user-ip': this.req.ip,
-            'x-api-key': process.env.API_KEY,
-            'Content-Type': 'multipart/form-data',
-            'x-user-agent': this.req.header('user-agent'),
-            Authorization: this.req.header('authorization'),
-          },
+          headers: getHeaders(this.req),
           baseURL: process.env.PLATFORM_URL,
         });
         return this.afterSync(res, result as any);

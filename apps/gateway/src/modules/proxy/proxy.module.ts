@@ -1,23 +1,12 @@
-import { NATS_CONFIG, PLATFORM_CONFIG } from '@app/common/core/envs';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { PLATFORM_CONFIG } from '@app/common/core/envs';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
 import { ProxyService } from './proxy.service';
-import { PROXY_GATEWAY } from './proxy.constant';
 import { ProxyController } from './proxy.controller';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: PROXY_GATEWAY,
-        options: NATS_CONFIG(),
-        transport: Transport.NATS,
-      },
-    ]),
-    HttpModule.register(PLATFORM_CONFIG()),
-  ],
+  imports: [HttpModule.register(PLATFORM_CONFIG())],
   controllers: [ProxyController],
   providers: [ProxyService],
 })

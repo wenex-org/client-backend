@@ -7,26 +7,26 @@ if (process.env.NODE_ENV?.toLowerCase().startsWith('prod')) {
   require('tracing').init(['http']);
 }
 
-import { prototyping, setupSwagger } from '@app/common/core/utils';
+import { prototyping, queryParser, setupSwagger } from '@app/common/core/utils';
 import { NestFactory } from '@nestjs/core';
 import { APP } from '@app/common';
 import helmet from 'helmet';
 import qs from 'qs';
 
-prototyping();
+prototyping('GATEWAY');
 import { AppModule } from './app.module';
 
 const { GATEWAY } = APP;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-
   app.use(helmet({ contentSecurityPolicy: false }));
+  app.enableShutdownHooks();
+  app.use(queryParser);
+  setupSwagger(app);
 
   const express = app.getHttpAdapter().getInstance();
   express.set('query parser', qs.parse);
   express.set('trust proxy', true);
-
-  setupSwagger(app);
 
   await app.listen(GATEWAY.API_PORT, '0.0.0.0');
 
