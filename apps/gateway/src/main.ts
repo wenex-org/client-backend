@@ -35,6 +35,5 @@ async function bootstrap() {
   console.log(`Swagger UI is running on: ${url}/api`);
   console.log(`Prometheus is running on ${url}/metrics`);
   console.log(`Health check is running on ${url}/status`);
-  console.log(`OpenApi Spec is running on: ${url}/api-json`);
 }
 void bootstrap();

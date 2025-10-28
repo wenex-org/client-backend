@@ -18,9 +18,7 @@ import { AppModule } from './app.module';
 const { WORKERS } = APP;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-
   app.use(helmet({ contentSecurityPolicy: false }));
-
   setupSwagger(app);
 
   await app.listen(WORKERS.API_PORT, '0.0.0.0');
@@ -29,7 +27,6 @@ async function bootstrap() {
   console.log(`Swagger UI is running on: ${url}/api`);
   console.log(`Prometheus is running on ${url}/metrics`);
   console.log(`Health check is running on ${url}/status`);
-  console.log(`OpenApi Spec is running on: ${url}/api-json`);
   console.log(`Workers Micro Successfully Started`);
 }
 void bootstrap();

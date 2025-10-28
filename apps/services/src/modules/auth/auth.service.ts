@@ -28,8 +28,9 @@ import { Injectable } from '@nestjs/common';
 import { isJSON } from 'class-validator';
 
 import { TouchService } from '../touch';
+import { Scope } from '@wenex/sdk/common/core';
 
-const { STRICT_TOKEN, CLIENT_SECRET } = CLIENT_CONFIG();
+const { STRICT_TOKEN, APP_ID, CLIENT_ID, CLIENT_SECRET } = CLIENT_CONFIG();
 
 @Injectable()
 export class AuthService {
@@ -76,6 +77,10 @@ export class AuthService {
         data.client_secret = secret || CLIENT_SECRET;
       } else data.client_secret = CLIENT_SECRET;
     }
+
+    if (!data.app_id?.trim()) data.app_id = APP_ID;
+    if (!data.scopes?.length) data.scopes = [Scope.None];
+    if (!data.client_id?.trim()) data.client_id = CLIENT_ID;
 
     return { data, type: 'assign' };
   }

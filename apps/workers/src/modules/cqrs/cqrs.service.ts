@@ -2,14 +2,12 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { fixIn, ObjectId } from '@app/common/core/utils/mongo';
 import { COLLECTION, Database } from '@wenex/sdk/common/core';
+import { NATS_GATEWAY } from '@app/common/core/constants';
 import { CqrsPayload } from '@app/common/core/interfaces';
 import { InjectConnection } from '@nestjs/mongoose';
 import { ClientProxy } from '@nestjs/microservices';
 import { Connection } from 'mongoose';
 import { lastValueFrom } from 'rxjs';
-
-import { getOperation } from './cqrs.util';
-import { CQRS_GATEWAY } from './cqrs.constant';
 
 @Injectable()
 export class CqrsService {
@@ -17,7 +15,7 @@ export class CqrsService {
 
   constructor(
     @InjectConnection() private readonly conn: Connection,
-    @Inject(CQRS_GATEWAY) private readonly client: ClientProxy,
+    @Inject(NATS_GATEWAY) private readonly client: ClientProxy,
   ) {}
 
   async cqrs({ id, op, source, after, ...rest }: CqrsPayload): Promise<void> {
@@ -33,9 +31,7 @@ export class CqrsService {
     }
 
     // Notify subscribers about the CQRS operation
-    const operation = getOperation(op);
-    const topic = [coll, operation].join('.');
-    await this.notify(topic, { id, op, source, after, ...rest });
+    await this.notify(coll, { id, op, source, after, ...rest });
   }
 
   protected async notify(topic: string, { id, op, source, after, ...rest }: CqrsPayload) {

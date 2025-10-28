@@ -1,5 +1,7 @@
-import { ALTCHA_CONFIG, PLATFORM_CONFIG, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/core/envs';
+import { ALTCHA_CONFIG, NATS_CONFIG, PLATFORM_CONFIG, REDIS_CONFIG, SENTRY_CONFIG } from '@app/common/core/envs';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { NATS_GATEWAY } from '@app/common/core/constants';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { AltchaModule } from '@app/module/altcha';
 import { BackupModule } from '@app/module/backup';
@@ -19,6 +21,17 @@ import { PublicModule } from './modules/public';
     AltchaModule.forRoot(ALTCHA_CONFIG()),
     SentryModule.forRoot(SENTRY_CONFIG()),
     HealthModule.forRoot(['redis', 'nats']),
+
+    ClientsModule.register({
+      isGlobal: true,
+      clients: [
+        {
+          name: NATS_GATEWAY,
+          options: NATS_CONFIG(),
+          transport: Transport.NATS,
+        },
+      ],
+    }),
 
     BackupModule.forRoot(),
     SdkModule.forRoot(PLATFORM_CONFIG()),

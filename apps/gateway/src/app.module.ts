@@ -9,6 +9,8 @@ import { RedisModule } from '@app/module/redis';
 import { SdkModule } from '@app/module/sdk';
 import { Module } from '@nestjs/common';
 
+import { MODULES } from './modules';
+
 @Module({
   imports: [
     PrometheusModule.register(),
@@ -28,7 +30,9 @@ import { Module } from '@nestjs/common';
     }),
 
     SdkModule.forRoot(PLATFORM_CONFIG()),
-    HealthModule.forRoot(['redis', 'nats', 'service']),
+    HealthModule.forRoot(['redis', 'nats', 'service', 'platform']),
+
+    ...[...MODULES],
   ],
 })
 export class AppModule {}

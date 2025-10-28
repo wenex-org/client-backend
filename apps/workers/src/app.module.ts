@@ -1,5 +1,7 @@
-import { MONGO_CONFIG, MONGO_OPTIONS, SENTRY_CONFIG } from '@app/common/core/envs';
+import { MONGO_CONFIG, MONGO_OPTIONS, NATS_CONFIG, SENTRY_CONFIG } from '@app/common/core/envs';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { NATS_GATEWAY } from '@app/common/core/constants';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HealthModule } from '@app/module/health';
@@ -11,8 +13,19 @@ import { CqrsModule } from './modules/cqrs';
   imports: [
     PrometheusModule.register(),
     SentryModule.forRoot(SENTRY_CONFIG()),
-    HealthModule.forRoot(['redis', 'mongo', 'nats']),
     MongooseModule.forRoot(MONGO_CONFIG(), MONGO_OPTIONS()),
+    HealthModule.forRoot(['redis', 'mongo', 'nats', 'service']),
+
+    ClientsModule.register({
+      isGlobal: true,
+      clients: [
+        {
+          name: NATS_GATEWAY,
+          options: NATS_CONFIG(),
+          transport: Transport.NATS,
+        },
+      ],
+    }),
 
     ...[CqrsModule],
   ],
