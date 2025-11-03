@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add `search:conjoint:messages` scope to `PHC Client` @winkcor
+
 ## [1.1.31] - 2025-11-01
 
 ### Updated
