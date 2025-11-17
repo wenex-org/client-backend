@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.32] - 2025-11-17
+
 ### Added
 
 - add `search:conjoint:messages` scope to `PHC Client` @winkcor
@@ -233,7 +235,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.31...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.32...HEAD
+[1.1.32]: https://github.com/wenex-org/client-backend/compare/1.1.31...1.1.32
 [1.1.31]: https://github.com/wenex-org/client-backend/compare/1.1.30...1.1.31
 [1.1.30]: https://github.com/wenex-org/client-backend/compare/1.1.29...1.1.30
 [1.1.29]: https://github.com/wenex-org/client-backend/compare/1.1.28...1.1.29
