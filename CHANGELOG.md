@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add `init` and `verify` transaction scope to phc coworker @vhidvz
+
 ### Fixed
 
 - fix: coworkers cqrs conflict port @vhidvz
