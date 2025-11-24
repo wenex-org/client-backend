@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.33] - 2025-11-24
+
 ### Added
 
 - add `init` and `verify` transaction scope to phc coworker @vhidvz
@@ -243,7 +245,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.32...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.33...HEAD
+[1.1.33]: https://github.com/wenex-org/client-backend/compare/1.1.32...1.1.33
 [1.1.32]: https://github.com/wenex-org/client-backend/compare/1.1.31...1.1.32
 [1.1.31]: https://github.com/wenex-org/client-backend/compare/1.1.30...1.1.31
 [1.1.30]: https://github.com/wenex-org/client-backend/compare/1.1.29...1.1.30
