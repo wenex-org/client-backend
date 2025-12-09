@@ -25,7 +25,6 @@ build:
   artifacts:
     paths:
       - .env
-      - libs
       - dist
       - node_modules
       - sonar-project.properties
