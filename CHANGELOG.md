@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add `tpfy` client to coworkers commands @vhidvz
+
 ## [1.1.33] - 2025-11-24
 
 ### Added
