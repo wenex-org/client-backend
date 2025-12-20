@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.34] - 2025-12-20
+
 ### Added
 
 - add `tpfy` client to coworkers commands @vhidvz
@@ -249,7 +251,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.33...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.34...HEAD
+[1.1.34]: https://github.com/wenex-org/client-backend/compare/1.1.33...1.1.34
 [1.1.33]: https://github.com/wenex-org/client-backend/compare/1.1.32...1.1.33
 [1.1.32]: https://github.com/wenex-org/client-backend/compare/1.1.31...1.1.32
 [1.1.31]: https://github.com/wenex-org/client-backend/compare/1.1.30...1.1.31
