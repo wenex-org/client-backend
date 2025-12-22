@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.35] - 2025-12-20
+
 ### Added
 
 - add `SpecialStat` scop @fdaei
+- add `ReadConjointAccounts` to lnd @winkcor
 
 ## [1.1.34] - 2025-12-20
 
@@ -255,7 +258,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.34...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.35...HEAD
+[1.1.35]: https://github.com/wenex-org/client-backend/compare/1.1.34...1.1.35
 [1.1.34]: https://github.com/wenex-org/client-backend/compare/1.1.33...1.1.34
 [1.1.33]: https://github.com/wenex-org/client-backend/compare/1.1.32...1.1.33
 [1.1.32]: https://github.com/wenex-org/client-backend/compare/1.1.31...1.1.32
