@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.36] - 2025-12-27
+
+### Fixed
+
+- fix: cursor proxy header @vhidvz
+
 ## [1.1.35] - 2025-12-20
 
 ### Added
@@ -258,7 +264,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.35...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.36...HEAD
+[1.1.36]: https://github.com/wenex-org/client-backend/compare/1.1.35...1.1.36
 [1.1.35]: https://github.com/wenex-org/client-backend/compare/1.1.34...1.1.35
 [1.1.34]: https://github.com/wenex-org/client-backend/compare/1.1.33...1.1.34
 [1.1.33]: https://github.com/wenex-org/client-backend/compare/1.1.32...1.1.33
