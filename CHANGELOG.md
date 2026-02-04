@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.37] - 2026-02-04
+
+### Changed
+
+- update `@wenex/sdk` to version `1.3.0` @vhidvz
+
 ## [1.1.36] - 2025-12-27
 
 ### Fixed
@@ -44,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.31] - 2025-11-01
 
-### Updated
+### Changed
 
 - copd coworker scopes updated base on phc client @vhidvz
 
