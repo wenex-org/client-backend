@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- update `clients.seed.ts` to add `AbortFinancialTransaction` for phc
+
+### Changed
+
 - update `libs/module` using update script @vhidvz
 
 ## [1.1.37] - 2026-02-04
