@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- add `hai` client to coworker clients @fdaei
 - update `clients.seed.ts` to add `AbortFinancialTransaction` for phc
 
 ### Changed
