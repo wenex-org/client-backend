@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.38] - 2026-02-19
+
 ### Changed
 
+- define `tapify` as `phc` coworker @vhidvz
 - add `hai` client to coworker clients @fdaei
-- update `clients.seed.ts` to add `AbortFinancialTransaction` for phc
-
-### Changed
-
+- update `clients.seed.ts` to add `AbortFinancialTransaction` for phc @yonus-a
 - update `libs/module` using update script @vhidvz
 
 ## [1.1.37] - 2026-02-04
@@ -279,7 +279,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.37...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.38...HEAD
+[1.1.38]: https://github.com/wenex-org/client-backend/compare/1.1.37...1.1.38
 [1.1.37]: https://github.com/wenex-org/client-backend/compare/1.1.36...1.1.37
 [1.1.36]: https://github.com/wenex-org/client-backend/compare/1.1.35...1.1.36
 [1.1.35]: https://github.com/wenex-org/client-backend/compare/1.1.34...1.1.35
