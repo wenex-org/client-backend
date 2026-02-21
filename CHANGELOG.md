@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - fix: phc `financial` scopes @vhidvz
+- fix: tapify seed data on `identity.users` subject field @vhidvz
 
 ## [1.1.38] - 2026-02-19
 
