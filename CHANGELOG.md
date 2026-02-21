@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- add tapify client to phc currencies `clients` props @vhidvz
+
+### Fixed
+
+- fix: phc `financial` scopes @vhidvz
+
 ## [1.1.38] - 2026-02-19
 
 ### Changed
