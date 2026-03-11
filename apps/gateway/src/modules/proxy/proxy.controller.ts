@@ -19,7 +19,7 @@ import { ProxyService } from './proxy.service';
 export class ProxyController {
   constructor(private readonly proxyService: ProxyService) {}
 
-  @All('*')
+  @All('-/*path')
   async all(@Req() req: Request, @Res() res: Response) {
     const serviceUrl = `http://${APP.SERVICES.HOST}:${APP.SERVICES.API_PORT}`;
     assertion(await isAlive(serviceUrl), 'Service is not alive', HttpStatus.SERVICE_UNAVAILABLE);
