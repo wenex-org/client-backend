@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- add validation for COWORKERS environment variable @mhalizadeh
+
 ## [1.1.39] - 2026-02-19
 
 ### Changed

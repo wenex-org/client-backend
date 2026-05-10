@@ -64,6 +64,7 @@ export class AuthService {
     }
 
     if (data.grant_type !== GrantType.client_credential) {
+      assertion(!process.env.COWORKERS || isJSON(process.env.COWORKERS), 'Invalid COWORKERS env var: expected valid JSON string');
       if (isJSON(process.env.COWORKERS)) {
         const coworkers = toJSON<string[]>(process.env.COWORKERS);
         const cond = (c: any) => COWORKERS_REGEX.test(toString(c));
