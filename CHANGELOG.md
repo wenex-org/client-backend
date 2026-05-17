@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.40] - 2026-05-17
+
+- add comment of post @fdaei
 - add validation for COWORKERS environment variable @mhalizadeh
 
 ## [1.1.39] - 2026-02-19
@@ -296,7 +299,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.39...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.40...HEAD
+[1.1.40]: https://github.com/wenex-org/client-backend/compare/1.1.39...1.1.40
 [1.1.39]: https://github.com/wenex-org/client-backend/compare/1.1.38...1.1.39
 [1.1.38]: https://github.com/wenex-org/client-backend/compare/1.1.37...1.1.38
 [1.1.37]: https://github.com/wenex-org/client-backend/compare/1.1.36...1.1.37
