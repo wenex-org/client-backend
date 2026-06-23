@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.42] - 2026-06-23
+
+### Added
+
+- coworkers sync domain/apps resource @vhidvz
+
 ## [1.1.41] - 2026-05-17
 
 ## [1.1.40] - 2026-05-17
@@ -301,7 +307,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.40...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.1.42...HEAD
+[1.1.42]: https://github.com/wenex-org/client-backend/compare/1.1.41...1.1.42
+[1.1.41]: https://github.com/wenex-org/client-backend/compare/1.1.40...1.1.41
 [1.1.40]: https://github.com/wenex-org/client-backend/compare/1.1.39...1.1.40
 [1.1.39]: https://github.com/wenex-org/client-backend/compare/1.1.38...1.1.39
 [1.1.38]: https://github.com/wenex-org/client-backend/compare/1.1.37...1.1.38
