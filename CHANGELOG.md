@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- stream gateway file uploads straight through to platform instead of buffering and re-uploading them. @vhidvz
+
 ## [1.1.42] - 2026-06-23
 
 ### Added

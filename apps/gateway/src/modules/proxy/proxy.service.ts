@@ -5,13 +5,11 @@ import { logger, toJSON, toString } from '@wenex/sdk/common/core/utils';
 import { NATS_GATEWAY } from '@app/common/core/constants';
 import { ENV } from '@wenex/sdk/common/core/env.util';
 import { ClientProxy } from '@nestjs/microservices';
-import formidable, { File } from 'formidable';
 import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { REQUEST } from '@nestjs/core';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
-import fs from 'fs/promises';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProxyService implements OnModuleInit {
@@ -58,7 +56,7 @@ export class ProxyService implements OnModuleInit {
     }
   }
 
-  async beforeSync(res: Response, files?: File[]): Promise<SyncData> {
+  async beforeSync(res: Response): Promise<SyncData> {
     try {
       const { params, pattern } = getRequestInfo(this.req, 'before');
 
@@ -69,7 +67,7 @@ export class ProxyService implements OnModuleInit {
           query: this.req.query,
           method: this.req.method,
           url: this.req.originalUrl,
-          data: files || this.req.body,
+          data: this.req.body,
           headers: getHeaders(this.req),
         } as ProxyData),
       );
@@ -94,32 +92,30 @@ export class ProxyService implements OnModuleInit {
       throw new HttpException('GraphQL mutations are not allowed', HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    let before: SyncData;
-    const formData = new FormData();
-    if (/upload/.test(path)) {
-      const form = formidable({ multiples: true });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, files] = await form.parse(this.req);
-      for (const file of files.file ?? []) {
-        const buffer = Buffer.from(await fs.readFile(file.filepath));
-        formData.append('file', new Blob([buffer]), file.originalFilename!);
-        await fs.unlink(file.filepath); // delete the file after reading
-        this.log.extend(this.all.name)('file %s processid', file.filepath);
-      }
-      before = await this.beforeSync(res, files.file);
-    } else before = await this.beforeSync(res);
+    const before = await this.beforeSync(res);
 
     if (!before?.end) {
       this.log.extend(this.all.name)('path %s', path);
       if (/upload/.test(path)) {
+        // Stream the raw multipart request straight through to the platform in a
+        // single pass: pipe `this.req` as the request body instead of buffering the
+        // file to disk and re-uploading it. `getHeaders` already forwards the original
+        // `content-type` (with the multipart boundary); forward `content-length` too so
+        // the platform gets a real length (falls back to chunked encoding if absent).
+        const headers = getHeaders(this.req);
+        const contentLength = this.req.header('content-length');
+        if (contentLength) headers['content-length'] = contentLength;
+
         const result = await this.http.axiosRef.request({
           responseType: 'json',
           url: path,
-          data: formData,
+          data: this.req,
           params: this.req.query,
           method: this.req.method,
-          headers: getHeaders(this.req),
+          headers,
           baseURL: process.env.PLATFORM_URL,
+          maxBodyLength: Infinity,
+          maxContentLength: Infinity,
         });
         return this.afterSync(res, result as any);
       } else if (/(cursor|download)/.test(path)) {
