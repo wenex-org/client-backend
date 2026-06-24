@@ -64,10 +64,10 @@ export class ProxyService implements OnModuleInit {
         this.client.send(pattern, {
           ip: this.req.ip,
           params,
+          data: this.req.body,
           query: this.req.query,
           method: this.req.method,
           url: this.req.originalUrl,
-          data: this.req.body,
           headers: getHeaders(this.req),
         } as ProxyData),
       );
@@ -97,25 +97,20 @@ export class ProxyService implements OnModuleInit {
     if (!before?.end) {
       this.log.extend(this.all.name)('path %s', path);
       if (/upload/.test(path)) {
-        // Stream the raw multipart request straight through to the platform in a
-        // single pass: pipe `this.req` as the request body instead of buffering the
-        // file to disk and re-uploading it. `getHeaders` already forwards the original
-        // `content-type` (with the multipart boundary); forward `content-length` too so
-        // the platform gets a real length (falls back to chunked encoding if absent).
         const headers = getHeaders(this.req);
         const contentLength = this.req.header('content-length');
         if (contentLength) headers['content-length'] = contentLength;
 
         const result = await this.http.axiosRef.request({
           responseType: 'json',
+          headers,
           url: path,
           data: this.req,
           params: this.req.query,
           method: this.req.method,
-          headers,
-          baseURL: process.env.PLATFORM_URL,
           maxBodyLength: Infinity,
           maxContentLength: Infinity,
+          baseURL: process.env.PLATFORM_URL,
         });
         return this.afterSync(res, result as any);
       } else if (/(cursor|download)/.test(path)) {

@@ -95,9 +95,6 @@ importers:
       elastic-apm-node:
         specifier: ^4.11.0
         version: 4.11.0
-      formidable:
-        specifier: ^3.5.4
-        version: 3.5.4
       handlebars:
         specifier: ^4.7.8
         version: 4.7.8
@@ -165,9 +162,6 @@ importers:
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
-      '@types/formidable':
-        specifier: ^3.4.5
-        version: 3.4.5
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -2136,9 +2130,6 @@ packages:
 
   '@types/express@5.0.0':
     resolution: {integrity: sha512-DvZriSMehGHL1ZNLzi6MidnsDhUZM/x2pRdDIKdwbUNqqwHxMlRdkxtn6/EPKyqKpHqTl/4nRZsRNLpZxZRpPQ==}
-
-  '@types/formidable@3.4.5':
-    resolution: {integrity: sha512-s7YPsNVfnsng5L8sKnG/Gbb2tiwwJTY1conOkJzTMRvJAlLFW1nEua+ADsJQu8N1c0oTHx9+d5nqg10WuT9gHQ==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -8600,10 +8591,6 @@ snapshots:
       '@types/express-serve-static-core': 5.0.2
       '@types/qs': 6.14.0
       '@types/serve-static': 1.15.7
-
-  '@types/formidable@3.4.5':
-    dependencies:
-      '@types/node': 22.12.0
 
   '@types/graceful-fs@4.1.9':
     dependencies:
