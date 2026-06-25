@@ -31,6 +31,8 @@ export class McpController {
     const sessionId = headers['mcp-session-id'];
     if (sessionId) res.setHeader('mcp-session-id', sessionId);
 
+    data.on('error', () => res.destroy());
+    res.on('close', () => data.destroy());
     data.pipe(res);
   }
 }

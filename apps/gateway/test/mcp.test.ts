@@ -129,6 +129,63 @@ describe('McpController (e2e) — POST /mcp', () => {
   });
 });
 
+describe('McpController (e2e) — upstream mid-stream error', () => {
+  let app: INestApplication;
+  let upstreamServer: http.Server;
+  let appPort: number;
+
+  beforeAll(async () => {
+    upstreamServer = http.createServer((req, res) => {
+      res.writeHead(200, { 'content-type': 'text/event-stream' });
+      res.write('data: partial\n\n');
+      setTimeout(() => res.destroy(), 30);
+    });
+    await new Promise<void>((r) => upstreamServer.listen(0, r));
+    process.env.PLATFORM_URL = `http://127.0.0.1:${(upstreamServer.address() as AddressInfo).port}`;
+
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [McpModule],
+    }).compile();
+    app = moduleFixture.createNestApplication();
+    await app.listen(0);
+    appPort = (app.getHttpServer().address() as AddressInfo).port;
+  });
+
+  afterAll(async () => {
+    await app.close();
+    await new Promise<void>((r) => upstreamServer.close(() => r()));
+  });
+
+  it('delivers bytes sent before upstream drop and does not hang or crash', async () => {
+    // Inline raw-http helper that resolves (never rejects) on end, close, aborted, or ECONNRESET.
+    const collected = await new Promise<{ chunks: string[]; terminated: boolean }>((resolve) => {
+      const chunks: string[] = [];
+      let settled = false;
+      const done = (terminated: boolean) => {
+        if (!settled) {
+          settled = true;
+          resolve({ chunks, terminated });
+        }
+      };
+      const req = http.request({ host: '127.0.0.1', port: appPort, path: '/mcp', method: 'GET' }, (res) => {
+        res.on('data', (c: Buffer) => chunks.push(c.toString()));
+        res.on('end', () => done(true));
+        res.on('close', () => done(true));
+        // 'aborted' is emitted on older Node; 'close' covers it on newer.
+        res.on('aborted', () => done(true));
+      });
+      req.on('error', () => done(true)); // ECONNRESET resolves, not rejects
+      req.end();
+    });
+
+    // Must have received the partial data sent before the upstream drop.
+    const body = collected.chunks.join('');
+    expect(body).toContain('data: partial');
+    // Connection must have terminated (not hung forever).
+    expect(collected.terminated).toBe(true);
+  });
+});
+
 describe('McpController (e2e) — GET /mcp', () => {
   let app: INestApplication;
   let appPort: number;
