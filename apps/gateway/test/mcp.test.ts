@@ -47,6 +47,58 @@ function collectChunks(port: number, headers: http.OutgoingHttpHeaders = {}) {
   });
 }
 
+describe('McpController (e2e) — POST /mcp', () => {
+  let app: INestApplication;
+  let upstreamServer: http.Server;
+  let received: { method?: string; headers?: http.IncomingHttpHeaders; body?: string } = {};
+
+  beforeAll(async () => {
+    upstreamServer = http.createServer((req, res) => {
+      let body = '';
+      req.on('data', (c) => (body += c.toString()));
+      req.on('end', () => {
+        received = { method: req.method, headers: req.headers, body };
+        res.writeHead(200, { 'content-type': 'text/event-stream', 'mcp-session-id': 'srv-session-789' });
+        res.write('data: post-first\n\n');
+        setTimeout(() => {
+          res.write('data: post-second\n\n');
+          res.end();
+        }, 50);
+      });
+    });
+    await new Promise<void>((r) => upstreamServer.listen(0, r));
+    process.env.PLATFORM_URL = `http://127.0.0.1:${(upstreamServer.address() as AddressInfo).port}`;
+
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [McpModule],
+    }).compile();
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  afterAll(async () => {
+    await app.close();
+    await new Promise<void>((r) => upstreamServer.close(() => r()));
+  });
+
+  it('forwards the POST body upstream and streams the SSE response back', async () => {
+    const payload = { jsonrpc: '2.0', id: 1, method: 'tools/list' };
+    const res = await request(app.getHttpServer()).post('/mcp').set('Mcp-Session-Id', 'client-xyz').send(payload);
+
+    // Request forwarded with body + session id.
+    expect(received.method).toBe('POST');
+    expect(JSON.parse(received.body ?? '{}')).toEqual(payload);
+    expect(received.headers?.['mcp-session-id']).toBe('client-xyz');
+
+    // Response streamed as SSE, session id bridged back, not buffered.
+    expect(res.headers['content-type']).toContain('text/event-stream');
+    expect(res.headers['mcp-session-id']).toBe('srv-session-789');
+    expect(res.headers['content-length']).toBeUndefined();
+    expect(res.text).toContain('data: post-first');
+    expect(res.text).toContain('data: post-second');
+  });
+});
+
 describe('McpController (e2e) — GET /mcp', () => {
   let app: INestApplication;
   let appPort: number;
