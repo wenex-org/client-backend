@@ -1,3 +1,4 @@
+import { McpModule } from './mcp';
 import { ProxyModule } from './proxy';
 
-export const MODULES = [ProxyModule] as const;
+export const MODULES = [McpModule, ProxyModule] as const;
