@@ -30,29 +30,41 @@ function startUpstream() {
 }
 
 // Raw HTTP client that timestamps each received chunk (to prove streaming).
-function collectChunks(port: number, headers: http.OutgoingHttpHeaders = {}) {
+// Supports GET (default) and POST (pass method='POST' and a JSON body object).
+function collectChunks(port: number, headers: http.OutgoingHttpHeaders = {}, method: 'GET' | 'POST' = 'GET', body?: object) {
   return new Promise<{
     status?: number;
     headers: http.IncomingHttpHeaders;
     chunks: { t: number; s: string }[];
   }>((resolve, reject) => {
-    const req = http.request({ host: '127.0.0.1', port, path: '/mcp', method: 'GET', headers }, (res) => {
+    const bodyStr = body !== undefined ? JSON.stringify(body) : undefined;
+    const reqHeaders: http.OutgoingHttpHeaders = { ...headers };
+    if (bodyStr !== undefined) {
+      reqHeaders['content-type'] = 'application/json';
+      reqHeaders['content-length'] = Buffer.byteLength(bodyStr);
+    }
+    const req = http.request({ host: '127.0.0.1', port, path: '/mcp', method, headers: reqHeaders }, (res) => {
       const start = Date.now();
       const chunks: { t: number; s: string }[] = [];
       res.on('data', (c) => chunks.push({ t: Date.now() - start, s: c.toString() }));
       res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, chunks }));
     });
     req.on('error', reject);
+    if (bodyStr !== undefined) {
+      req.write(bodyStr);
+    }
     req.end();
   });
 }
 
 describe('McpController (e2e) — POST /mcp', () => {
   let app: INestApplication;
+  let appPort: number;
   let upstreamServer: http.Server;
   let received: { method?: string; headers?: http.IncomingHttpHeaders; body?: string } = {};
 
   beforeAll(async () => {
+    // NOTE: process.env.PLATFORM_URL is mutated here; blocks rely on Jest's sequential describe execution.
     upstreamServer = http.createServer((req, res) => {
       let body = '';
       req.on('data', (c) => (body += c.toString()));
@@ -73,7 +85,8 @@ describe('McpController (e2e) — POST /mcp', () => {
       imports: [McpModule],
     }).compile();
     app = moduleFixture.createNestApplication();
-    await app.init();
+    await app.listen(0);
+    appPort = (app.getHttpServer().address() as AddressInfo).port;
   });
 
   afterAll(async () => {
@@ -96,6 +109,23 @@ describe('McpController (e2e) — POST /mcp', () => {
     expect(res.headers['content-length']).toBeUndefined();
     expect(res.text).toContain('data: post-first');
     expect(res.text).toContain('data: post-second');
+
+    // Independently verify streaming: raw HTTP client must receive >=2 separate
+    // chunks, joined text contains both events, and the last chunk arrives with
+    // measurable delay (upstream delays the second event by 50 ms).
+    const streamed = await collectChunks(appPort, { 'mcp-session-id': 'client-xyz' }, 'POST', {
+      jsonrpc: '2.0',
+      id: 2,
+      method: 'tools/list',
+    });
+    expect(streamed.status).toBe(200);
+    expect(streamed.headers['content-type']).toContain('text/event-stream');
+    expect(streamed.headers['content-length']).toBeUndefined();
+    expect(streamed.chunks.length).toBeGreaterThanOrEqual(2);
+    const joinedText = streamed.chunks.map((c) => c.s).join('');
+    expect(joinedText).toContain('data: post-first');
+    expect(joinedText).toContain('data: post-second');
+    expect(streamed.chunks[streamed.chunks.length - 1].t).toBeGreaterThanOrEqual(40);
   });
 });
 
@@ -105,6 +135,7 @@ describe('McpController (e2e) — GET /mcp', () => {
   let upstream: ReturnType<typeof startUpstream>;
 
   beforeAll(async () => {
+    // NOTE: process.env.PLATFORM_URL is mutated here; blocks rely on Jest's sequential describe execution.
     upstream = startUpstream();
     await new Promise<void>((r) => upstream.server.listen(0, r));
     const upstreamPort = (upstream.server.address() as AddressInfo).port;
