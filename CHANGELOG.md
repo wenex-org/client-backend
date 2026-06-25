@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- add /mcp gateway route streaming MCP traffic to the platform as live SSE, with Mcp-Session-Id preserved. @vhidvz
+
 ### Changed
 
 - stream gateway file uploads straight through to platform instead of buffering and re-uploading them. @vhidvz
