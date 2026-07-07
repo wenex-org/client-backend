@@ -19,7 +19,11 @@ export class McpService {
     const sessionId = this.req.header('mcp-session-id');
     if (sessionId) headers['mcp-session-id'] = sessionId;
 
+    const accept = this.req.header('accept');
+    if (accept) headers['accept'] = accept;
+
     return this.http.axiosRef.request({
+      validateStatus: () => true,
       responseType: 'stream',
       url: '/mcp',
       headers,
