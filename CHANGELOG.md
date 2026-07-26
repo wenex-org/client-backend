@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Grant the LND client 9 scopes: logistic drivers/vehicles/travels/cargoes, travel routing. @vhidvz
+- Grant the LND client transaction init/verify/abort and `search:career:products` scopes. @vhidvz
+- Seed Landau's IRR currency (precision 0), BUSINESS account and commission wallet. @vhidvz
+
 ### Fixed
 
 - gateway: bridge MCP `accept` header to platform; getHeaders stripped it, so the 406 surfaced as a generic 500. @vhidvz
