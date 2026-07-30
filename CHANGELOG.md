@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- sync `subjects`/`status` onto seeded root users; an existing row could never be repaired. @vhidvz
+
 ### Added
 
 - Grant the LND client 9 scopes: logistic drivers/vehicles/travels/cargoes, travel routing. @vhidvz
