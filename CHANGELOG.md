@@ -7,18 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
-- sync `subjects`/`status` onto seeded root users; an existing row could never be repaired. @vhidvz
+## [1.2.2] - 2026-08-09
 
 ### Added
 
+- Pair PHC and COPD as coworkers on both sides and grant COPD `ReadContentPosts`/`SearchContentPosts`. @hassansaadat
 - Grant the LND client 9 scopes: logistic drivers/vehicles/travels/cargoes, travel routing. @vhidvz
 - Grant the LND client transaction init/verify/abort and `search:career:products` scopes. @vhidvz
 - Seed Landau's IRR currency (precision 0), BUSINESS account and commission wallet. @vhidvz
 
+### Changed
+
+- coworkers: sync the `coworkers` property too, so already-seeded clients pick up coworker changes. @hassansaadat
+- run every package script, Dockerfile build step, husky pre-push hook and the circular-dependency script through `pnpm` instead of `npm`. @vhidvz
+
 ### Fixed
 
+- sync `subjects`/`status` onto seeded root users; an existing row could never be repaired. @vhidvz
 - gateway: bridge MCP `accept` header to platform; getHeaders stripped it, so the 406 surfaced as a generic 500. @vhidvz
 
 ## [1.2.1] - 2026-06-28
@@ -119,7 +124,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.2.1...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.2.2...HEAD
+[1.2.2]: https://github.com/wenex-org/client-backend/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/wenex-org/client-backend/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/wenex-org/client-backend/compare/1.1.42...1.2.0
 [1.1.X]: https://github.com/wenex-org/client-backend/compare/1.0.21...1.1.42
