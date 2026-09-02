@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Grant the LND client `manage:content:tickets` — Landau's support desk rides `content/tickets` (75.1). @vhidvz
+
 ## [1.2.2] - 2026-08-09
 
 ### Added
