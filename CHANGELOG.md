@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.3] - 2026-09-09
+
 ### Added
 
 - Grant the LND client `collect:special:stats` — plan 93's margin series is written on that credential. @vhidvz
@@ -129,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - initial release 🎉​🎊​.
 
-[unreleased]: https://github.com/wenex-org/client-backend/compare/1.2.2...HEAD
+[unreleased]: https://github.com/wenex-org/client-backend/compare/1.2.3...HEAD
+[1.2.3]: https://github.com/wenex-org/client-backend/compare/1.2.2...1.2.3
 [1.2.2]: https://github.com/wenex-org/client-backend/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/wenex-org/client-backend/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/wenex-org/client-backend/compare/1.1.42...1.2.0
