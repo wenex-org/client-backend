@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The unit suite's Mongo/Redis prefix is `try`, the value the template and every sibling backend use. @vhidvz
+
 ## [1.2.3] - 2026-09-09
 
 ### Added
