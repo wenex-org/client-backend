@@ -9,8 +9,8 @@ cd client-backend
 cp .env.example .env
 
 # Clone git submodules
-npm run git:clone
-npm run git checkout main
+pnpm run git:clone
+pnpm run git checkout main
 
 # Install node dependencies
 pnpm install --frozen-lockfile
@@ -27,7 +27,7 @@ pnpm install --frozen-lockfile
 ## Add Remote (Optional)
 
 ```sh
-npm run git:remote:add staging example.com
+pnpm run git:remote:add staging example.com
 ```
 
 > Note: stage must be `staging` or `production`.
@@ -36,7 +36,9 @@ npm run git:remote:add staging example.com
 
 ```sh
 docker-compose -f docker/docker-compose.yml up -d
-# The other `yml` files in `docker` directory are optional
+# Also required: docker/docker-compose.mg.yml (MongoDB — see docker/README.md) and
+# docker/docker-compose.rds.yml (Redis). Only otlp/snq/sntr are optional. (Corrected 2026-09-20 —
+# this line called them all optional while .env.example needs Mongo and Redis.)
 ```
 
 ## DB Seeding and Initialization
@@ -58,9 +60,9 @@ docker-compose --profile platform-raise up
 ### Manual Seeding
 
 ```sh
-npm run platform:seed
-npm run platform:raise
-# npm run platform:clean
+pnpm run platform:seed
+pnpm run platform:raise
+# pnpm run platform:clean
 ```
 
 ### Coworkers Seeding
@@ -68,9 +70,9 @@ npm run platform:raise
 Manual:
 
 ```sh
-npm run coworkers:seed
-npm run coworkers:raise
-# npm run coworkers:clean
+pnpm run coworkers:seed
+pnpm run coworkers:raise
+# pnpm run coworkers:clean
 ```
 
 Using Docker:
@@ -97,20 +99,20 @@ Start each service you want using the following command
 
 ```sh
 # Gateway
-npm run start:dev gateway
-#npm run start:debug[2] gateway
+pnpm run start:dev gateway
+#pnpm run start:debug[2] gateway
 
 # Services
-npm run start:dev services
-#npm run start:debug[2] services
+pnpm run start:dev services
+#pnpm run start:debug[2] services
 
 # Workers
-npm run start:dev workers
-#npm run start:debug[2] workers
+pnpm run start:dev workers
+#pnpm run start:debug[2] workers
 ```
 
 Serve static files located at the `assets` directory
 
 ```sh
-npm run serve:static
+pnpm run serve:static
 ```

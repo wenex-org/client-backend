@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The unit suite's Mongo/Redis prefix is `try`, the value the template and every sibling backend use. @vhidvz
+- `package.json` reads 1.2.3, the version the changelog and the tags already carry (efbcabd had rewound it). @vhidvz
+- README runs every script through `pnpm`; the start step names the Mongo/Redis composes; docker/README documents NATS. @vhidvz
 
 ## [1.2.3] - 2026-09-09
 
@@ -30,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - coworkers: sync the `coworkers` property too, so already-seeded clients pick up coworker changes. @hassansaadat
-- run every package script, Dockerfile build step, husky pre-push hook and the circular-dependency script through `pnpm` instead of `npm`. @vhidvz
+- run every package script, Dockerfile step, husky pre-push hook and circular-dependency check through `pnpm`, not `npm`. @vhidvz
 
 ### Fixed
 
