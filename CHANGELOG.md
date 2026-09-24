@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `REDIS_CONFIG` refuses an empty `REDIS_PREFIX` instead of opening the shared keyspace (libs 83c5244). @vhidvz
+
 ### Changed
 
 - The unit suite's Mongo/Redis prefix is `try`, the value the template and every sibling backend use. @vhidvz
